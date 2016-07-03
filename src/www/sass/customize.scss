@@ -1,0 +1,8 @@
+.hero-body .container {
+    @include lg {
+        margin-left: 15px;
+    };
+    @include md {
+        margin-left: 15px;
+    };
+}

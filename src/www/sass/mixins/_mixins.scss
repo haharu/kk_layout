@@ -1,0 +1,10 @@
+@mixin font-smoothing($val: antialiased) {
+    -webkit-font-smoothing: $val;
+    -moz-font-smoothing: $val;
+    -ms-font-smoothing: $val;
+    -o-font-smoothing: $val;
+}
+@mixin calc($property, $expression) {
+    #{$property}: -webkit-calc(#{$expression});
+    #{$property}: calc(#{$expression});
+}
