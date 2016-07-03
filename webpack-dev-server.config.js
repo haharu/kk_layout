@@ -22,7 +22,8 @@ var config = {
         devtool: 'eval',
         hot: true, //Live-reload
         inline: true,
-        port: 8080 //Port Number
+        port: 8080, //Port Number
+        historyApiFallback: true
     },
     devtool: 'eval',
     output: {
