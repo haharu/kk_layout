@@ -36,7 +36,7 @@ export default class Header extends React.Component {
                         <div className="nav-left">
                             <NavLink to={`/card`}>Card</NavLink>
                             <NavLink to={`/level`}>Level</NavLink>
-                            <a className="nav-item is-tab">Media object</a>
+                            <NavLink to={`/finance`}>Finance</NavLink>
                             <a className="nav-item is-tab">Menu</a>
                             <a className="nav-item is-tab">Message</a>
                             <a className="nav-item is-tab">Modal</a>

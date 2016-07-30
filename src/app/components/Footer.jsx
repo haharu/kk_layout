@@ -3,9 +3,16 @@
 import React from 'react';
 
 export default class Footer extends React.Component {
+    constructor(props, context){
+        super(props);
+        this.state = {
+            className: props.className + ' box'
+        }
+    }
     render() {
+        let {className} = this.state;
         return (
-            <div className="box">
+            <div className={className}>
                 <article className="media">
                     <div className="media-left">
                         <figure className="image is-64x64">
