@@ -1,28 +1,58 @@
+import opaqueParser from '../helpers'
+
 export const REQUEST_FINANCE = 'REQUEST_FINANCE'
 export const RECEIVE_FINANCE = 'RECEIVE_FINANCE'
+export const INVALIDATE_FINANCE = 'INVALIDATE_FINANCE'
+export const SELECT_CURRENCY = 'SELECT_CURRENCY'
 
-function requestFinance(finance) {
-    return {type: REQUEST_FINANCE, finance}
+function requestFinance(currency) {
+    return {type: REQUEST_FINANCE, currency}
 }
 
-function receiveFinance(finance, json) {
-    return {type: RECEIVE_FINANCE, finance, data: json, receiveAt: Date.now()}
+function receiveFinance(currency, json) {
+    return {type: RECEIVE_FINANCE, currency, data: json, receiveAt: Date.now()}
 }
 
-function fetchFinance(finance) {
+export function invalidateFinance(currency) {
+    return {type: INVALIDATE_FINANCE, currency}
+}
+
+export function selectCurrency(currency) {
+    return {type: SELECT_CURRENCY, currency}
+}
+
+function fetchFinance(currency) {
     return dispatch => {
-        dispatch(requestFinance(finance))
-        return fetch(`http://www.google.com/finance/getprices?q=${finance}&x=CURRENCY&i=86400&p=1Y`).then(resp => resp.json()).then(json => dispatch(receiveFinance(finance, json)))
+        let options = {
+            method: 'GET',
+            headers: new Headers(),
+            mode: 'cors',
+            cache: 'default'
+        };
+        let url = `https://www.google.com/finance/getprices?q=${currency}&x=CURRENCY&i=86400&p=1Y`;
+        let req = new Request(url, options)
+        dispatch(requestFinance(currency))
+        return fetch(req)
+        .then(resp => resp.text())
+        .then(data => dispatch(receiveFinance(currency, opaqueParser(data))))
     }
 }
 
-function shouldFetchFinance(state, finance) {
-    if (state) {}
+function shouldFetchFinance(state, currency) {
+    const finance = state.financeByGoogle[currency];
+    if (!finance) {
+        return true;
+    }
+    if (finance.isFetching) {
+        return false;
+    }
+    return finance.didInvalidate
 }
-export function fetchFinanceIfNeeded(finance) {
+
+export function fetchFinanceIfNeeded(currency) {
     return (dispatch, getState) => {
-        if (shouldFetchFinance(getState, finance)) {
-            return dispatch(fetchFinance(finance))
+        if (shouldFetchFinance(getState(), currency)) {
+            return dispatch(fetchFinance(currency))
         }
     }
 }
