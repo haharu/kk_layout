@@ -1,4 +1,4 @@
-import opaqueParser from '../helpers'
+import {opaqueParser, chartTranc} from '../helpers'
 
 export const REQUEST_FINANCE = 'REQUEST_FINANCE'
 export const RECEIVE_FINANCE = 'RECEIVE_FINANCE'
@@ -21,7 +21,7 @@ export function selectCurrency(currency) {
     return {type: SELECT_CURRENCY, currency}
 }
 
-function fetchFinance(currency) {
+function fetchFinance(currency, period ='1M') {
     return dispatch => {
         let options = {
             method: 'GET',
@@ -29,12 +29,13 @@ function fetchFinance(currency) {
             mode: 'cors',
             cache: 'default'
         };
-        let url = `https://www.google.com/finance/getprices?q=${currency}&x=CURRENCY&i=86400&p=1Y`;
+        let url = `https://www.google.com/finance/getprices?q=${currency}&x=CURRENCY&i=86400&p=${period}`;
         let req = new Request(url, options)
         dispatch(requestFinance(currency))
         return fetch(req)
         .then(resp => resp.text())
-        .then(data => dispatch(receiveFinance(currency, opaqueParser(data))))
+        .then(row => opaqueParser(row))
+        .then(data => dispatch(receiveFinance(currency, chartTranc(data))))
     }
 }
 

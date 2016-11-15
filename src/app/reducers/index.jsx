@@ -5,7 +5,7 @@ import {routerReducer as routing} from 'react-router-redux'
 function finance(state = {
     isFetching: false,
     didInvalidate: false,
-    items: {}
+    items: []
 }, action) {
     switch (action.type) {
         case INVALIDATE_FINANCE:

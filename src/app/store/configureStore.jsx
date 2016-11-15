@@ -7,8 +7,8 @@ export default function configureStore(preloadedState) {
     const logger = createLogger();
     const store = createStore(rootReducer, preloadedState, applyMiddleware(ReduxThunk, logger))
 
-    if (module.hot) {
-        module.hot.accept('../reducers', () => {
+    if (module.makeHot) {
+        module.makeHot('../reducers', () => {
             const nextRootReducer = require('../reducers').default
             store.replaceReducer(nextRootReducer)
         })

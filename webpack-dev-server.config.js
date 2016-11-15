@@ -23,7 +23,8 @@ var config = {
         hot: true, //Live-reload
         inline: true,
         port: 8080, //Port Number
-        historyApiFallback: true
+        historyApiFallback: true,
+        headers: { 'Access-Control-Allow-Origin': '*' }
     },
     devtool: 'eval',
     output: {
@@ -52,7 +53,7 @@ var config = {
         loaders: [{
             //React-hot loader and
             test: /\.(js|jsx)$/, //All .js and .jsx files
-            loaders: ['react-hot', 'babel'], //react-hot is like browser sync and babel loads jsx and es6-7
+            loaders: ['babel'], //react-hot is like browser sync and babel loads jsx and es6-7
             exclude: [nodeModulesPath]
         }, {
             test: /\.css$/,

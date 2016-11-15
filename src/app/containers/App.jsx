@@ -9,6 +9,10 @@ import Footer from '../components/Footer';
 import Currency from '../components/Currency';
 import Picker from '../components/Picker';
 
+import {LineChart} from 'react-d3'
+
+import {BarChartTranc} from '../helpers'
+
 class App extends Component {
     constructor(props) {
         super(props)
@@ -33,9 +37,12 @@ class App extends Component {
     }
 
     render() {
-        console.log(this.props);
         const {currency, data, isFetching, lastUpdated} = this.props
         const isEmpty = data.length === 0
+        let chartOptions = {
+            strokeDashArray: "5,5"
+        }
+        let BarChartData = BarChartTranc(data, currency, chartOptions);
         return (
             <div>
                 <Header/>
@@ -47,19 +54,24 @@ class App extends Component {
                 }
                 <Picker value={currency}
                     onChange={this.handleChange}
-                    options={[ 'TWDJPY', 'JPYTWD' ]} /><br/>
-                {isFetching &&
-                    <span>
-                        Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-                        {' '}
-                    </span>
-                }
-                isFetching : {isFetching.toString()}<br/>
-                currency : {currency}<br/>
-                {data &&
-                    <p>
-                        Data : {JSON.stringify(data)}
-                    </p>
+                    options={[ 'TWDJPY', 'JPYTWD', 'USDTWD', 'TWDUSD']}
+                />
+                <br/>
+                {!isEmpty &&
+                    <LineChart
+                        data={BarChartData}
+                        width={'100%'}
+                        height={400}
+                        legend={true}
+                        viewBoxObject={{
+                            x: 0,
+                            y: 0,
+                            width: 1000,
+                            height: 400
+                        }}
+                        gridHorizontal={true}
+                        gridVertical={true}
+                    />
                 }
                 <Footer className="margin-t-20"/>
             </div>
@@ -71,7 +83,7 @@ class App extends Component {
 
 App.propTypes = {
     currency: PropTypes.string.isRequired,
-    data: PropTypes.object.isRequired,
+    data: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     receiveAt: PropTypes.number,
     dispatch: PropTypes.func.isRequired
@@ -81,7 +93,7 @@ function mapStateToProps(state) {
     const {financeByGoogle, currency} = state
     const {isFetching, lastUpdated, items: data} = financeByGoogle[currency] || {
         isFetching: true,
-        items: {}
+        items: []
     }
 
     return {currency, data, isFetching, lastUpdated}
