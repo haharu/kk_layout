@@ -29,8 +29,14 @@ var config = {
         //Transfer Files
         new TransferWebpackPlugin([{
             from: 'www'
-        }], path.resolve(__dirname, "src"))
+        }], path.resolve(__dirname, "src")),
+		new webpack.DefinePlugin({
+			'process.env': {
+				'NODE_ENV': JSON.stringify('production')
+			}
+		})
     ],
+	devtool: 'cheap-module-source-map',
     module: {
         preLoaders: [{
             test: /\.(js|jsx)$/,
@@ -45,7 +51,22 @@ var config = {
         }, {
             test: /\.css$/,
             loader: 'style-loader!css-loader'
-        }]
+        }, {
+            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            loader: 'file-loader?mimetype=image/svg+xml'
+        }, {
+            test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "file-loader?mimetype=application/font-woff"
+        }, {
+            test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "file-loader?mimetype=application/font-woff"
+        }, {
+            test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "file-loader?mimetype=application/octet-stream"
+        }, {
+            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "file-loader"
+        }, ]
     },
     //Eslint config
     eslint: {
