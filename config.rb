@@ -6,12 +6,12 @@ require 'font-awesome-sass'
 # Require any additional compass plugins here.
 
 # Set this to the root of your project when deployed:
-http_path = "./"
-css_dir = "stylesheets"
-fonts_dir = "fonts"
-sass_dir = "sass"
-images_dir = "images"
-javascripts_dir = "javascripts"
+http_path = "app"
+css_dir = "app/stylesheets"
+fonts_dir = "app/fonts"
+sass_dir = "app/sass"
+images_dir = "app/images"
+javascripts_dir = "app/src"
 relative_assets = true
 cache = false
 
