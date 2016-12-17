@@ -1,6 +1,6 @@
 'use strict';
 
-import "../www/stylesheets/screen.css";
+import "../sass/screen.scss";
 import "babel-polyfill";
 
 import React from 'react';
@@ -21,12 +21,14 @@ const store = configureStore();
 
 const history = syncHistoryWithStore(browserHistory, store)
 
-render((
-    <Provider store={store}>
-        <Router history={history}>
-            <Route path="/" component={App}>
-                <Route path="*"/>
-            </Route>
-        </Router>
-    </Provider>
-), document.getElementById('app'));
+if (typeof document !== 'undefined') {
+    render((
+        <Provider store={store}>
+            <Router history={history}>
+                <Route path="/" component={App}>
+                    <Route path="*"/>
+                </Route>
+            </Router>
+        </Provider>
+    ), document.getElementById('app'));
+}
