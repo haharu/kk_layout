@@ -4,7 +4,9 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack-dev-server.config.js --progress --inline --colors --harmony",
     "build": "cross-env NODE_ENV=production webpack -p --config webpack-production.config.js --harmony --progress --colors",
     "test": "cross-env BABEL_ENV=commonjs mocha --compilers js:babel-register",
-    "lint": "eslint test src"
+    "lint": "eslint test src",
+    "css:watch": "compass watch",
+    "css:build": "compass compile"
   },
   "author": "haharu",
   "license": "ISC",
