@@ -5,6 +5,6 @@
 @import "mixins/**/*";
 @import "component/**/*";
 @import "fixer/**/*";
+@import "font-awesome-compass";
 @import "font-awesome";
-@import "font-awsome-compass";
-@import "~bulma";
+@import "../../node_modules/bulma/bulma.sass";

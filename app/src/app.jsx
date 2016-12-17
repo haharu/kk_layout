@@ -1,6 +1,6 @@
 'use strict';
 
-import "../sass/screen.scss";
+import "../stylesheets/main.css";
 import "babel-polyfill";
 
 import React from 'react';

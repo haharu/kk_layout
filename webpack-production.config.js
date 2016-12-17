@@ -39,16 +39,8 @@ var config = {
             }
         }),
         new HtmlWebpackPlugin({
-            hash: true,
-            cache: true,
-            minify: {
-                minifyJS: true,
-                removeEmptyAttributes: true,
-                minifyCSS: true,
-                minifyURLs: true,
-                removeComments: true,
-                removeRedundantAttributes: true
-            }
+            title: 'workbox',
+            template: path.join(__dirname, '/app/index.ejs'),
         }),
         new webpack.optimize.CommonsChunkPlugin("commons", "commons.js"),
         new ExtractTextPlugin('[name]-[hash].css', {allChunks: true})
@@ -69,28 +61,28 @@ var config = {
                 loaders: ['babel'], //react-hot is like browser sync and babel loads jsx and es6-7
                 exclude: [nodeModulesPath]
             }, {
-                test: /\.s?css$/,
-                loader: ExtractTextPlugin.extract({fallbackLoader: "style-loader", loader: "css-loader!sass-loader"})
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader")
             }, {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.svg(\?.*$|$)/,
                 loader: 'file-loader?mimetype=image/svg+xml'
             }, {
-                test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.woff(\?.*$|$)/,
                 loader: "file-loader?mimetype=application/font-woff"
             }, {
-                test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.woff2(\?.*$|$)/,
                 loader: "file-loader?mimetype=application/font-woff"
             }, {
-                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.ttf(\?.*$|$)/,
                 loader: "file-loader?mimetype=application/octet-stream"
             }, {
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.eot(\?.*$|$)/,
                 loader: "file-loader"
             }, {
                 test: /\.png$/,
                 loader: "url-loader?limit=100000"
             }, {
-                test: /\.jpg$/,
+                test: /\.jpg(\?.*$|$)/,
                 loader: "file-loader"
             }
         ]

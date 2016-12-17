@@ -40,13 +40,15 @@ var config = {
         //Allows error warnings but does not stop compiling. Will remove when eslint is added
         new webpack.NoErrorsPlugin(),
         //Moves files
-        // new TransferWebpackPlugin([
-        //     {
-        //         from: 'sass'
-        //     }, {
-        //         from: 'fonts'
-        //     }
-        // ], path.resolve(__dirname, "app")),
+        new TransferWebpackPlugin([
+            {
+                from: 'stylesheets'
+            }, {
+                from: 'fonts'
+            }, {
+                from: 'images'
+            }
+        ], path.resolve(__dirname, "app")),
         new HtmlWebpackPlugin({
             title: 'workbox',
             template: path.join(__dirname, '/app/index.ejs')
@@ -74,9 +76,6 @@ var config = {
                 loader: "style-loader!css-loader",
                 exclude: [nodeModulesPath]
             }, {
-                test: /\.scss$/,
-                loader: 'style-loader!css-loader!sass-loader'
-            }, {
                 loader: "babel-loader",
 
                 // Skip any files outside of your project's `src` directory
@@ -91,25 +90,25 @@ var config = {
                     presets: ['es2015', 'stage-0', 'react']
                 }
             }, {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.svg(\?.*$|$)/,
                 loader: 'file-loader?mimetype=image/svg+xml'
             }, {
-                test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.woff(\?.*$|$)/,
                 loader: "file-loader?mimetype=application/font-woff"
             }, {
-                test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.woff2(\?.*$|$)/,
                 loader: "file-loader?mimetype=application/font-woff"
             }, {
-                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.ttf(\?.*$|$)/,
                 loader: "file-loader?mimetype=application/octet-stream"
             }, {
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.eot(\?.*$|$)/,
                 loader: "file-loader"
             }, {
                 test: /\.png$/,
                 loader: "url-loader?limit=100000"
             }, {
-                test: /\.jpg$/,
+                test: /\.jpg(\?.*$|$)/,
                 loader: "file-loader"
             }
         ]
