@@ -19,12 +19,13 @@ var config = {
     },
     //Server Configuration options
     devServer: {
-        contentBase: 'app', //Relative directory for base of server
+        contentBase: buildPath, //Relative directory for base of server
         devtool: 'eval',
         hot: true, //Live-reload
         inline: true,
         port: process.env.PORT || 8080, //Port Number
         historyApiFallback: true,
+        compress: true,
         headers: {
             'Access-Control-Allow-Origin': '*'
         }
@@ -40,15 +41,15 @@ var config = {
         //Allows error warnings but does not stop compiling. Will remove when eslint is added
         new webpack.NoErrorsPlugin(),
         //Moves files
-        new TransferWebpackPlugin([
-            {
-                from: 'stylesheets'
-            }, {
-                from: 'fonts'
-            }, {
-                from: 'images'
-            }
-        ], path.resolve(__dirname, "app")),
+        // new TransferWebpackPlugin([
+        //     {
+        //         from: 'app/stylesheets'
+        //     }, {
+        //         from: 'app/fonts'
+        //     }, {
+        //         from: 'app/images'
+        //     }
+        // ], path.resolve(__dirname, "/build")),
         new HtmlWebpackPlugin({
             title: 'workbox',
             template: path.join(__dirname, '/app/index.ejs')
@@ -61,7 +62,7 @@ var config = {
                 //Eslint loader
                 test: /\.jsx?$/,
                 loader: 'eslint-loader',
-                include: [path.resolve(__dirname, "src/app")],
+                include: [path.resolve(__dirname, "app/src")],
                 exclude: [nodeModulesPath]
             }
         ],
