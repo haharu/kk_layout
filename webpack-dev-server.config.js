@@ -62,34 +62,19 @@ var config = {
                 //Eslint loader
                 test: /\.jsx?$/,
                 loader: 'eslint-loader',
-                include: [path.resolve(__dirname, "app/src")],
-                exclude: [nodeModulesPath]
+                include: [path.resolve(__dirname, "app/src")]
             }
         ],
         loaders: [
             {
                 //React-hot loader and
                 test: /\.jsx?$/, //All .js and .jsx files
-                loaders: ['babel'], //react-hot is like browser sync and babel loads jsx and es6-7
-                exclude: [nodeModulesPath]
+                loaders: ['babel?presets[]=es2015,presets[]=stage-0,presets[]=react,plugins[]=transform-runtime'], //react-hot is like browser sync and babel loads jsx and es6-7
+                include: [path.resolve(__dirname, "app/src")],
             }, {
                 test: /\.css$/,
                 loader: "style-loader!css-loader",
                 exclude: [nodeModulesPath]
-            }, {
-                loader: "babel-loader",
-
-                // Skip any files outside of your project's `src` directory
-                include: [path.resolve(__dirname, "app/src")],
-
-                // Only run `.js` and `.jsx` files through Babel
-                test: /\.jsx?$/,
-
-                // Options to configure babel with
-                query: {
-                    plugins: ['transform-runtime'],
-                    presets: ['es2015', 'stage-0', 'react']
-                }
             }, {
                 test: /\.svg(\?.*$|$)/,
                 loader: 'file-loader?mimetype=image/svg+xml'
