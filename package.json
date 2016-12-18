@@ -6,8 +6,8 @@
     "deploy": "cross-env NODE_ENV=production webpack -p --config webpack-production.config.js --harmony --progress --colors",
     "test": "cross-env BABEL_ENV=commonjs mocha --compilers js:babel-register",
     "lint": "eslint test src",
-    "css:watch": "compass watch",
-    "css:build": "compass compile"
+    "css:build": "compass compile",
+    "css:watch": "compass watch"
   },
   "author": "haharu",
   "license": "ISC",
@@ -35,10 +35,8 @@
     "file-loader": "^0.9.0",
     "html-webpack-plugin": "^2.24.1",
     "mocha": "^3.2.0",
-    "node-sass": "^4.0.0",
     "react-hot-loader": "^3.0.0-beta.6",
     "redux-devtools": "^3.3.1",
-    "sass-loader": "^4.1.0",
     "style-loader": "^0.13.1",
     "transfer-webpack-plugin": "^0.1.4",
     "url-loader": "^0.5.7",

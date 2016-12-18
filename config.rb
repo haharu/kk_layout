@@ -9,7 +9,7 @@ require 'font-awesome-sass'
 http_path = "app"
 css_dir = "app/stylesheets"
 fonts_dir = "app/fonts"
-sass_dir = "app/sass"
+sass_dir = "app/sass/chunks"
 images_dir = "app/images"
 javascripts_dir = "app/src"
 relative_assets = true
