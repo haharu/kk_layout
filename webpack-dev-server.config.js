@@ -6,24 +6,20 @@ var TransferWebpackPlugin = require('transfer-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var config = {
-    //Entry points to the project
     entry: [
         'webpack/hot/dev-server',
         'webpack/hot/only-dev-server',
         path.join(__dirname, '/app/src/app.jsx')
     ],
-    //Config options on how to interpret requires imports
     resolve: {
         extensions: ["", ".js", ".jsx"]
-        //node_modules: ["web_modules", "node_modules"]  (Default Settings)
     },
-    //Server Configuration options
     devServer: {
-        contentBase: buildPath, //Relative directory for base of server
+        contentBase: buildPath,
         devtool: 'eval',
         hot: true, //Live-reload
         inline: true,
-        port: process.env.PORT || 8080, //Port Number
+        port: process.env.PORT || 8080,
         historyApiFallback: true,
         compress: true,
         headers: {
@@ -32,31 +28,19 @@ var config = {
     },
     devtool: 'eval',
     output: {
-        path: buildPath, //Path of output file
+        path: buildPath,
         filename: 'bundle_[hash].js'
     },
     plugins: [
         //Enables Hot Modules Replacement
         new webpack.HotModuleReplacementPlugin(),
-        //Allows error warnings but does not stop compiling. Will remove when eslint is added
         new webpack.NoErrorsPlugin(),
-        //Moves files
-        // new TransferWebpackPlugin([
-        //     {
-        //         from: 'app/stylesheets'
-        //     }, {
-        //         from: 'app/fonts'
-        //     }, {
-        //         from: 'app/images'
-        //     }
-        // ], path.resolve(__dirname, "/build")),
         new HtmlWebpackPlugin({
             title: 'workbox',
             template: path.join(__dirname, '/app/index.ejs')
         })
     ],
     module: {
-        //Loaders to interpret non-vanilla javascript code as well as most other extensions including images and text.
         preLoaders: [
             {
                 //Eslint loader
@@ -67,10 +51,9 @@ var config = {
         ],
         loaders: [
             {
-                //React-hot loader and
-                test: /\.jsx?$/, //All .js and .jsx files
+                test: /\.jsx?$/,
                 loaders: ['babel?presets[]=es2015,presets[]=stage-0,presets[]=react,plugins[]=transform-runtime'], //react-hot is like browser sync and babel loads jsx and es6-7
-                include: [path.resolve(__dirname, "app/src")],
+                include: [path.resolve(__dirname, "app/src")]
             }, {
                 test: /\.css$/,
                 loader: "style-loader!css-loader",
@@ -99,7 +82,6 @@ var config = {
             }
         ]
     },
-    //eslint config options. Part of the eslint-loader package
     eslint: {
         configFile: '.eslintrc'
     }

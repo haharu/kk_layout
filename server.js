@@ -57,7 +57,7 @@ app.use(async(ctx, next) => {
 app.listen(3000, function(err) {
     if (err) {
         console.log(err);
-        return;;
+        return;
     }
 });
 console.log('Listening at port 3000');
