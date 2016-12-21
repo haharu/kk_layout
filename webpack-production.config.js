@@ -62,7 +62,8 @@ var config = {
                 exclude: [nodeModulesPath]
             }, {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader"),
+                include: [path.join(__dirname, 'app/stylesheets')]
             }, {
                 test: /\.svg(\?.*$|$)/,
                 loader: 'file-loader?mimetype=image/svg+xml'

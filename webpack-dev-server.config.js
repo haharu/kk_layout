@@ -7,6 +7,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var config = {
     entry: [
+        'webpack-hot-middleware/client',
         'webpack/hot/dev-server',
         'webpack/hot/only-dev-server',
         path.join(__dirname, '/app/src/app.jsx')

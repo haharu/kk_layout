@@ -1,15 +1,20 @@
 import webpack from 'webpack'
-// import webpackMiddleware from 'webpack-dev-middleware';
+import path from 'path';
+
 import kwdm from 'koa-webpack-dev-middleware';
 import kwhm from 'koa-webpack-hot-middleware';
 import devConfig from './webpack-dev-server.config.js'
 import Koa from 'koa';
 import convert from 'koa-convert';
-import serve from 'koa-static';
 
 const app = new Koa();
-const compile = webpack(devConfig)
-app.use(convert(kwdm(compile, {
+const compile = webpack(devConfig);
+let PORT = process.env.PORT || 3000;
+
+const _use = app.use
+app.use = x => _use.call(app, convert(x))
+
+app.use(kwdm(compile, {
     // display no info to console (only warnings and errors)
     noInfo: false,
 
@@ -22,25 +27,20 @@ app.use(convert(kwdm(compile, {
 
     // public path to bind the middleware to
     // use the same as in webpack
-    publicPath: "./build/",
+    // publicPath: path.join(__dirname, 'build'),
 
     // custom headers
-    headers: {
-        'Access-Control-Allow-Origin': '*'
-    },
+    // headers: {
+    //     'Access-Control-Allow-Origin': '*'
+    // },
 
     // options for formating the statistics
     stats: {
         colors: true
     }
-})));
+}));
 
-app.use(convert(kwhm(compile, {
-
-})));
-
-// serve static files e.g. bundle.js
-app.use(serve('./build'));
+app.use(kwhm(compile, {}));
 
 // set the initial content
 app.use(async(ctx, next) => {
@@ -54,10 +54,10 @@ app.use(async(ctx, next) => {
     }
 })
 
-app.listen(3000, function(err) {
+app.listen(PORT, function(err) {
     if (err) {
         console.log(err);
         return;
     }
 });
-console.log('Listening at port 3000');
+console.log('Listening at port ' + PORT);
