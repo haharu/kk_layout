@@ -8,7 +8,7 @@ export default function configureStore(preloadedState) {
     if (process.env.NODE_ENV !== 'production') {
         middleware = [...middleware, createLogger()];
     }
-    const store = createStore(rootReducer, preloadedState, applyMiddleware(middleware))
+    const store = createStore(rootReducer, preloadedState, applyMiddleware(...middleware))
 
     if (module.makeHot) {
         module.makeHot('../reducers', () => {
