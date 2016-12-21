@@ -26,7 +26,7 @@ function fetchFinance(currency, period ='1M') {
         let options = {
             method: 'GET',
             headers: new Headers(),
-            mode: 'cors',
+            mode: 'no-cors',
             cache: 'default'
         };
         let url = `https://www.google.com/finance/getprices?q=${currency}&x=CURRENCY&i=86400&p=${period}`;
