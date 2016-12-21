@@ -8,8 +8,8 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var config = {
     entry: [
         'webpack-hot-middleware/client',
-        'webpack/hot/dev-server',
-        'webpack/hot/only-dev-server',
+        // 'webpack/hot/dev-server',
+        // 'webpack/hot/only-dev-server',
         path.join(__dirname, '/app/src/app.jsx')
     ],
     resolve: {
@@ -23,9 +23,6 @@ var config = {
         port: process.env.PORT || 8080,
         historyApiFallback: true,
         compress: true,
-        headers: {
-            'Access-Control-Allow-Origin': '*'
-        }
     },
     devtool: 'eval',
     output: {

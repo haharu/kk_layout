@@ -3,13 +3,16 @@ import path from 'path';
 
 import kwdm from 'koa-webpack-dev-middleware';
 import kwhm from 'koa-webpack-hot-middleware';
-import devConfig from './webpack-dev-server.config.js'
+import devConfig from './webpack-dev-server.config.js';
+import prodConfig from './webpack-production.config.js';
 import Koa from 'koa';
 import convert from 'koa-convert';
 
-const app = new Koa();
-const compile = webpack(devConfig);
 let PORT = process.env.PORT || 3000;
+let NODE_ENV = process.env.NODE_ENV  || 'development';
+
+const app = new Koa();
+const compile = webpack(NODE_ENV === 'production' && prodConfig || devConfig);
 
 const _use = app.use
 app.use = x => _use.call(app, convert(x))

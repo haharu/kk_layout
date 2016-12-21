@@ -4,8 +4,11 @@ import createLogger from 'redux-logger';
 import rootReducer from '../reducers'
 
 export default function configureStore(preloadedState) {
-    const logger = createLogger();
-    const store = createStore(rootReducer, preloadedState, applyMiddleware(ReduxThunk, logger))
+    let middleware = [ReduxThunk];
+    if (process.env.NODE_ENV !== 'production') {
+        middleware = [...middleware, createLogger()];
+    }
+    const store = createStore(rootReducer, preloadedState, applyMiddleware(middleware))
 
     if (module.makeHot) {
         module.makeHot('../reducers', () => {
