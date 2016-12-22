@@ -43,7 +43,8 @@ app.use(kwdm(compile, {
     }
 }));
 
-app.use(kwhm(compile, {}));
+app.use(kwhm(compile));
+
 
 // set the initial content
 app.use(async(ctx, next) => {
