@@ -8,6 +8,8 @@ import devConfig from './webpack-dev-server.config.js';
 import Koa from 'koa';
 import convert from 'koa-convert';
 import serve from 'koa-static';
+import zlib from 'zlib'
+import compress from 'koa-compress';
 
 let PORT = process.env.PORT || 3000;
 let NODE_ENV = process.env.NODE_ENV || 'development';
@@ -31,11 +33,13 @@ if (NODE_ENV === 'development') {
 
     app.use(kwhm(compile));
 } else {
+    app.use(compress({threshold: 2048, flush: zlib.Z_SYNC_FLUSH}));
     app.use(serve('public'));
 }
 
 // set the initial content
 app.use(async(ctx, next) => {
+    this.set('Access-Control-Allow-Origin', '*');
     try {
         await next(); // next is now a function
     } catch (err) {
