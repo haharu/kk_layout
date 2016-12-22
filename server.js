@@ -39,7 +39,6 @@ if (NODE_ENV === 'development') {
 
 // set the initial content
 app.use(async(ctx, next) => {
-    this.set('Access-Control-Allow-Origin', '*');
     try {
         await next(); // next is now a function
     } catch (err) {
