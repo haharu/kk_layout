@@ -21,17 +21,11 @@ export function selectCurrency(currency) {
     return {type: SELECT_CURRENCY, currency}
 }
 
-function fetchFinance(currency, period ='1M') {
+function fetchFinance(currency, period = '1M') {
     return dispatch => {
-        let options = {
-            method: 'GET',
-            headers: new Headers(),
-            cache: 'default'
-        };
         let url = `https://www.google.com/finance/getprices?q=${currency}&x=CURRENCY&i=86400&p=${period}`;
-        let req = new Request(url, options)
         dispatch(requestFinance(currency))
-        return fetch(req)
+        return fetch(url)
         .then(resp => resp.text())
         .then(row => opaqueParser(row))
         .then(data => dispatch(receiveFinance(currency, chartTranc(data))))

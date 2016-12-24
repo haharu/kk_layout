@@ -10,7 +10,6 @@ import convert from 'koa-convert';
 import serve from 'koa-static';
 import zlib from 'zlib'
 import compress from 'koa-compress';
-import cors from 'koa-cors';
 
 let PORT = process.env.PORT || 3000;
 let NODE_ENV = process.env.NODE_ENV || 'development';
@@ -18,10 +17,8 @@ let NODE_ENV = process.env.NODE_ENV || 'development';
 const app = new Koa();
 const compile = webpack(devConfig);
 
-const _use = app.use
-app.use = x => _use.call(app, convert(x))
-
-app.use(cors());
+const _use = app.use;
+app.use = x => _use.call(app, convert(x));
 
 if (NODE_ENV === 'development') {
     app.use(kwdm(compile, {
@@ -40,22 +37,11 @@ if (NODE_ENV === 'development') {
     app.use(serve('public'));
 }
 
-// set the initial content
-app.use(async(ctx, next) => {
-    try {
-        await next(); // next is now a function
-    } catch (err) {
-        ctx.body = {
-            message: err.message
-        };
-        ctx.status = err.status || 500;
-    }
-})
-
 app.listen(PORT, function(err) {
     if (err) {
         console.log(err);
         return;
     }
 });
+
 console.log('Listening at port ' + PORT);
