@@ -10,6 +10,7 @@ import convert from 'koa-convert';
 import serve from 'koa-static';
 import zlib from 'zlib'
 import compress from 'koa-compress';
+import cors from 'koa-cors';
 
 let PORT = process.env.PORT || 3000;
 let NODE_ENV = process.env.NODE_ENV || 'development';
@@ -19,6 +20,8 @@ const compile = webpack(devConfig);
 
 const _use = app.use
 app.use = x => _use.call(app, convert(x))
+
+app.use(cors());
 
 if (NODE_ENV === 'development') {
     app.use(kwdm(compile, {

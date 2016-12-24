@@ -73,7 +73,6 @@ class App extends Component {
                         gridVertical={true}
                     />
                 }
-                <Footer className="margin-t-20"/>
             </div>
         )
 
