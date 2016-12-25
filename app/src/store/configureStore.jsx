@@ -10,11 +10,11 @@ export default function configureStore(preloadedState) {
     }
     const store = createStore(rootReducer, preloadedState, applyMiddleware(...middleware))
 
-    if (module.makeHot) {
-        module.makeHot('../reducers', () => {
+    if (module.hot) {
+        module.hot.accept('../reducers', () => {
             const nextRootReducer = require('../reducers').default
             store.replaceReducer(nextRootReducer)
-        })
+        });
     }
 
     return store

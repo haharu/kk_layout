@@ -1,36 +1,30 @@
 var webpack = require('webpack');
 var path = require('path');
-var buildPath = path.resolve(__dirname, 'build');
+
+var HOST = 'localhost';
+let PORT = process.env.PORT || 3000;
+
+var assetPath = path.resolve(__dirname, 'build');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var config = {
     entry: [
-        'webpack-hot-middleware/client',
-        // 'webpack/hot/dev-server',
-        // 'webpack/hot/only-dev-server',
+        'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
         path.join(__dirname, '/app/src/app.jsx')
     ],
     resolve: {
         extensions: ["", ".js", ".jsx"]
     },
-    devServer: {
-        contentBase: buildPath,
-        devtool: 'eval',
-        hot: true, //Live-reload
-        inline: true,
-        port: process.env.PORT || 8080,
-        historyApiFallback: true,
-        compress: true,
-    },
-    devtool: 'eval',
+    devtool: 'cheap-module-eval-source-map',
     output: {
-        path: buildPath,
+        path: assetPath,
         filename: 'bundle_[hash].js'
     },
     plugins: [
         //Enables Hot Modules Replacement
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
         new HtmlWebpackPlugin({
@@ -41,7 +35,6 @@ var config = {
     module: {
         preLoaders: [
             {
-                //Eslint loader
                 test: /\.jsx?$/,
                 loader: 'eslint-loader',
                 include: [path.resolve(__dirname, "app/src")]

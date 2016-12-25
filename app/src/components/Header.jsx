@@ -12,7 +12,7 @@ export default class Header extends React.Component {
                     <div className="hero-body">
                         <div className="container">
                             <h1 className="title">
-                                KK_test
+                                kk_test
                             </h1>
                             <h2 className="subtitle">
                                 中文にほんご간곡고englishอักษรไทยfrançaisहिन्दी或हिंदीHindīالعَرَبِيَّة
