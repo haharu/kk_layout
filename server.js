@@ -9,10 +9,12 @@ import devConfig from './webpack-dev-server.config.js';
 import Koa from 'koa';
 import convert from 'koa-convert';
 import serve from 'koa-static';
-import zlib from 'zlib'
+import bodyParser from 'koa-bodyparser';
 import compress from 'koa-compress';
+import zlib from 'zlib'
 import responseTime from 'koa-response-time';
-import router from 'koa-router';
+import session from 'koa-generic-session';
+import redisStore from 'koa-redis';
 
 const app = new Koa();
 const compile = webpack(devConfig);
@@ -24,6 +26,21 @@ const _use = app.use;
 app.use = x => _use.call(app, convert(x));
 
 app.use(responseTime());
+
+app.use(bodyParser());
+
+app.use(session());
+
+app.use(async(ctx, next) => {
+    try {
+        await next()
+    } catch (err) {
+        ctx.status = err.status || 500
+        ctx.body = err.message
+        ctx.app.emit('error', err, ctx)
+    }
+})
+
 app.use(compress({threshold: 2048, flush: zlib.Z_SYNC_FLUSH}));
 
 if (NODE_ENV === 'development') {
@@ -46,8 +63,6 @@ if (NODE_ENV === 'development') {
 } else {
     app.use(serve('public'));
 }
-
-//app.use(router(app));
 
 app.listen(PORT, function(err) {
     if (err) {
