@@ -11,7 +11,6 @@ import _ from 'lodash';
 import Koa from 'koa';
 import convert from 'koa-convert';
 import serve from 'koa-static';
-import bodyParser from 'koa-bodyparser';
 import compress from 'koa-compress';
 import zlib from 'zlib'
 import responseTime from 'koa-response-time';
@@ -41,8 +40,6 @@ app.use = x => _use.call(app, convert(x))
 
 app.use(responseTime())
 
-// app.use(bodyParser())
-
 app.use(session())
 
 router.get('/map/locate/:addr', async(ctx, next) => {
@@ -67,7 +64,7 @@ router.get('/map/locate/:addr', async(ctx, next) => {
 
 }).get('/map/geoconv', async(ctx, next) => {
     try {
-        let resp = await execSync(`bash ${path.join(__dirname, 'api/map-utils/point2coord.sh')} ${ctx.query.geoX}, ${ctx.query.geoY}`)
+        let resp = execSync(`bash ${path.join(__dirname, 'api/map-utils/point2coord.sh')} ${ctx.query.geoX}, ${ctx.query.geoY}`)
         ctx.body = _.trim(resp);
     } catch (err) {
         ctx.status = err.status || 500
