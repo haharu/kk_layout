@@ -20,18 +20,25 @@ var config = {
     devtool: 'cheap-module-eval-source-map',
     output: {
         path: assetPath,
-        filename: 'bundle_[hash].js'
+        filename: 'bundle_[hash].js',
+        publicPath: '/'
     },
     plugins: [
-        //Enables Hot Modules Replacement
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
         new HtmlWebpackPlugin({
-            title: 'workbox',
+            title: 'dr.hush',
+            description: 'dr.hush',
             template: path.join(__dirname, '/app/index.ejs')
         })
     ],
+    node: {
+        console: true,
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
+    },
     module: {
         preLoaders: [
             {
@@ -42,13 +49,16 @@ var config = {
         ],
         loaders: [
             {
+                test: /\.json$/,
+                loader: "json-loader"
+            }, {
                 test: /\.jsx?$/,
-                loaders: ['babel?presets[]=es2015,presets[]=stage-0,presets[]=react,plugins[]=transform-runtime'], //react-hot is like browser sync and babel loads jsx and es6-7
-                include: [path.resolve(__dirname, "app/src")]
+                loaders: ['babel'],
+                exclude: /(node_modules|bower_components)/
             }, {
                 test: /\.css$/,
                 loader: "style-loader!css-loader",
-                exclude: [nodeModulesPath]
+                exclude: /(node_modules|bower_components)/
             }, {
                 test: /\.svg(\?.*$|$)/,
                 loader: 'file-loader?mimetype=image/svg+xml'

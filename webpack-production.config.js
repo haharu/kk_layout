@@ -7,10 +7,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var config = {
-    entry: [
-        'babel-polyfill',
-        path.join(__dirname, '/app/src/app.jsx')
-    ],
+    entry: [path.join(__dirname, '/app/src/app.jsx')],
     resolve: {
         //When require, do not have to add these extensions to file's name
         extensions: ["", ".js", ".jsx"]
@@ -39,13 +36,20 @@ var config = {
             }
         }),
         new HtmlWebpackPlugin({
-            title: 'workbox',
-            template: path.join(__dirname, '/app/index.ejs'),
+            title: 'dr.hush',
+            description: 'dr.hush',
+            template: path.join(__dirname, '/app/index.ejs')
         }),
         new webpack.optimize.CommonsChunkPlugin("commons", "commons.js"),
         new ExtractTextPlugin('[name]-[hash].css', {allChunks: true})
     ],
     devtool: 'cheap-module-source-map',
+    node: {
+        console: true,
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
+    },
     module: {
         preLoaders: [
             {
@@ -57,6 +61,9 @@ var config = {
         ],
         loaders: [
             {
+                test: /\.json$/,
+                loader: "json-loader"
+            }, {
                 test: /\.jsx?$/, //All .js and .jsx files
                 loaders: ['babel'], //react-hot is like browser sync and babel loads jsx and es6-7
                 exclude: [nodeModulesPath]

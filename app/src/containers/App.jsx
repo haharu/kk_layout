@@ -1,101 +1,48 @@
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
-import {selectCurrency, invalidateFinance, fetchFinanceIfNeeded} from '../actions'
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 
-import Card from '../components/Card';
-import Level from '../components/Level';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
-import Currency from '../components/Currency';
 import Picker from '../components/Picker';
+import Input from '../components/Input';
+import BaiduMap from '../components/BaiduMap';
 
-import {LineChart} from 'react-d3'
+import * as MapActionCreator from '../reducers/map';
 
-import {BarChartTranc} from '../helpers'
-
+// @connect(state => {
+//     return {map: state.map}
+// })
 class App extends Component {
     constructor(props) {
-        super(props)
-        this.handleChange = this.handleChange.bind(this)
-    }
-    componentDidMount() {
-        const {dispatch, currency} = this.props
-        dispatch(fetchFinanceIfNeeded(currency))
+        super(props);
+
+        this.updateSearchValue = this.updateSearchValue.bind(this);
+        this.mapSearchLocation = this.mapSearchLocation.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.currency !== this.props.currency) {
-            const {dispatch, currency} = this.props
-            dispatch(fetchFinanceIfNeeded(currency))
-        }
+    updateSearchValue(nextValue) {
+        this.props.dispatch(MapActionCreator.changeSearchTxt(nextValue));
     }
-
-    handleChange(nextCurrency) {
-        this.props.dispatch(selectCurrency(nextCurrency))
-        this.props.dispatch(invalidateFinance(this.props.currency))
-        this.props.dispatch(fetchFinanceIfNeeded(nextCurrency))
+    mapSearchLocation() {
+        this.props.dispatch(MapActionCreator.fetchLocationIfNeeded());
     }
 
     render() {
-        const {currency, data, isFetching, lastUpdated} = this.props
-        const isEmpty = data.length === 0
-        let chartOptions = {
-            strokeDashArray: "5,5"
-        }
-        let BarChartData = BarChartTranc(data, currency, chartOptions);
+        let {dispatch} = this.props
         return (
             <div>
                 <Header/>
-                {lastUpdated &&
-                    <span>
-                        Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-                        {' '}
-                    </span>
-                }
-                <Picker value={currency}
-                    onChange={this.handleChange}
-                    options={[ 'TWDJPY', 'JPYTWD', 'USDTWD', 'TWDUSD']}
-                />
-                <br/>
-                {!isEmpty &&
-                    <LineChart
-                        data={BarChartData}
-                        width={'100%'}
-                        height={400}
-                        legend={true}
-                        viewBoxObject={{
-                            x: 0,
-                            y: 0,
-                            width: 1000,
-                            height: 400
-                        }}
-                        gridHorizontal={true}
-                        gridVertical={true}
-                    />
-                }
+                <div className="container is-fluid">
+                    <Input searchName="搜尋" onchange={this.updateSearchValue} onsubmit={this.mapSearchLocation} onloading={this.props.map.isFetching}/>
+                    <BaiduMap id='BMap' style={{
+                        minHeight: 500
+                    }} location={this.props.map.currLocation}/>
+                </div>
             </div>
         )
 
     }
 
 }
-
-App.propTypes = {
-    currency: PropTypes.string.isRequired,
-    data: PropTypes.array.isRequired,
-    isFetching: PropTypes.bool.isRequired,
-    receiveAt: PropTypes.number,
-    dispatch: PropTypes.func.isRequired
-}
-
-function mapStateToProps(state) {
-    const {financeByGoogle, currency} = state
-    const {isFetching, lastUpdated, items: data} = financeByGoogle[currency] || {
-        isFetching: true,
-        items: []
-    }
-
-    return {currency, data, isFetching, lastUpdated}
-}
-
-export default connect(mapStateToProps)(App)
+export default connect(state => {
+    return {map: state.map}
+})(App)

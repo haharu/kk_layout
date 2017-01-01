@@ -1,5 +1,6 @@
 {
     "presets": ["es2015", "stage-0", "react"],
+    "plugins": ["transform-runtime", "transform-decorators-legacy", "transform-class-properties"],
     "env": {
         "commonjs": {
             "plugins": [
@@ -8,6 +9,5 @@
                 }, "react-hot-loader/babel"]
             ]
         },
-    },
-    "plugins": ["transform-runtime"]
+    }
 }

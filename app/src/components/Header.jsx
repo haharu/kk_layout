@@ -1,10 +1,10 @@
 'use strict';
 
-import React from 'react';
+import React, {Component} from 'react';
 import NavLink from './NavLink';
 import {Link} from 'react-router';
 
-export default class Header extends React.Component {
+export default class Header extends Component {
     render() {
         return (
             <div>
@@ -12,7 +12,7 @@ export default class Header extends React.Component {
                     <div className="hero-body">
                         <div className="container">
                             <h1 className="title">
-                                kk_test
+                                test
                             </h1>
                             <h2 className="subtitle">
                                 中文にほんご간곡고englishอักษรไทยfrançaisहिन्दी或हिंदीHindīالعَرَبِيَّة
@@ -20,30 +20,12 @@ export default class Header extends React.Component {
                         </div>
                     </div>
                 </section>
-                <section className="section">
-                    <div className="container">
-                        <div className="heading">
-                            <h1 className="title">Section</h1>
-                            <h2 className="subtitle">
-                                A simple container to divide your page into
-                                <strong>sections</strong>, like the one you're currently reading
-                            </h2>
-                        </div>
-                    </div>
-                </section>
                 <nav className="nav has-shadow margin-b-20">
                     <div className="container">
                         <div className="nav-left">
-                            <NavLink to={`/card`}>Card</NavLink>
-                            <NavLink to={`/level`}>Level</NavLink>
-                            <NavLink to={`/finance`}>Finance</NavLink>
-                            <a className="nav-item is-tab">Menu</a>
-                            <a className="nav-item is-tab">Message</a>
-                            <a className="nav-item is-tab">Modal</a>
-                            <a className="nav-item is-tab">Nav</a>
-                            <a className="nav-item is-tab">Pagination</a>
-                            <a className="nav-item is-tab">Panel</a>
-                            <a className="nav-item is-tab">Tabs</a>
+                            <NavLink>tab1</NavLink>
+                            <NavLink>tab2</NavLink>
+                            <NavLink>tab3</NavLink>
                         </div>
                     </div>
                 </nav>
