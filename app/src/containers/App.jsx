@@ -6,12 +6,12 @@ import Picker from '../components/Picker';
 import Input from '../components/Input';
 import BaiduMap from '../components/BaiduMap';
 
-import * as MapActionCreator from '../reducers/map';
+import {changeSearchTxt, fetchLocationIfNeeded} from '../reducers/map';
 
 @connect(state => {
     return {map: state.map}
 })
-class App extends Component {
+export default class App extends Component {
     constructor(props) {
         super(props);
 
@@ -20,10 +20,10 @@ class App extends Component {
     }
 
     updateSearchValue(nextValue) {
-        this.props.dispatch(MapActionCreator.changeSearchTxt(nextValue));
+        this.props.dispatch(changeSearchTxt(nextValue));
     }
     mapSearchLocation() {
-        this.props.dispatch(MapActionCreator.fetchLocationIfNeeded());
+        this.props.dispatch(fetchLocationIfNeeded());
     }
 
     render() {
