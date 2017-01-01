@@ -2,7 +2,7 @@ var webpack = require('webpack');
 var path = require('path');
 
 var HOST = 'localhost';
-let PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || 3000;
 
 var assetPath = path.resolve(__dirname, 'build');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');

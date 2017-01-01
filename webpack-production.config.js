@@ -9,26 +9,21 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var config = {
     entry: [path.join(__dirname, '/app/src/app.jsx')],
     resolve: {
-        //When require, do not have to add these extensions to file's name
         extensions: ["", ".js", ".jsx"]
-        //node_modules: ["web_modules", "node_modules"]  (Default Settings)
     },
-    //output config
     output: {
-        path: buildPath, //Path of output file
-        filename: 'bundle_[hash].js' //Name of output file
+        path: buildPath,
+        filename: 'bundle_[hash].js',
+        publicPath: '/'
     },
     plugins: [
         new webpack.optimize.OccurrenceOrderPlugin(),
-        //Minify the bundle
         new webpack.optimize.UglifyJsPlugin({
             minimize: true,
             compress: {
-                //supresses warnings, usually from module minification
                 warnings: false
             }
         }),
-        //Allows error warnings but does not stop compiling. Will remove when eslint is added
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({
             'process.env': {
@@ -64,8 +59,8 @@ var config = {
                 test: /\.json$/,
                 loader: "json-loader"
             }, {
-                test: /\.jsx?$/, //All .js and .jsx files
-                loaders: ['babel'], //react-hot is like browser sync and babel loads jsx and es6-7
+                test: /\.jsx?$/,
+                loaders: ['babel'],
                 exclude: [nodeModulesPath]
             }, {
                 test: /\.css$/,
@@ -97,7 +92,7 @@ var config = {
     },
     //Eslint config
     eslint: {
-        configFile: '.eslintrc' //Rules for eslint
+        configFile: '.eslintrc'
     }
 };
 
