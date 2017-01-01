@@ -8,9 +8,9 @@ import BaiduMap from '../components/BaiduMap';
 
 import * as MapActionCreator from '../reducers/map';
 
-// @connect(state => {
-//     return {map: state.map}
-// })
+@connect(state => {
+    return {map: state.map}
+})
 class App extends Component {
     constructor(props) {
         super(props);
@@ -43,6 +43,3 @@ class App extends Component {
     }
 
 }
-export default connect(state => {
-    return {map: state.map}
-})(App)
