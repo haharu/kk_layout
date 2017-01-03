@@ -119,6 +119,7 @@ function fetchBaiduLocation(geometry) {
         dispatch(requestBaiduLocation(geometry))
         rp(opts).then(resp => {
             dispatch(receiveBaiduLocation(geometry, resp))
+            return null;
         }).catch(err => {
             console.log(err);
             dispatch(invalidBaiduLocation(geometry))
@@ -148,6 +149,7 @@ function fetchPlaceDetail(placeId) {
                 }
                 dispatch(fetchBaiduLocationIfNeeded(geo))
             }
+            return null;
         }).catch(err => {
             console.log(err);
             dispatch(invalidPlaceDetail(placeId));
@@ -165,6 +167,7 @@ function fetchAutocomplete(searchTxt) {
         dispatch(requestAutocomplete(searchTxt))
         rp(opts).then(resp => {
             dispatch(receiveAutocomplete(searchTxt, resp))
+            return null;
         }).catch(err => {
             console.log(err);
             dispatch(invalidAutocomplete(searchTxt))

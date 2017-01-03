@@ -44,7 +44,7 @@ router.get('/map/autocomplete/:input', async(ctx, next) => {
 
     try {
         let opts = {
-            uri: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURI(_.trim(ctx.params.input))}&components=country:us&language=zh-CN&key=${G_API_KEY}`,
+            uri: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURI(_.trim(ctx.params.input))}&types=establishment&components=country:us&key=${G_API_KEY}`,
             json: true
         }
 

@@ -21,16 +21,19 @@ export default class App extends Component {
     }
 
     updateSearchValue(nextValue) {
-        let {dispatch} = this.props
-        dispatch(mapActions.changeSearchTxt(nextValue));
-        dispatch(mapActions.fetchAutocompleteIfNeeded());
+        if (_.trim(nextValue)) {
+            let {dispatch} = this.props
+            dispatch(mapActions.changeSearchTxt(nextValue));
+            dispatch(mapActions.fetchAutocompleteIfNeeded());
+        }
     }
     mapSearchLocation(nextValue) {
-        let {dispatch, map} = this.props
-        if (!_.isEmpty(map.autocomplete)) {
-            dispatch(mapActions.changePlaceId(map.autocomplete[0].place_id));
-            dispatch(mapActions.fetchPlaceDetailIfNeeded());
-
+        if (_.trim(nextValue)) {
+            let {dispatch, map} = this.props
+            if (!_.isEmpty(map.autocomplete)) {
+                dispatch(mapActions.changePlaceId(map.autocomplete[0].place_id));
+                dispatch(mapActions.fetchPlaceDetailIfNeeded());
+            }
         }
     }
 
