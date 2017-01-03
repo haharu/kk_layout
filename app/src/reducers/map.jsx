@@ -140,7 +140,7 @@ function fetchPlaceDetail(placeId) {
             return resp
         }).then(resp => {
             let {map} = getState();
-            if (_.isEmpty(map.placeDetail)) {
+            if (!_.isEmpty(map.placeDetail)) {
                 let {geometry} = map.placeDetail[placeId]
                 let geo = {
                     lng: geometry.location.lng,
