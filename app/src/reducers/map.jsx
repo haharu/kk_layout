@@ -1,12 +1,14 @@
 const CHANGE_SEARCH_TXT = 'CHANGE_SEARCH_TXT';
-const REQUEST_LOCATION = 'REQUEST_LOCATION';
-const RECEIVE_LOCATION = 'RECEIVE_LOCATION';
-const INVALID_LOCATION = 'INVALID_LOCATION';
-const LOCATE_PLACE = 'LOCATE_PLACE';
-const INVALID_PLACE = 'INVALID_PLACE';
-const REQUEST_GEO_CONV = 'REQUEST_GEO_CONV';
-const RECEIVE_GEO_CONV = 'RECEIVE_GEO_CONV';
-const INVALID_GEO = 'INVALID_GEO';
+const CHANGE_PLACE_ID = 'CHANGE_PLACE_ID';
+const INVALID_AUTOCOMPLETE = 'INVALID_AUTOCOMPLETE';
+const INVALID_PLACE_DETAIL = 'INVALID_PLACE_DETAIL';
+const REQUEST_AUTOCOMPLETE = 'REQUEST_AUTOCOMPLETE';
+const RECEIVE_AUTOCOMPLETE = 'RECEIVE_AUTOCOMPLETE';
+const REQUEST_PLACE_DETAIL = 'REQUEST_PLACE_DETAIL';
+const RECEIVE_PLACE_DETAIL = 'RECEIVE_PLACE_DETAIL';
+const REQUEST_BAIDU_LOCATION = 'REQUEST_BAIDU_LOCATION';
+const RECEIVE_BAIDU_LOCATION = 'RECEIVE_BAIDU_LOCATION';
+const INVALID_BAIDU_LOCATION = 'INVALID_BAIDU_LOCATION'
 
 import rp from 'request-promise';
 
@@ -14,130 +16,182 @@ const baseUrl = window.location.protocol + '//' + window.location.host;
 
 export default function reducer(state = {
     searchTxt: '',
+    placeId: '',
+    autocomplete: {},
+    placeDetail: {},
     location: {},
-    currLocation: {},
     isFetching: false
 }, action) {
     switch (action.type) {
         case CHANGE_SEARCH_TXT:
-        case INVALID_LOCATION:
             return Object.assign({}, state, {
                 searchTxt: action.searchTxt,
                 isFetching: false
             })
-        case REQUEST_LOCATION:
-            return Object.assign({}, state, {isFetching: true});
-        case RECEIVE_LOCATION:
+        case CHANGE_PLACE_ID:
+            return Object.assign({}, state, {
+                placeId: action.placeId,
+                isFetching: false
+            })
+        case REQUEST_AUTOCOMPLETE:
+        case INVALID_AUTOCOMPLETE:
+        case REQUEST_PLACE_DETAIL:
+        case INVALID_PLACE_DETAIL:
+        case REQUEST_BAIDU_LOCATION:
+        case INVALID_BAIDU_LOCATION:
+            return Object.assign({}, state, {isFetching: true})
+        case RECEIVE_AUTOCOMPLETE:
+            return Object.assign({}, state, {
+                autocomplete: action.data,
+                isFetching: false
+            })
+        case RECEIVE_PLACE_DETAIL:
+            return Object.assign({}, state, {
+                placeDetail: {
+                    [action.placeId]: action.data
+                },
+                isFetching: false
+            })
+        case RECEIVE_BAIDU_LOCATION:
             return Object.assign({}, state, {
                 location: action.data,
                 isFetching: false
             })
-        case LOCATE_PLACE:
-            return Object.assign({}, state, {})
-        case REQUEST_GEO_CONV:
-            return Object.assign({}, state, {
-                currLocation: {
-                    geo: action.geo
-                }
-            })
-        case RECEIVE_GEO_CONV:
-            return Object.assign({}, state, {
-                currLocation: {
-                    geo: action.geo,
-                    coord: action.coord
-                }
-            })
-
         default:
             return state
     }
 }
 
-export function requestLocation(searchTxt) {
-    return {type: REQUEST_LOCATION, searchTxt};
+export function requestAutocomplete(searchTxt) {
+    return {type: REQUEST_AUTOCOMPLETE, searchTxt};
 }
 
-export function receiveLocation(searchTxt, json) {
-    return {type: RECEIVE_LOCATION, searchTxt, data: json};
+export function receiveAutocomplete(searchTxt, data) {
+    return {type: RECEIVE_AUTOCOMPLETE, searchTxt, data: data.predictions};
 }
 
-export function invalidLocation(searchTxt) {
-    return {type: INVALID_LOCATION, searchTxt}
+export function invalidAutocomplete(searchTxt) {
+    return {type: INVALID_AUTOCOMPLETE, searchTxt}
 }
 
 export function changeSearchTxt(searchTxt) {
     return {type: CHANGE_SEARCH_TXT, searchTxt};
 }
 
-export function locatePlace(location) {
-    return {type: LOCATE_PLACE, location}
+export function changePlaceId(placeId) {
+    return {type: CHANGE_PLACE_ID, placeId};
 }
 
-export function requestGeoConv(geo) {
-    return {type: REQUEST_GEO_CONV, geo}
+export function requestPlaceDetail(placeId) {
+    return {type: REQUEST_PLACE_DETAIL, placeId}
 }
 
-export function receiveGeoConv(geo, coord) {
-    return {type: RECEIVE_GEO_CONV, geo, coord}
+export function receivePlaceDetail(placeId, data) {
+    return {type: RECEIVE_PLACE_DETAIL, placeId, data: data.result}
 }
 
-export function invalidGeo(geo) {
-    return {type: INVALID_GEO, geo}
+export function invalidPlaceDetail(placeId) {
+    return {type: INVALID_PLACE_DETAIL, placeId}
 }
 
-function fetchGeo2Coord(geo) {
-    let _geo = _.split(geo, /[\|\,\;]/g)
+export function requestBaiduLocation(geometry) {
+    return {type: REQUEST_BAIDU_LOCATION, geometry}
+}
+
+export function receiveBaiduLocation(geometry, data) {
+    return {type: RECEIVE_BAIDU_LOCATION, geometry, data}
+}
+
+export function invalidBaiduLocation(geometry) {
+    return {type: INVALID_BAIDU_LOCATION, geometry}
+}
+
+function fetchBaiduLocation(geometry) {
     const opts = {
         uri: baseUrl + '/map/geoconv',
         qs: {
-            geoX: _geo[1],
-            geoY: _geo[2]
-        }
+            lng: geometry.lng,
+            lat: geometry.lat
+        },
+        json: true
     }
-
     return dispatch => {
-        dispatch(requestGeoConv(geo))
+        dispatch(requestBaiduLocation(geometry))
         rp(opts).then(resp => {
-            dispatch(receiveGeoConv(geo, resp))
+            dispatch(receiveBaiduLocation(geometry, resp))
         }).catch(err => {
             console.log(err);
-            dispatch(invalidGeo(geo));
+            dispatch(invalidBaiduLocation(geometry))
         })
     }
 }
 
-function fetchLocation(searchTxt) {
+function fetchPlaceDetail(placeId) {
+
     const opts = {
-        uri: baseUrl + '/map/locate/' + searchTxt,
+        uri: baseUrl + '/map/place/detail/' + placeId,
+        json: true
+    }
+
+    return (dispatch, getState) => {
+        dispatch(requestPlaceDetail(placeId))
+        rp(opts).then(resp => {
+            dispatch(receivePlaceDetail(placeId, resp))
+            return resp
+        }).then(resp => {
+            let {map} = getState();
+            if (_.isEmpty(map.placeDetail)) {
+                let {geometry} = map.placeDetail[placeId]
+                let geo = {
+                    lng: geometry.location.lng,
+                    lat: geometry.location.lat
+                }
+                dispatch(fetchBaiduLocationIfNeeded(geo))
+            }
+        }).catch(err => {
+            console.log(err);
+            dispatch(invalidPlaceDetail(placeId));
+        })
+    }
+}
+
+function fetchAutocomplete(searchTxt) {
+    const opts = {
+        uri: baseUrl + '/map/autocomplete/' + searchTxt,
         json: true
     }
 
     return dispatch => {
-        dispatch(requestLocation(searchTxt))
+        dispatch(requestAutocomplete(searchTxt))
         rp(opts).then(resp => {
-            dispatch(receiveLocation(searchTxt, resp))
-            return resp;
-        }).then(location => {
-            if (_.size(location.content) === 1) {
-                let {geo} = location.content[0]
-                dispatch(fetchGeo2CoordIfNeeded(geo))
-            }
+            dispatch(receiveAutocomplete(searchTxt, resp))
         }).catch(err => {
             console.log(err);
-            dispatch(invalidLocation(searchTxt))
+            dispatch(invalidAutocomplete(searchTxt))
         });
     }
 }
 
-export function fetchGeo2CoordIfNeeded(geo) {
+export function fetchBaiduLocationIfNeeded(geometry) {
     return (dispatch, getState) => {
-        const state = getState();
-        return dispatch(fetchGeo2Coord(geo));
+        const {map} = getState();
+        if (!_.has(map.location, map.placeId)) {
+            return dispatch(fetchBaiduLocation(geometry));
+        }
     }
 }
-export function fetchLocationIfNeeded() {
+
+export function fetchPlaceDetailIfNeeded(placeId) {
     return (dispatch, getState) => {
-        const state = getState();
-        return dispatch(fetchLocation(state.map.searchTxt));
+        const {map} = getState();
+        if (!_.has(map.placeDetail, map.placeId)) {
+            return dispatch(fetchPlaceDetail(map.placeId));
+        }
+    }
+}
+export function fetchAutocompleteIfNeeded() {
+    return (dispatch, getState) => {
+        const {map} = getState();
+        return dispatch(fetchAutocomplete(map.searchTxt));
     }
 }

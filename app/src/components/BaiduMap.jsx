@@ -1,5 +1,6 @@
 "use strict";
 import React, {PropTypes, Component} from 'react';
+import rp from 'request-promise';
 
 const ZOOM_LEVEL = 12;
 
@@ -9,34 +10,19 @@ export default class BaiduMap extends Component {
         super(props);
     }
     componentDidMount() {
-        let {location, id} = this.props
+        let {id} = this.props
 
         this._map = new BMap.Map(id);
-        if (!_.isEmpty(location)) {
-            let {coord} = location;
-            let _coord = this.coordParser(coord);
-            this._map.centerAndZoom(new BMap.Point(_coord.x, _coord.y), ZOOM_LEVEL);
-        } else {
-            this._map.centerAndZoom(new BMap.Point(-71.116628, 42.377031), ZOOM_LEVEL);
-        }
+        this._map.centerAndZoom(new BMap.Point(-71.116628, 42.377031), ZOOM_LEVEL);
         this._map.enableScrollWheelZoom();
 
     }
     componentWillReceiveProps(nextProps) {
-        const {location} = nextProps
+        let {dispatch, map, fetchAutocompleteIfNeeded, fetchPlaceDetailIfNeeded, fetchBaiduLocationIfNeeded} = this.props
+        let {placeId, autocomplete, placeDetail, location} = nextProps.map
 
-        if (!_.isEmpty(location) && this.props.location.coord !== location.coord) {
-            let {coord} = location
-            let _coord = this.coordParser(coord);
-            this._map.centerAndZoom(new BMap.Point(_coord.x, _coord.y), ZOOM_LEVEL);
-        }
-    }
-
-    coordParser(coord) {
-        let _coord = _.split(coord, /(\,\s+)/)
-        return {
-            x: _.toNumber(_coord[0]),
-            y: _.toNumber(_coord[2])
+        if (!_.isEmpty(location) && !location.error) {
+            this._map.centerAndZoom(new BMap.Point(atob(location.x), atob(location.y)), ZOOM_LEVEL);
         }
     }
 
@@ -51,5 +37,5 @@ export default class BaiduMap extends Component {
 BaiduMap.propTypes = {
     id: PropTypes.string.isRequired,
     style: PropTypes.object,
-    location: PropTypes.object.isRequired
+    map: PropTypes.object.isRequired
 };

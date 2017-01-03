@@ -1,12 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
 import Header from '../components/Header';
 import Picker from '../components/Picker';
 import Input from '../components/Input';
 import BaiduMap from '../components/BaiduMap';
 
-import {changeSearchTxt, fetchLocationIfNeeded} from '../reducers/map';
+import * as mapActions from '../reducers/map';
 
 @connect(state => {
     return {map: state.map}
@@ -20,14 +21,22 @@ export default class App extends Component {
     }
 
     updateSearchValue(nextValue) {
-        this.props.dispatch(changeSearchTxt(nextValue));
+        let {dispatch} = this.props
+        dispatch(mapActions.changeSearchTxt(nextValue));
+        dispatch(mapActions.fetchAutocompleteIfNeeded());
     }
-    mapSearchLocation() {
-        this.props.dispatch(fetchLocationIfNeeded());
+    mapSearchLocation(nextValue) {
+        let {dispatch, map} = this.props
+        if (!_.isEmpty(map.autocomplete)) {
+            dispatch(mapActions.changePlaceId(map.autocomplete[0].place_id));
+            dispatch(mapActions.fetchPlaceDetailIfNeeded());
+
+        }
     }
 
     render() {
         let {dispatch} = this.props
+        let MapActionCreator = bindActionCreators(mapActions, dispatch)
         return (
             <div>
                 <Header/>
@@ -35,7 +44,7 @@ export default class App extends Component {
                     <Input searchName="搜尋" onchange={this.updateSearchValue} onsubmit={this.mapSearchLocation} onloading={this.props.map.isFetching}/>
                     <BaiduMap id='BMap' style={{
                         minHeight: 500
-                    }} location={this.props.map.currLocation}/>
+                    }} map={this.props.map} {...MapActionCreator}/>
                 </div>
             </div>
         )

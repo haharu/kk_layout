@@ -5,4 +5,4 @@ import currency from './currency';
 import finance from './finance';
 import map from './map';
 
-export default combineReducers({finance, currency, map, routing});
+export default combineReducers({map, routing});

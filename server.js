@@ -21,19 +21,17 @@ import koaRouter from 'koa-router';
 import request from 'request';
 import rp from 'request-promise'
 
-import {execSync} from 'child_process';
-
 const app = new Koa();
 const router = koaRouter();
 const compile = webpack(devConfig);
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const PORT = process.env.PORT || 3000;
+const G_API_KEY = 'AIzaSyC9RIsTSntRihFUG6spUF2jeDycO-ZyWeE';
 
 if (NODE_ENV === 'development') {
     require('request-debug')(rp);
 }
-
 
 const _use = app.use;
 app.use = x => _use.call(app, convert(x))
@@ -42,19 +40,15 @@ app.use(responseTime())
 
 app.use(session())
 
-router.get('/map/locate/:addr', async(ctx, next) => {
+router.get('/map/autocomplete/:input', async(ctx, next) => {
 
     try {
         let opts = {
-            uri: `http://map.baidu.com/?qt=s&wd=${_.trim(ctx.params.addr)}&b=(13499863,2853429;13567511,2885813)`,
+            uri: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURI(_.trim(ctx.params.input))}&components=country:us&language=zh-CN&key=${G_API_KEY}`,
             json: true
         }
 
-        await rp(opts).then(resp => {
-            return {result: resp.result, content: resp.content, psrs: resp.psrs}
-        }).then(result => {
-            ctx.body = result
-        })
+        await rp(opts).then(resp => ctx.body = resp)
 
     } catch (err) {
         ctx.status = err.status || 500
@@ -62,10 +56,28 @@ router.get('/map/locate/:addr', async(ctx, next) => {
         ctx.app.emit('error', err, ctx)
     }
 
+}).get('/map/place/detail/:placeId', async(ctx, next) => {
+    try {
+        let opts = {
+            uri: `https://maps.googleapis.com/maps/api/place/details/json?placeid=${ctx.params.placeId}&key=${G_API_KEY}`,
+            json: true
+        }
+        await rp(opts).then(resp => ctx.body = resp)
+
+    } catch (err) {
+        ctx.status = err.status || 500
+        ctx.body = err.message
+        ctx.app.emit('error', err, ctx)
+    }
 }).get('/map/geoconv', async(ctx, next) => {
     try {
-        let resp = execSync(`bash ${path.join(__dirname, 'api/map-utils/point2coord.sh')} ${ctx.query.geoX}, ${ctx.query.geoY}`)
-        ctx.body = _.trim(resp);
+        let opts = {
+            uri: `https://api.map.baidu.com/ag/coord/convert?from=2&to=4&x=${ctx.query.lng}&y=${ctx.query.lat}`,
+            json: true
+        }
+        await rp(opts).then(resp => {
+            ctx.body = resp
+        })
     } catch (err) {
         ctx.status = err.status || 500
         ctx.body = err.message
@@ -75,16 +87,6 @@ router.get('/map/locate/:addr', async(ctx, next) => {
 
 app.use(router.routes());
 app.use(router.allowedMethods());
-
-app.use(async(ctx, next) => {
-    try {
-        await next()
-    } catch (err) {
-        ctx.status = err.status || 500
-        ctx.body = err.message
-        ctx.app.emit('error', err, ctx)
-    }
-})
 
 app.use(compress({threshold: 2048, flush: zlib.Z_SYNC_FLUSH}));
 
@@ -110,6 +112,16 @@ app.listen(PORT, function(err) {
     if (err) {
         console.log(err);
         return;
+    }
+})
+
+app.use(async(ctx, next) => {
+    try {
+        await next()
+    } catch (err) {
+        ctx.status = err.status || 500
+        ctx.body = err.message
+        ctx.app.emit('error', err, ctx)
     }
 })
 
