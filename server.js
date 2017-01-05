@@ -40,7 +40,7 @@ app.use(responseTime())
 
 app.use(session())
 
-router.get('/map/place/textsearch/:input', async(ctx,next) =>{
+router.get('/map/place/textsearch/:input', async(ctx, next) => {
     try {
         let opts = {
             uri: `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURI(_.trim(ctx.params.input))}&language=zh-CN&key=${G_API_KEY}`,
@@ -78,6 +78,19 @@ router.get('/map/place/textsearch/:input', async(ctx,next) =>{
         }
         await rp(opts).then(resp => ctx.body = resp)
 
+    } catch (err) {
+        ctx.status = err.status || 500
+        ctx.body = err.message
+        ctx.app.emit('error', err, ctx)
+    }
+}).get('/map/photo/:maxWidth/:maxHeight/:ref', async(ctx, next) => {
+    try {
+        let opts = {
+            uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${ctx.params.maxWidth}&maxheight=${ctx.params.maxHeight}&photoreference=${ctx.params.ref}&key=${G_API_KEY}`,
+            encoding: null
+        }
+
+        await rp(opts).then(resp => ctx.body = resp)
     } catch (err) {
         ctx.status = err.status || 500
         ctx.body = err.message

@@ -5,6 +5,7 @@ import rp from 'request-promise';
 
 const ZOOM_LEVEL = 12;
 const OFFSET = 0.00003;
+const DEFAULT_INFO_IMG = 'http://static.bigstockphoto.com/images/homepage/2016_popular_photo_categories.jpg'
 
 export default class BaiduMap extends Component {
 
@@ -19,40 +20,8 @@ export default class BaiduMap extends Component {
         this._map.centerAndZoom(point, ZOOM_LEVEL);
         this._map.setViewport([point])
         this._map.enableScrollWheelZoom();
-
-        let content = `
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-4by3">
-                        <img src="http://static.bigstockphoto.com/images/homepage/2016_popular_photo_categories.jpg" alt="">
-                    </figure>
-                </div>
-                <div class="card-content">
-                    <div class="media">
-                        <div class="media-left">
-                            <figure class="image is-32x32">
-                                <img src="https://40.media.tumblr.com/da455c51e4468e705a61f1800763c0e8/tumblr_niyf6pOg441sqk7hko1_1280.jpg" alt="Image">
-                            </figure>
-                        </div>
-                        <div class="media-content">
-                            <p class="title is-5">John Smith</p>
-                            <p class="subtitle is-6">@johnsmith</p>
-                        </div>
-                    </div>
-
-                    <div class="content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. <a href="#">@bulmaio</a>.
-                        <a href="#">#css</a> <a href="#">#responsive</a>
-                        <br>
-                        <small>11:09 PM - 1 Jan 2016</small>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        this.markPoint(point, content);
-
     }
+
     componentWillReceiveProps(nextProps) {
         let {dispatch, map} = this.props
         let {placeId, predictions, location} = nextProps.map
@@ -63,44 +32,45 @@ export default class BaiduMap extends Component {
             this._map.centerAndZoom(point, ZOOM_LEVEL);
             this._map.setViewport([point])
 
-            let content = `
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="http://static.bigstockphoto.com/images/homepage/2016_popular_photo_categories.jpg" alt="">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-left">
-                                <figure class="image is-32x32">
-                                    <img src="https://40.media.tumblr.com/da455c51e4468e705a61f1800763c0e8/tumblr_niyf6pOg441sqk7hko1_1280.jpg" alt="Image">
-                                </figure>
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-5">John Smith</p>
-                                <p class="subtitle is-6">@johnsmith</p>
-                            </div>
-                        </div>
+            this.markPoint(point, predictions[0]);
 
-                        <div class="content">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. <a href="#">@bulmaio</a>.
-                            <a href="#">#css</a> <a href="#">#responsive</a>
-                            <br>
-                            <small>11:09 PM - 1 Jan 2016</small>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            this.markPoint(point, content);
         }
     }
 
-    markPoint(point, infoContent) {
+    markPoint(point, info) {
+        let imgUrl = _.has(info, 'photos')
+            ? '/map/photo/400/300/' + info.photos[0].photo_reference
+            : DEFAULT_INFO_IMG
+        let content = `
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        <img src="${imgUrl}" alt="">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-32x32">
+                                <img src="${info.icon}" alt="Image">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <p class="title is-5">${info.name}</p>
+                            <p class="subtitle is-6">@${info.types[0]}</p>
+                        </div>
+                    </div>
 
+                    <div class="content">
+                        ${info.formatted_address}
+                        <br>
+                        <small>${Date.now()}</small>
+                    </div>
+                </div>
+            </div>
+        `;
         let marker = new BMap.Marker(point);
-        let infoWindow = new BMap.InfoWindow(infoContent);
+        let infoWindow = new BMap.InfoWindow(content);
 
         this._map.openInfoWindow(infoWindow, point)
         infoWindow.redraw()
