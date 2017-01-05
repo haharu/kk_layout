@@ -27,7 +27,7 @@ const compile = webpack(devConfig);
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const PORT = process.env.PORT || 3000;
-const G_API_KEY = 'AIzaSyC9RIsTSntRihFUG6spUF2jeDycO-ZyWeE';
+const G_API_KEY = 'AIzaSyCWF9rxrnc0Lxx5YuhojPNhO-kY3aflIXE';
 
 if (NODE_ENV === 'development') {
     require('request-debug')(rp);
@@ -44,7 +44,7 @@ router.get('/map/autocomplete/:input', async(ctx, next) => {
 
     try {
         let opts = {
-            uri: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURI(_.trim(ctx.params.input))}&types=establishment&components=country:us&key=${G_API_KEY}`,
+            uri: `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURI(_.trim(ctx.params.input))}&components=country:us&key=${G_API_KEY}`,
             json: true
         }
 

@@ -107,19 +107,19 @@ export function invalidBaiduLocation(geometry) {
 }
 
 function fetchBaiduLocation(geometry) {
+    let {lng, lat} = geometry
     const opts = {
         uri: baseUrl + '/map/geoconv',
         qs: {
-            lng: geometry.lng,
-            lat: geometry.lat
+            lng,
+            lat
         },
         json: true
     }
     return dispatch => {
         dispatch(requestBaiduLocation(geometry))
-        rp(opts).then(resp => {
+        return rp(opts).then(resp => {
             dispatch(receiveBaiduLocation(geometry, resp))
-            return null;
         }).catch(err => {
             console.log(err);
             dispatch(invalidBaiduLocation(geometry))
@@ -136,20 +136,8 @@ function fetchPlaceDetail(placeId) {
 
     return (dispatch, getState) => {
         dispatch(requestPlaceDetail(placeId))
-        rp(opts).then(resp => {
+        return rp(opts).then(resp => {
             dispatch(receivePlaceDetail(placeId, resp))
-            return resp
-        }).then(resp => {
-            let {map} = getState();
-            if (!_.isEmpty(map.placeDetail)) {
-                let {geometry} = map.placeDetail[placeId]
-                let geo = {
-                    lng: geometry.location.lng,
-                    lat: geometry.location.lat
-                }
-                dispatch(fetchBaiduLocationIfNeeded(geo))
-            }
-            return null;
         }).catch(err => {
             console.log(err);
             dispatch(invalidPlaceDetail(placeId));
@@ -165,9 +153,8 @@ function fetchAutocomplete(searchTxt) {
 
     return dispatch => {
         dispatch(requestAutocomplete(searchTxt))
-        rp(opts).then(resp => {
+        return rp(opts).then(resp => {
             dispatch(receiveAutocomplete(searchTxt, resp))
-            return null;
         }).catch(err => {
             console.log(err);
             dispatch(invalidAutocomplete(searchTxt))
@@ -175,20 +162,24 @@ function fetchAutocomplete(searchTxt) {
     }
 }
 
-export function fetchBaiduLocationIfNeeded(geometry) {
+export function fetchBaiduLocationIfNeeded() {
     return (dispatch, getState) => {
         const {map} = getState();
-        if (!_.has(map.location, map.placeId)) {
-            return dispatch(fetchBaiduLocation(geometry));
+        if (!_.isEmpty(map.placeDetail) && !_.has(map.location, map.placeId)) {
+            return dispatch(fetchBaiduLocation(map.placeDetail[map.placeId].geometry.location));
+        } else {
+            return Promise.resolve();
         }
     }
 }
 
-export function fetchPlaceDetailIfNeeded(placeId) {
+export function fetchPlaceDetailIfNeeded() {
     return (dispatch, getState) => {
         const {map} = getState();
-        if (!_.has(map.placeDetail, map.placeId)) {
+        if (map.placeId && !_.has(map.placeDetail, map.placeId)) {
             return dispatch(fetchPlaceDetail(map.placeId));
+        } else {
+            return Promise.resolve();
         }
     }
 }

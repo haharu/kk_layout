@@ -28,13 +28,14 @@ export default class App extends Component {
         }
     }
     mapSearchLocation(nextValue) {
-        if (_.trim(nextValue)) {
-            let {dispatch, map} = this.props
-            if (!_.isEmpty(map.autocomplete)) {
-                dispatch(mapActions.changePlaceId(map.autocomplete[0].place_id));
-                dispatch(mapActions.fetchPlaceDetailIfNeeded());
-            }
+        let {dispatch, map} = this.props
+        if (_.trim(map.searchTxt) && !_.isEmpty(map.autocomplete)) {
+            dispatch(mapActions.changePlaceId(map.autocomplete[0].place_id))
+            dispatch(mapActions.fetchPlaceDetailIfNeeded()).then(() => {
+                dispatch(mapActions.fetchBaiduLocationIfNeeded())
+            })
         }
+
     }
 
     render() {
