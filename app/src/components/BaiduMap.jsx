@@ -28,9 +28,15 @@ export default class BaiduMap extends Component {
 
         if (!_.isEmpty(predictions), !_.isEqual(predictions, map.predictions)) {
             let {geometry} = predictions[0]
+
             let point = new BMap.Point(geometry.location.lng + OFFSET, geometry.location.lat + OFFSET)
             this._map.centerAndZoom(point, ZOOM_LEVEL);
-            this._map.setViewport([point])
+
+            if (_.has(geometry, 'viewport')) {
+                let viewPortNE = new BMap.Point(geometry.viewport.northeast.lng + OFFSET, geometry.viewport.northeast.lat + OFFSET)
+                let viewPortWS = new BMap.Point(geometry.viewport.southwest.lng + OFFSET, geometry.viewport.southwest.lat + OFFSET)
+                this._map.setViewport([point, viewPortNE, viewPortWS])
+            }
 
             this.markPoint(point, predictions[0]);
 
