@@ -55,11 +55,11 @@ export default class BaiduMap extends Component {
     }
     componentWillReceiveProps(nextProps) {
         let {dispatch, map} = this.props
-        let {placeId, autocomplete, placeDetail, location} = nextProps.map
+        let {placeId, predictions, location} = nextProps.map
 
-        if (!_.isEmpty(location) && !location.error && !_.isEqual(location, map.location)) {
-            // let point = new BMap.Point(atob(location.x), atob(location.y))
-            let point = new BMap.Point(placeDetail[placeId].geometry.location.lng + OFFSET, placeDetail[placeId].geometry.location.lat + OFFSET)
+        if (!_.isEmpty(predictions), !_.isEqual(predictions, map.predictions)) {
+            let {geometry} = predictions[0]
+            let point = new BMap.Point(geometry.location.lng + OFFSET, geometry.location.lat + OFFSET)
             this._map.centerAndZoom(point, ZOOM_LEVEL);
             this._map.setViewport([point])
 

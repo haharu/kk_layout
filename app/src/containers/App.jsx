@@ -21,21 +21,12 @@ export default class App extends Component {
     }
 
     updateSearchValue(nextValue) {
-        if (_.trim(nextValue)) {
             let {dispatch} = this.props
             dispatch(mapActions.changeSearchTxt(nextValue));
-            dispatch(mapActions.fetchAutocompleteIfNeeded());
-        }
     }
     mapSearchLocation(nextValue) {
-        let {dispatch, map} = this.props
-        if (_.trim(map.searchTxt) && !_.isEmpty(map.autocomplete)) {
-            dispatch(mapActions.changePlaceId(map.autocomplete[0].place_id))
-            dispatch(mapActions.fetchPlaceDetailIfNeeded()).then(() => {
-                dispatch(mapActions.fetchBaiduLocationIfNeeded())
-            })
-        }
-
+        let {dispatch} = this.props
+        dispatch(mapActions.fetchTextSearchIfNeeded())
     }
 
     render() {

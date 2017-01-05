@@ -40,7 +40,21 @@ app.use(responseTime())
 
 app.use(session())
 
-router.get('/map/autocomplete/:input', async(ctx, next) => {
+router.get('/map/place/textsearch/:input', async(ctx,next) =>{
+    try {
+        let opts = {
+            uri: `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURI(_.trim(ctx.params.input))}&language=zh-CN&key=${G_API_KEY}`,
+            json: true
+        }
+
+        await rp(opts).then(resp => ctx.body = resp)
+
+    } catch (err) {
+        ctx.status = err.status || 500
+        ctx.body = err.message
+        ctx.app.emit('error', err, ctx)
+    }
+}).get('/map/autocomplete/:input', async(ctx, next) => {
 
     try {
         let opts = {

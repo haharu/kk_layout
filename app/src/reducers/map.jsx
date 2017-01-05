@@ -1,7 +1,10 @@
 const CHANGE_SEARCH_TXT = 'CHANGE_SEARCH_TXT';
 const CHANGE_PLACE_ID = 'CHANGE_PLACE_ID';
+const INVALID_TEXT_SEARCH = 'INVALID_TEXT_SEARCH';
 const INVALID_AUTOCOMPLETE = 'INVALID_AUTOCOMPLETE';
 const INVALID_PLACE_DETAIL = 'INVALID_PLACE_DETAIL';
+const REQUEST_TEXT_SEARCH = 'REQUEST_TEXT_SEARCH';
+const RECEIVE_TEXT_SEARCH = 'RECEIVE_TEXT_SEARCH';
 const REQUEST_AUTOCOMPLETE = 'REQUEST_AUTOCOMPLETE';
 const RECEIVE_AUTOCOMPLETE = 'RECEIVE_AUTOCOMPLETE';
 const REQUEST_PLACE_DETAIL = 'REQUEST_PLACE_DETAIL';
@@ -17,7 +20,7 @@ const baseUrl = window.location.protocol + '//' + window.location.host;
 export default function reducer(state = {
     searchTxt: '',
     placeId: '',
-    autocomplete: {},
+    predictions: {},
     placeDetail: {},
     location: {},
     isFetching: false
@@ -33,6 +36,8 @@ export default function reducer(state = {
                 placeId: action.placeId,
                 isFetching: false
             })
+        case REQUEST_TEXT_SEARCH:
+        case INVALID_TEXT_SEARCH:
         case REQUEST_AUTOCOMPLETE:
         case INVALID_AUTOCOMPLETE:
         case REQUEST_PLACE_DETAIL:
@@ -40,9 +45,14 @@ export default function reducer(state = {
         case REQUEST_BAIDU_LOCATION:
         case INVALID_BAIDU_LOCATION:
             return Object.assign({}, state, {isFetching: true})
+        case RECEIVE_TEXT_SEARCH:
+            return Object.assign({}, state, {
+                predictions: action.data,
+                isFetching: false
+            })
         case RECEIVE_AUTOCOMPLETE:
             return Object.assign({}, state, {
-                autocomplete: action.data,
+                predictions: action.data,
                 isFetching: false
             })
         case RECEIVE_PLACE_DETAIL:
@@ -60,6 +70,18 @@ export default function reducer(state = {
         default:
             return state
     }
+}
+
+export function requestTextSearch(searchTxt) {
+    return {type: REQUEST_TEXT_SEARCH, searchTxt}
+}
+
+export function receiveTextSearch(searchTxt, data) {
+    return {type: RECEIVE_TEXT_SEARCH, searchTxt, data: data.results}
+}
+
+export function invalidTextSearch(searchTxt) {
+    return {type: INVALID_TEXT_SEARCH, searchTxt}
 }
 
 export function requestAutocomplete(searchTxt) {
@@ -162,6 +184,22 @@ function fetchAutocomplete(searchTxt) {
     }
 }
 
+function fetchTextSearch(searchTxt) {
+    const opts = {
+        uri: baseUrl + '/map/place/textsearch/' + searchTxt,
+        json: true
+    }
+    return dispatch => {
+        dispatch(requestTextSearch(searchTxt))
+        return rp(opts).then(resp => {
+            dispatch(receiveTextSearch(searchTxt, resp))
+        }).catch(err => {
+            console.log(err);
+            dispatch(invalidTextSearch(searchTxt))
+        })
+    }
+}
+
 export function fetchBaiduLocationIfNeeded() {
     return (dispatch, getState) => {
         const {map} = getState();
@@ -186,6 +224,17 @@ export function fetchPlaceDetailIfNeeded() {
 export function fetchAutocompleteIfNeeded() {
     return (dispatch, getState) => {
         const {map} = getState();
-        return dispatch(fetchAutocomplete(map.searchTxt));
+        if (_.trim(map.searchTxt)) {
+            return dispatch(fetchAutocomplete(map.searchTxt));
+        }
+    }
+}
+
+export function fetchTextSearchIfNeeded() {
+    return (dispatch, getState) => {
+        const {map} = getState();
+        if (_.trim(map.searchTxt)) {
+            return dispatch(fetchTextSearch(map.searchTxt))
+        }
     }
 }
