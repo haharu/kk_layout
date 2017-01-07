@@ -20,9 +20,15 @@ export default class App extends Component {
         this.mapSearchLocation = this.mapSearchLocation.bind(this);
     }
 
+    componentDidMount() {
+        let {dispatch} = this.props
+        dispatch(mapActions.changeSearchTxt('美國'));
+        dispatch(mapActions.fetchTextSearchIfNeeded())
+    }
+
     updateSearchValue(nextValue) {
-            let {dispatch} = this.props
-            dispatch(mapActions.changeSearchTxt(nextValue));
+        let {dispatch} = this.props
+        dispatch(mapActions.changeSearchTxt(nextValue));
     }
     mapSearchLocation(nextValue) {
         let {dispatch} = this.props
@@ -30,7 +36,7 @@ export default class App extends Component {
     }
 
     render() {
-        let {dispatch} = this.props
+        let {dispatch, map} = this.props
         let MapActionCreator = bindActionCreators(mapActions, dispatch)
         return (
             <div>
@@ -39,7 +45,7 @@ export default class App extends Component {
                     <Input searchName="搜尋" onchange={this.updateSearchValue} onsubmit={this.mapSearchLocation} onloading={this.props.map.isFetching}/>
                     <BaiduMap id='BMap' style={{
                         minHeight: 500
-                    }} map={this.props.map} {...MapActionCreator}/>
+                    }} map={map} {...MapActionCreator}/>
                 </div>
             </div>
         )

@@ -11,82 +11,89 @@ export default class BaiduMap extends Component {
     constructor(props) {
         super(props);
         this.showInfo = this.showInfo.bind(this)
+        this.locate = this.locate.bind(this)
     }
+
     componentDidMount() {
-        let {id} = this.props
+        let {id, map} = this.props
         this._map = new BMap.Map(id)
         this._map.addControl(new BMap.ScaleControl());
         this._map.addControl(new BMap.NavigationControl());
-
-        let point = new BMap.Point(-95.712891, 37.09024)
-        let NE = new BMap.Point(-66.94, 49.38);
-        let SW = new BMap.Point(-124.39, 25.82);
-        this._map.panTo(point);
-        this._map.setViewport([point, NE, SW])
         this._map.enableScrollWheelZoom();
+        this.locate(map.predictions)
     }
 
     componentWillReceiveProps(nextProps) {
-        let {dispatch, map} = this.props
-        let {placeId, predictions, location} = nextProps.map
+        let {map} = this.props
+        let {predictions} = nextProps.map
 
-        if (!_.isEmpty(predictions), !_.isEqual(predictions, map.predictions)) {
+        if (!_.isEqual(predictions, map.predictions)) {
+            this.locate(predictions).then(point => {
+                this.showInfo(predictions, point);
+            })
+        }
+    }
+
+    locate(predictions) {
+        if (!_.isEmpty(predictions)) {
             let {geometry} = predictions[0]
 
             let point = new BMap.Point(geometry.location.lng + OFFSET, geometry.location.lat + OFFSET)
-            this._map.panTo(point);
+            this._map.centerAndZoom(point);
 
             if (_.has(geometry, 'viewport')) {
                 let viewPortNE = new BMap.Point(geometry.viewport.northeast.lng + OFFSET, geometry.viewport.northeast.lat + OFFSET)
                 let viewPortWS = new BMap.Point(geometry.viewport.southwest.lng + OFFSET, geometry.viewport.southwest.lat + OFFSET)
                 this._map.setViewport([point, viewPortNE, viewPortWS])
             }
-
-            this.showInfo(point, predictions[0]);
-
+            return Promise.resolve(point)
         }
+        return Promise.resolve()
     }
 
-    showInfo(point, info) {
-        let imgUrl = _.has(info, 'photos')
-            ? '/map/photo/400/300/' + info.photos[0].photo_reference
-            : DEFAULT_INFO_IMG
-        let content = `
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-4by3">
-                        <img src="${imgUrl}" alt="">
-                    </figure>
-                </div>
-                <div class="card-content">
-                    <div class="media">
-                        <div class="media-left">
-                            <figure class="image is-32x32">
-                                <img src="${info.icon}" alt="Image">
-                            </figure>
+    showInfo(predictions, point) {
+        if (!_.isEmpty(predictions)) {
+            let info = predictions[0]
+            let imgUrl = _.has(info, 'photos')
+                ? '/map/photo/400/300/' + info.photos[0].photo_reference
+                : DEFAULT_INFO_IMG
+            let content = `
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            <img src="${imgUrl}" alt="">
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-32x32">
+                                    <img src="${info.icon}" alt="Image">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-5">${info.name}</p>
+                                <p class="subtitle is-6">@${info.types[0]}</p>
+                            </div>
                         </div>
-                        <div class="media-content">
-                            <p class="title is-5">${info.name}</p>
-                            <p class="subtitle is-6">@${info.types[0]}</p>
+
+                        <div class="content">
+                            ${info.formatted_address}
                         </div>
                     </div>
-
-                    <div class="content">
-                        ${info.formatted_address}
-                    </div>
+                    <footer class="card-footer">
+                        <a class="card-footer-item">Save</a>
+                        <a class="card-footer-item">Edit</a>
+                        <a class="card-footer-item">Delete</a>
+                    </footer>
                 </div>
-                <footer class="card-footer">
-                    <a class="card-footer-item">Save</a>
-                    <a class="card-footer-item">Edit</a>
-                    <a class="card-footer-item">Delete</a>
-                </footer>
-            </div>
-        `;
+            `;
 
-        let infoWindow = new BMap.InfoWindow(content);
+            let infoWindow = new BMap.InfoWindow(content);
 
-        this._map.openInfoWindow(infoWindow, point)
-        infoWindow.redraw()
+            this._map.openInfoWindow(infoWindow, point)
+            infoWindow.redraw()
+        }
 
     }
 
