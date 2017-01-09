@@ -1,22 +1,25 @@
 var webpack = require('webpack');
 var path = require('path');
-var buildPath = path.resolve(__dirname, 'public');
+var assetPath = path.resolve(__dirname, 'public');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
+var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools-configuration'));
 
-var config = {
+module.exports = {
     entry: [path.join(__dirname, '/app/src/app.jsx')],
     resolve: {
         extensions: ["", ".js", ".jsx"]
     },
     output: {
-        path: buildPath,
-        filename: 'bundle_[hash].js',
+        path: assetPath,
+        filename: '[name]-[chunkhash].js',
+        chunkFilename: '[name]-[chunkhash].js',
         publicPath: '/'
     },
     plugins: [
+        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             minimize: true,
@@ -27,16 +30,13 @@ var config = {
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
+                NODE_ENV: '"production"'
             }
         }),
-        new HtmlWebpackPlugin({
-            title: 'dr.hush',
-            description: 'dr.hush',
-            template: path.join(__dirname, '/app/index.ejs')
-        }),
+        new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
+        webpackIsomorphicToolsPlugin,
         new webpack.optimize.CommonsChunkPlugin("commons", "commons.js"),
-        new ExtractTextPlugin('[name]-[hash].css', {allChunks: true})
+        new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true})
     ],
     devtool: 'cheap-module-source-map',
     node: {
@@ -82,11 +82,8 @@ var config = {
                 test: /\.eot(\?.*$|$)/,
                 loader: "file-loader"
             }, {
-                test: /\.png$/,
-                loader: "url-loader?limit=100000"
-            }, {
-                test: /\.jpg(\?.*$|$)/,
-                loader: "file-loader"
+                test: webpackIsomorphicToolsPlugin.regular_expression('images'),
+                loader: 'url-loader?limit=10240'
             }
         ]
     },
@@ -95,5 +92,3 @@ var config = {
         configFile: '.eslintrc'
     }
 };
-
-module.exports = config;

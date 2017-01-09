@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
+import {asyncConnect} from 'redux-connect'
 import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 import Header from '../components/Header';
 import Picker from '../components/Picker';
@@ -9,6 +10,14 @@ import BaiduMap from '../components/BaiduMap';
 
 import * as mapActions from '../reducers/map';
 
+@asyncConnect([
+    {
+        key: 'map',
+        promise: ({params, helpers}) => {
+        
+        }
+    }
+])
 @connect(state => {
     return {map: state.map}
 })

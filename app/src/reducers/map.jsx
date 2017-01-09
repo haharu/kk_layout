@@ -9,10 +9,6 @@ const RECEIVE_PLACE_DETAIL = 'RECEIVE_PLACE_DETAIL';
 const REQUEST_BAIDU_LOCATION = 'REQUEST_BAIDU_LOCATION';
 const RECEIVE_BAIDU_LOCATION = 'RECEIVE_BAIDU_LOCATION';
 
-import rp from 'request-promise';
-
-const baseUrl = window.location.protocol + '//' + window.location.host;
-
 export default function reducer(state = {
     searchTxt: '',
     placeId: '',
@@ -105,19 +101,11 @@ export function receiveBaiduLocation(geometry, data) {
 }
 
 function fetchBaiduLocation(geometry) {
-    let {lng, lat} = geometry
-    const opts = {
-        uri: baseUrl + '/map/geoconv',
-        qs: {
-            lng,
-            lat
-        },
-        json: true
-    }
+    const url = `/map/geoconv?lat=${geometry.lat}&lng=${geometry.lng}`;
     return dispatch => {
         dispatch(requestBaiduLocation(geometry))
-        return rp(opts).then(resp => {
-            dispatch(receiveBaiduLocation(geometry, resp))
+        return fetch(url).then(resp => resp.json()).then(resp => {
+            dispatch(receiveBaiduLocation(geometry, resp.json()))
         }).catch(err => {
             console.log(err);
         })
@@ -125,16 +113,12 @@ function fetchBaiduLocation(geometry) {
 }
 
 function fetchPlaceDetail(placeId) {
-
-    const opts = {
-        uri: baseUrl + '/map/place/detail/' + placeId,
-        json: true
-    }
+    const url = `/map/place/detail/${placeId}`
 
     return (dispatch, getState) => {
         dispatch(requestPlaceDetail(placeId))
-        return rp(opts).then(resp => {
-            dispatch(receivePlaceDetail(placeId, resp))
+        return fetch(url).then(resp => resp.json()).then(resp => {
+            dispatch(receivePlaceDetail(placeId, resp.json()))
         }).catch(err => {
             console.log(err);
         })
@@ -142,15 +126,12 @@ function fetchPlaceDetail(placeId) {
 }
 
 function fetchAutocomplete(searchTxt) {
-    const opts = {
-        uri: baseUrl + '/map/autocomplete/' + searchTxt,
-        json: true
-    }
+    const url = `/map/autocomplete/${searchTxt}`
 
     return dispatch => {
         dispatch(requestAutocomplete(searchTxt))
-        return rp(opts).then(resp => {
-            dispatch(receiveAutocomplete(searchTxt, resp))
+        return fetch(url).then(resp => resp.json()).then(resp => {
+            dispatch(receiveAutocomplete(searchTxt, resp.json()))
         }).catch(err => {
             console.log(err);
         });
@@ -158,13 +139,11 @@ function fetchAutocomplete(searchTxt) {
 }
 
 function fetchTextSearch(searchTxt) {
-    const opts = {
-        uri: baseUrl + '/map/place/textsearch/' + searchTxt,
-        json: true
-    }
+    const url = `/map/place/textsearch/${searchTxt}`
+
     return dispatch => {
         dispatch(requestTextSearch(searchTxt))
-        return rp(opts).then(resp => {
+        return fetch(url).then(resp => resp.json()).then(resp => {
             dispatch(receiveTextSearch(searchTxt, resp))
         }).catch(err => {
             console.log(err);

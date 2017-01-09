@@ -1,22 +1,19 @@
 import React, {Component, PropTypes} from 'react';
 import {Provider} from 'react-redux';
 import {render} from 'react-dom';
-import {Router, Route} from 'react-router';
+import {Router} from 'react-router';
+import {ReduxAsyncConnect} from 'redux-connect'
 
-import App from '../containers/App'
-
-const routes = (
-    <Route path="/" component={App}>
-        <Route path="*"/>
-    </Route>
-);
+import routes from './route'
 
 export default class Root extends Component {
     render() {
         const {store, history} = this.props;
         return (
             <Provider store={store}>
-                <Router routes={routes} history={history}/>
+                <Router render={(props) => {
+                    return <ReduxAsyncConnect {...props}/>
+                }} routes={routes} history={history}/>
             </Provider>
         );
     }
