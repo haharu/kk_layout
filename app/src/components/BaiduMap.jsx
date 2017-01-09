@@ -2,8 +2,6 @@
 import React, {PropTypes, Component} from 'react';
 import _ from 'lodash'
 
-import rp from 'request-promise';
-
 const OFFSET = 0.00003;
 const DEFAULT_INFO_IMG = 'http://static.bigstockphoto.com/images/homepage/2016_popular_photo_categories.jpg'
 
