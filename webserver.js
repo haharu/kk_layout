@@ -1,13 +1,12 @@
 import webpack from 'webpack'
 import path from 'path';
+import _ from 'lodash';
+require('isomorphic-fetch')
 
 import devMiddleware from 'koa-webpack-dev-middleware';
 import hotMiddleware from 'koa-webpack-hot-middleware';
 
 import devConfig from './webpack-dev-server.config.js';
-
-import _ from 'lodash';
-import 'isomorphic-fetch'
 
 import Koa from 'koa';
 import convert from 'koa-convert';

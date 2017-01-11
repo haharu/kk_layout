@@ -10,14 +10,14 @@ import BaiduMap from '../components/BaiduMap';
 
 import * as mapActions from '../reducers/map';
 
-@asyncConnect([
-    {
-        key: 'map',
-        promise: ({params, helpers}) => {
-        
-        }
-    }
-])
+@asyncConnect([{
+  promise: ({store: {dispatch, getState}}) => {
+    const promises = [];
+
+
+    return Promise.all(promises);
+  }
+}])
 @connect(state => {
     return {map: state.map}
 })
@@ -31,7 +31,7 @@ export default class App extends Component {
 
     componentDidMount() {
         let {dispatch} = this.props
-        dispatch(mapActions.changeSearchTxt('美國'));
+        dispatch(mapActions.changeSearchTxt('美國'))
         dispatch(mapActions.fetchTextSearchIfNeeded())
     }
 
@@ -50,12 +50,14 @@ export default class App extends Component {
         return (
             <div>
                 <Header/>
-                <div className="container is-fluid">
-                    <Input searchName="搜尋" onchange={this.updateSearchValue} onsubmit={this.mapSearchLocation} onloading={this.props.map.isFetching}/>
-                    <BaiduMap id='BMap' style={{
-                        minHeight: 500
-                    }} map={map} {...MapActionCreator}/>
-                </div>
+                <section className="section">
+                    <div className="container is-fluid">
+                        <Input searchName="搜尋" onchange={this.updateSearchValue} onsubmit={this.mapSearchLocation} onloading={this.props.map.isFetching}/>
+                        <BaiduMap id='BMap' style={{
+                            minHeight: 500
+                        }} map={map} {...MapActionCreator}/>
+                    </div>
+                </section>
             </div>
         )
 

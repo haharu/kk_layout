@@ -1,7 +1,8 @@
+import path from 'path'
+import WebpackIsomorphicTools from 'webpack-isomorphic-tools'
 
-var project_base_path = require('path').resolve(__dirname)
-
-var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
-global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('./webpack-isomorphic-tools-configuration')).server(project_base_path, function() {
-    require('./webpack-dev-server')
+global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('./webpack-isomorphic-tools-configuration')).server(path.resolve(__dirname), () => {
+    require('./webserver')
 })
+
+global._ = require('lodash')

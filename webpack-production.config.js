@@ -39,12 +39,6 @@ module.exports = {
         new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true})
     ],
     devtool: 'cheap-module-source-map',
-    node: {
-        console: true,
-        fs: 'empty',
-        net: 'empty',
-        tls: 'empty'
-    },
     module: {
         preLoaders: [
             {

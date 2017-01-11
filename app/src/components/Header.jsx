@@ -19,8 +19,25 @@ export default class Header extends Component {
                             </h2>
                         </div>
                     </div>
+                    <div className="hero-foot">
+                        <div className="container">
+                            <nav className="tabs is-boxed">
+                                <ul>
+                                    <li className="is-active">
+                                        <a>tab-a</a>
+                                    </li>
+                                    <li>
+                                        <a>tab-b</a>
+                                    </li>
+                                    <li>
+                                        <a>tab-c</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                            </div>
                 </section>
-                <nav className="nav has-shadow margin-b-20">
+                <nav className="nav has-shadow">
                     <div className="container">
                         <div className="nav-left">
                             <NavLink>tab1</NavLink>

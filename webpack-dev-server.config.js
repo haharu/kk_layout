@@ -29,12 +29,6 @@ module.exports = {
         new webpack.NoErrorsPlugin(),
         webpackIsomorphicToolsPlugin.development()
     ],
-    node: {
-        console: true,
-        fs: 'empty',
-        net: 'empty',
-        tls: 'empty'
-    },
     module: {
         preLoaders: [
             {
