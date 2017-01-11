@@ -10,14 +10,6 @@ import BaiduMap from '../components/BaiduMap';
 
 import * as mapActions from '../reducers/map';
 
-@asyncConnect([{
-  promise: ({store: {dispatch, getState}}) => {
-    const promises = [];
-
-
-    return Promise.all(promises);
-  }
-}])
 @connect(state => {
     return {map: state.map}
 })
