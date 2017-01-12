@@ -2,9 +2,9 @@ var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin')
 var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools-configuration'))
 var webpack = require('webpack');
 var path = require('path');
-var config = require('./app/src/config');
+var config = require('./app/src/config').default;
 
-var assetPath = path.resolve(__dirname, 'build');
+var assetPath = path.resolve(__dirname, 'dist');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
 
@@ -22,12 +22,10 @@ module.exports = {
     output: {
         path: assetPath,
         filename: 'bundle_[hash].js',
+        publicPath: 'http://' + config.host + ':' + config.port + '/assets/'
     },
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin(),
-        webpackIsomorphicToolsPlugin.development()
+        new webpack.optimize.OccurrenceOrderPlugin(), new webpack.HotModuleReplacementPlugin(), new webpack.NoErrorsPlugin(), webpackIsomorphicToolsPlugin.development()
     ],
     module: {
         preLoaders: [
@@ -66,7 +64,7 @@ module.exports = {
                 loader: "file-loader"
             }, {
                 test: webpackIsomorphicToolsPlugin.regular_expression('images'),
-                loader: 'url-loader?limit=10240',
+                loader: 'url-loader?limit=10240'
             }
         ]
     },

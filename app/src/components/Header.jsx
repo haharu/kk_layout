@@ -1,11 +1,44 @@
 'use strict';
 
 import React, {Component} from 'react';
-import NavLink from './NavLink';
-import {Link} from 'react-router';
+import {Link, IndexLink} from 'react-router';
+
+class NavLink extends Component {
+    render() {
+        const {index, to, children, activeClassName, router} = this.props
+
+        const isActive = index
+            ? router.isActive(to, index)
+            : router.isActive(to)
+        const LinkComponent = index
+            ? IndexLink
+            : Link
+
+        return (
+            <li className={isActive ? activeClassName : ''}>
+                <LinkComponent to={to}>{children}</LinkComponent>
+            </li>
+        )
+    }
+}
+
+class SubNavLink extends Component {
+    render() {
+        const {to, name} = this.props
+        return (
+            <Link to={to} className="nav-item is-tab" activeClassName="is-active">
+                {name}
+            </Link>
+        )
+    }
+}
 
 export default class Header extends Component {
+    constructor(props) {
+        super(props)
+    }
     render() {
+
         return (
             <div>
                 <section className="hero is-primary">
@@ -23,26 +56,18 @@ export default class Header extends Component {
                         <div className="container">
                             <nav className="tabs is-boxed">
                                 <ul>
-                                    <li className="is-active">
-                                        <a>tab-a</a>
-                                    </li>
-                                    <li>
-                                        <a>tab-b</a>
-                                    </li>
-                                    <li>
-                                        <a>tab-c</a>
-                                    </li>
+                                    <NavLink index={true} to="/" router={this.props.router} activeClassName="is-active" children="home"/>
+                                    <NavLink to="/bmap" router={this.props.router} activeClassName="is-active" children="bmap"/>
                                 </ul>
                             </nav>
                         </div>
-                            </div>
+                    </div>
                 </section>
                 <nav className="nav has-shadow">
                     <div className="container">
                         <div className="nav-left">
-                            <NavLink>tab1</NavLink>
-                            <NavLink>tab2</NavLink>
-                            <NavLink>tab3</NavLink>
+                            <SubNavLink to="/bmap/locate" name="locate"/>
+                            <SubNavLink to="/bmap/search" name="search"/>
                         </div>
                     </div>
                 </nav>

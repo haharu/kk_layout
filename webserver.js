@@ -49,7 +49,8 @@ if (!config.isProduction) {
         hot: true,
         quiet: true,
         inline: true,
-        port: config.port
+        port: config.port,
+        publicPath: devConfig.output.publicPath
     }));
 
     app.use(hotMiddleware(compile));
@@ -121,7 +122,13 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
         ctx.app.emit('error', err, ctx)
     })
 
-}).get(/^\/(.*)(?:\/|$)/, async(ctx, next) => {
+})
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+app.use(async(ctx, next) => {
+
     if (!config.isProduction) {
         webpackIsomorphicTools.refresh();
     }
@@ -143,9 +150,6 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
         })
     })
 })
-
-app.use(router.routes());
-app.use(router.allowedMethods());
 
 app.listen(config.port, function(err) {
     if (err) {
