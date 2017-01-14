@@ -20,9 +20,13 @@ export default class BaiduMap extends Component {
                 mapDirections
             }
         } = this.props
+
+        let opts = {
+            anchor: BMAP_ANCHOR_BOTTOM_RIGHT
+        }
         this._map = new BMap.Map(id)
-        this._map.addControl(new BMap.ScaleControl());
-        this._map.addControl(new BMap.NavigationControl());
+        this._map.addControl(new BMap.ScaleControl(opts));
+        this._map.addControl(new BMap.NavigationControl(opts));
         this._map.enableScrollWheelZoom();
         this.locate(mapLocation.predictions)
     }
@@ -34,7 +38,7 @@ export default class BaiduMap extends Component {
                 mapDirections
             }
         } = this.props
-        
+
         let {predictions} = nextProps.map.mapLocation
 
         if (!_.isEqual(predictions, mapLocation.predictions)) {
