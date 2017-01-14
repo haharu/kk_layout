@@ -1,20 +1,20 @@
 const CHANGE_SEARCH_TXT = 'CHANGE_SEARCH_TXT';
 const CHANGE_PLACE_ID = 'CHANGE_PLACE_ID';
+const CHANGE_DISTANCE_MATRIX_STATE = 'CHANGE_DISTANCE_MATRIX_STATE';
 const REQUEST_TEXT_SEARCH = 'REQUEST_TEXT_SEARCH';
 const RECEIVE_TEXT_SEARCH = 'RECEIVE_TEXT_SEARCH';
 const REQUEST_AUTOCOMPLETE = 'REQUEST_AUTOCOMPLETE';
 const RECEIVE_AUTOCOMPLETE = 'RECEIVE_AUTOCOMPLETE';
 const REQUEST_PLACE_DETAIL = 'REQUEST_PLACE_DETAIL';
 const RECEIVE_PLACE_DETAIL = 'RECEIVE_PLACE_DETAIL';
-const REQUEST_BAIDU_LOCATION = 'REQUEST_BAIDU_LOCATION';
-const RECEIVE_BAIDU_LOCATION = 'RECEIVE_BAIDU_LOCATION';
+
+import request from 'superagent';
 
 export default function reducer(state = {
     searchTxt: '',
     placeId: '',
     predictions: {},
     placeDetail: {},
-    location: {},
     isFetching: false
 }, action) {
     switch (action.type) {
@@ -31,7 +31,6 @@ export default function reducer(state = {
         case REQUEST_TEXT_SEARCH:
         case REQUEST_AUTOCOMPLETE:
         case REQUEST_PLACE_DETAIL:
-        case REQUEST_BAIDU_LOCATION:
             return Object.assign({}, state, {isFetching: true})
         case RECEIVE_TEXT_SEARCH:
             return Object.assign({}, state, {
@@ -44,20 +43,23 @@ export default function reducer(state = {
                 isFetching: false
             })
         case RECEIVE_PLACE_DETAIL:
-            return Object.assign({}, state, {
+            return deepAssign({}, state, {
                 placeDetail: {
                     [action.placeId]: action.data
                 },
                 isFetching: false
             })
-        case RECEIVE_BAIDU_LOCATION:
-            return Object.assign({}, state, {
-                location: action.data,
-                isFetching: false
-            })
         default:
             return state
     }
+}
+
+export function changeSearchTxt(searchTxt) {
+    return {type: CHANGE_SEARCH_TXT, searchTxt};
+}
+
+export function changePlaceId(placeId) {
+    return {type: CHANGE_PLACE_ID, placeId};
 }
 
 export function requestTextSearch(searchTxt) {
@@ -76,14 +78,6 @@ export function receiveAutocomplete(searchTxt, data) {
     return {type: RECEIVE_AUTOCOMPLETE, searchTxt, data: data.predictions};
 }
 
-export function changeSearchTxt(searchTxt) {
-    return {type: CHANGE_SEARCH_TXT, searchTxt};
-}
-
-export function changePlaceId(placeId) {
-    return {type: CHANGE_PLACE_ID, placeId};
-}
-
 export function requestPlaceDetail(placeId) {
     return {type: REQUEST_PLACE_DETAIL, placeId}
 }
@@ -92,25 +86,6 @@ export function receivePlaceDetail(placeId, data) {
     return {type: RECEIVE_PLACE_DETAIL, placeId, data: data.result}
 }
 
-export function requestBaiduLocation(geometry) {
-    return {type: REQUEST_BAIDU_LOCATION, geometry}
-}
-
-export function receiveBaiduLocation(geometry, data) {
-    return {type: RECEIVE_BAIDU_LOCATION, geometry, data}
-}
-
-function fetchBaiduLocation(geometry) {
-    const url = `/map/geoconv?lat=${geometry.lat}&lng=${geometry.lng}`;
-    return dispatch => {
-        dispatch(requestBaiduLocation(geometry))
-        return fetch(url).then(resp => resp.json()).then(resp => {
-            dispatch(receiveBaiduLocation(geometry, resp.json()))
-        }).catch(err => {
-            console.log(err);
-        })
-    }
-}
 
 function fetchPlaceDetail(placeId) {
     const url = `/map/place/detail/${placeId}`
@@ -151,22 +126,11 @@ function fetchTextSearch(searchTxt) {
     }
 }
 
-export function fetchBaiduLocationIfNeeded() {
-    return (dispatch, getState) => {
-        const {map} = getState();
-        if (!_.isEmpty(map.placeDetail) && !_.has(map.location, map.placeId)) {
-            return dispatch(fetchBaiduLocation(map.placeDetail[map.placeId].geometry.location));
-        } else {
-            return Promise.resolve();
-        }
-    }
-}
-
 export function fetchPlaceDetailIfNeeded() {
     return (dispatch, getState) => {
-        const {map} = getState();
-        if (map.placeId && !_.has(map.placeDetail, map.placeId)) {
-            return dispatch(fetchPlaceDetail(map.placeId));
+        const {mapLocation} = getState();
+        if (mapLocation.placeId && !_.has(mapLocation.placeDetail, mapLocation.placeId)) {
+            return dispatch(fetchPlaceDetail(mapLocation.placeId));
         } else {
             return Promise.resolve();
         }
@@ -174,18 +138,18 @@ export function fetchPlaceDetailIfNeeded() {
 }
 export function fetchAutocompleteIfNeeded() {
     return (dispatch, getState) => {
-        const {map} = getState();
-        if (_.trim(map.searchTxt)) {
-            return dispatch(fetchAutocomplete(map.searchTxt));
+        const {mapLocation} = getState();
+        if (!_.isEmpty(mapLocation.searchTxt)) {
+            return dispatch(fetchAutocomplete(mapLocation.searchTxt));
         }
     }
 }
 
 export function fetchTextSearchIfNeeded() {
     return (dispatch, getState) => {
-        const {map} = getState();
-        if (_.trim(map.searchTxt)) {
-            return dispatch(fetchTextSearch(map.searchTxt))
+        const {mapLocation} = getState();
+        if (!_.isEmpty(mapLocation.searchTxt)) {
+            return dispatch(fetchTextSearch(mapLocation.searchTxt))
         }
     }
 }

@@ -13,19 +13,31 @@ export default class BaiduMap extends Component {
     }
 
     componentDidMount() {
-        let {id, map} = this.props
+        let {
+            id,
+            map: {
+                mapLocation,
+                mapDirections
+            }
+        } = this.props
         this._map = new BMap.Map(id)
         this._map.addControl(new BMap.ScaleControl());
         this._map.addControl(new BMap.NavigationControl());
         this._map.enableScrollWheelZoom();
-        this.locate(map.predictions)
+        this.locate(mapLocation.predictions)
     }
 
     componentWillReceiveProps(nextProps) {
-        let {map} = this.props
-        let {predictions} = nextProps.map
+        let {
+            map: {
+                mapLocation,
+                mapDirections
+            }
+        } = this.props
+        
+        let {predictions} = nextProps.map.mapLocation
 
-        if (!_.isEqual(predictions, map.predictions)) {
+        if (!_.isEqual(predictions, mapLocation.predictions)) {
             this.locate(predictions).then(point => {
                 this.showInfo(predictions, point);
             })

@@ -2,9 +2,8 @@
 
 import "../stylesheets/main.css";
 
+import _ from 'lodash';
 require('isomorphic-fetch')
-import _ from 'lodash'
-
 import React from 'react';
 import {render} from 'react-dom';
 

@@ -1,12 +1,12 @@
 import webpack from 'webpack'
 import path from 'path';
 import _ from 'lodash';
-require('isomorphic-fetch')
 
 import devMiddleware from 'koa-webpack-dev-middleware';
 import hotMiddleware from 'koa-webpack-hot-middleware';
 
-import devConfig from './webpack-dev-server.config.js';
+import devConfig from './webpack-dev-server.config';
+import prodConfig from './webpack-production.config';
 
 import Koa from 'koa';
 import convert from 'koa-convert';
@@ -16,6 +16,8 @@ import zlib from 'zlib'
 import responseTime from 'koa-response-time';
 import bodyParser from 'koa-bodyparser';
 import koaRouter from 'koa-router';
+
+import querystring from 'querystring';
 
 import React from 'react'
 import {renderToString} from 'react-dom/server'
@@ -55,7 +57,7 @@ if (!config.isProduction) {
 
     app.use(hotMiddleware(compile));
 } else {
-    app.use(serve('public'));
+    app.use(serve('dist'));
 }
 
 app.use(responseTime())
@@ -122,6 +124,20 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
         ctx.app.emit('error', err, ctx)
     })
 
+}).get('/map/distancematrix', async(ctx, next) => {
+    let opts = Object.assign({}, {
+        language: 'zh-CN'
+    }, _.omitBy(ctx.query, _.isEmpty))
+
+    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?${querystring.stringify(opts)}`;
+
+    await fetch(url).then(resp => resp.json()).then(resp => {
+        ctx.body = resp
+    }).catch(err => {
+        ctx.status = err.status || 500
+        ctx.body = err.message
+        ctx.app.emit('error', err, ctx)
+    })
 })
 
 app.use(router.routes());

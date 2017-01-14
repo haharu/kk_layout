@@ -15,7 +15,9 @@ class NavLink extends Component {
             : Link
 
         return (
-            <li className={isActive ? activeClassName : ''}>
+            <li className={isActive
+                ? activeClassName
+                : ''}>
                 <LinkComponent to={to}>{children}</LinkComponent>
             </li>
         )
@@ -38,17 +40,16 @@ export default class Header extends Component {
         super(props)
     }
     render() {
-
         return (
             <div>
                 <section className="hero is-primary">
                     <div className="hero-body">
                         <div className="container">
                             <h1 className="title">
-                                test
+                                drhush
                             </h1>
                             <h2 className="subtitle">
-                                中文にほんご간곡고englishอักษรไทยfrançaisहिन्दी或हिंदीHindīالعَرَبِيَّة
+                                drhush map
                             </h2>
                         </div>
                     </div>
@@ -67,7 +68,7 @@ export default class Header extends Component {
                     <div className="container">
                         <div className="nav-left">
                             <SubNavLink to="/bmap/locate" name="locate"/>
-                            <SubNavLink to="/bmap/search" name="search"/>
+                            <SubNavLink to="/bmap/route" name="route"/>
                         </div>
                     </div>
                 </nav>

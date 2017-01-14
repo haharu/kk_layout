@@ -1,6 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
-var assetPath = path.resolve(__dirname, 'public');
+var assetPath = path.resolve(__dirname, 'dist');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");

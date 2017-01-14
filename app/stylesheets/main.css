@@ -3815,6 +3815,320 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   clip: auto;
 }
 
+/* line 1, ../sass/mixins/_helper.scss */
+.clearfix {
+  zoom: 1;
+  /* For IE 6/7 (trigger hasLayout) */
+}
+/* line 4, ../sass/mixins/_helper.scss */
+.clearfix:after, .clearfix:before {
+  content: "";
+  display: table;
+}
+/* line 9, ../sass/mixins/_helper.scss */
+.clearfix:after {
+  clear: both;
+}
+
+/* line 13, ../sass/mixins/_helper.scss */
+.inline-flex-center-container {
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+
+/* line 20, ../sass/mixins/_helper.scss */
+.flex-center-container {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+
+/* line 27, ../sass/mixins/_helper.scss */
+.full-width {
+  width: 100%;
+}
+
+/* line 30, ../sass/mixins/_helper.scss */
+.center-block {
+  margin: 0 auto;
+  display: block;
+}
+
+/* line 36, ../sass/mixins/_helper.scss */
+.padding-h-15 {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* line 40, ../sass/mixins/_helper.scss */
+.padding-v-15 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+/* line 44, ../sass/mixins/_helper.scss */
+.padding-l-15 {
+  padding-left: 15px;
+}
+
+/* line 47, ../sass/mixins/_helper.scss */
+.padding-r-15 {
+  padding-right: 15px;
+}
+
+/* line 50, ../sass/mixins/_helper.scss */
+.padding-t-15 {
+  padding-top: 15px;
+}
+
+/* line 53, ../sass/mixins/_helper.scss */
+.padding-b-15 {
+  padding-bottom: 15px;
+}
+
+/* line 56, ../sass/mixins/_helper.scss */
+.margin-h-15 {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+/* line 60, ../sass/mixins/_helper.scss */
+.margin-v-15 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+/* line 64, ../sass/mixins/_helper.scss */
+.margin-l-15 {
+  margin-left: 15px;
+}
+
+/* line 67, ../sass/mixins/_helper.scss */
+.margin-r-15 {
+  margin-right: 15px;
+}
+
+/* line 70, ../sass/mixins/_helper.scss */
+.margin-t-15 {
+  margin-top: 15px;
+}
+
+/* line 73, ../sass/mixins/_helper.scss */
+.margin-b-15 {
+  margin-bottom: 15px;
+}
+
+/* line 36, ../sass/mixins/_helper.scss */
+.padding-h-20 {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* line 40, ../sass/mixins/_helper.scss */
+.padding-v-20 {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* line 44, ../sass/mixins/_helper.scss */
+.padding-l-20 {
+  padding-left: 20px;
+}
+
+/* line 47, ../sass/mixins/_helper.scss */
+.padding-r-20 {
+  padding-right: 20px;
+}
+
+/* line 50, ../sass/mixins/_helper.scss */
+.padding-t-20 {
+  padding-top: 20px;
+}
+
+/* line 53, ../sass/mixins/_helper.scss */
+.padding-b-20 {
+  padding-bottom: 20px;
+}
+
+/* line 56, ../sass/mixins/_helper.scss */
+.margin-h-20 {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+/* line 60, ../sass/mixins/_helper.scss */
+.margin-v-20 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* line 64, ../sass/mixins/_helper.scss */
+.margin-l-20 {
+  margin-left: 20px;
+}
+
+/* line 67, ../sass/mixins/_helper.scss */
+.margin-r-20 {
+  margin-right: 20px;
+}
+
+/* line 70, ../sass/mixins/_helper.scss */
+.margin-t-20 {
+  margin-top: 20px;
+}
+
+/* line 73, ../sass/mixins/_helper.scss */
+.margin-b-20 {
+  margin-bottom: 20px;
+}
+
+/* line 36, ../sass/mixins/_helper.scss */
+.padding-h-25 {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+/* line 40, ../sass/mixins/_helper.scss */
+.padding-v-25 {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+/* line 44, ../sass/mixins/_helper.scss */
+.padding-l-25 {
+  padding-left: 25px;
+}
+
+/* line 47, ../sass/mixins/_helper.scss */
+.padding-r-25 {
+  padding-right: 25px;
+}
+
+/* line 50, ../sass/mixins/_helper.scss */
+.padding-t-25 {
+  padding-top: 25px;
+}
+
+/* line 53, ../sass/mixins/_helper.scss */
+.padding-b-25 {
+  padding-bottom: 25px;
+}
+
+/* line 56, ../sass/mixins/_helper.scss */
+.margin-h-25 {
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+/* line 60, ../sass/mixins/_helper.scss */
+.margin-v-25 {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+/* line 64, ../sass/mixins/_helper.scss */
+.margin-l-25 {
+  margin-left: 25px;
+}
+
+/* line 67, ../sass/mixins/_helper.scss */
+.margin-r-25 {
+  margin-right: 25px;
+}
+
+/* line 70, ../sass/mixins/_helper.scss */
+.margin-t-25 {
+  margin-top: 25px;
+}
+
+/* line 73, ../sass/mixins/_helper.scss */
+.margin-b-25 {
+  margin-bottom: 25px;
+}
+
+/* line 36, ../sass/mixins/_helper.scss */
+.padding-h-30 {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* line 40, ../sass/mixins/_helper.scss */
+.padding-v-30 {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+/* line 44, ../sass/mixins/_helper.scss */
+.padding-l-30 {
+  padding-left: 30px;
+}
+
+/* line 47, ../sass/mixins/_helper.scss */
+.padding-r-30 {
+  padding-right: 30px;
+}
+
+/* line 50, ../sass/mixins/_helper.scss */
+.padding-t-30 {
+  padding-top: 30px;
+}
+
+/* line 53, ../sass/mixins/_helper.scss */
+.padding-b-30 {
+  padding-bottom: 30px;
+}
+
+/* line 56, ../sass/mixins/_helper.scss */
+.margin-h-30 {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+/* line 60, ../sass/mixins/_helper.scss */
+.margin-v-30 {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+/* line 64, ../sass/mixins/_helper.scss */
+.margin-l-30 {
+  margin-left: 30px;
+}
+
+/* line 67, ../sass/mixins/_helper.scss */
+.margin-r-30 {
+  margin-right: 30px;
+}
+
+/* line 70, ../sass/mixins/_helper.scss */
+.margin-t-30 {
+  margin-top: 30px;
+}
+
+/* line 73, ../sass/mixins/_helper.scss */
+.margin-b-30 {
+  margin-bottom: 30px;
+}
+
+/* line 1, ../sass/component/_common.scss */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -ms-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+}
+
 /*! bulma.io v0.2.3 | MIT License | github.com/jgthms/bulma */
 @keyframes spinAround {
   from {
@@ -3970,7 +4284,7 @@ body {
 
 /* line 44, ../../node_modules/bulma/sass/base/generic.sass */
 a {
-  color: #00d1b2;
+  color: #26bec9;
   cursor: pointer;
   text-decoration: none;
   transition: none 86ms ease-out;
@@ -4466,11 +4780,11 @@ table th {
 
 /* line 10, ../../node_modules/bulma/sass/elements/box.sass */
 a.box:hover, a.box:focus {
-  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px #00d1b2;
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px #26bec9;
 }
 /* line 13, ../../node_modules/bulma/sass/elements/box.sass */
 a.box:active {
-  box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.2), 0 0 0 1px #00d1b2;
+  box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.2), 0 0 0 1px #26bec9;
 }
 
 /* line 19, ../../node_modules/bulma/sass/elements/button.sass */
@@ -4509,7 +4823,7 @@ a.box:active {
 }
 /* line 43, ../../node_modules/bulma/sass/utilities/controls.sass */
 .button:active, .button:focus, .button.is-active {
-  border-color: #00d1b2;
+  border-color: #26bec9;
   outline: none;
 }
 /* line 48, ../../node_modules/bulma/sass/utilities/controls.sass */
@@ -4720,20 +5034,20 @@ a.box:active {
 }
 /* line 53, ../../node_modules/bulma/sass/elements/button.sass */
 .button.is-primary {
-  background-color: #00d1b2;
+  background-color: #26bec9;
   border-width: 0;
   color: white;
 }
 /* line 57, ../../node_modules/bulma/sass/elements/button.sass */
 .button.is-primary:hover, .button.is-primary:focus, .button.is-primary.is-active {
-  background-color: #00b89c;
+  background-color: #22aab4;
   border-color: transparent;
   color: white;
 }
 /* line 63, ../../node_modules/bulma/sass/elements/button.sass */
 .button.is-primary.is-inverted {
   background-color: white;
-  color: #00d1b2;
+  color: #26bec9;
 }
 /* line 66, ../../node_modules/bulma/sass/elements/button.sass */
 .button.is-primary.is-inverted:hover {
@@ -4746,14 +5060,14 @@ a.box:active {
 /* line 71, ../../node_modules/bulma/sass/elements/button.sass */
 .button.is-primary.is-outlined {
   background-color: transparent;
-  border-color: #00d1b2;
+  border-color: #26bec9;
   border-width: 1px;
-  color: #00d1b2;
+  color: #26bec9;
 }
 /* line 76, ../../node_modules/bulma/sass/elements/button.sass */
 .button.is-primary.is-outlined:hover, .button.is-primary.is-outlined:focus {
-  background-color: #00d1b2;
-  border-color: #00d1b2;
+  background-color: #26bec9;
+  border-color: #26bec9;
   color: white;
 }
 /* line 53, ../../node_modules/bulma/sass/elements/button.sass */
@@ -4995,7 +5309,7 @@ a.box:active {
 }
 /* line 9, ../../node_modules/bulma/sass/elements/content.sass */
 .content a:not(.button):hover {
-  border-bottom-color: #00d1b2;
+  border-bottom-color: #26bec9;
 }
 /* line 11, ../../node_modules/bulma/sass/elements/content.sass */
 .content li + li {
@@ -5129,7 +5443,7 @@ a.box:active {
 .textarea:active,
 .textarea:focus,
 .textarea.is-active {
-  border-color: #00d1b2;
+  border-color: #26bec9;
   outline: none;
 }
 /* line 48, ../../node_modules/bulma/sass/utilities/controls.sass */
@@ -5188,7 +5502,7 @@ a.box:active {
 /* line 5, ../../node_modules/bulma/sass/elements/form.sass */
 .input.is-primary,
 .textarea.is-primary {
-  border-color: #00d1b2;
+  border-color: #26bec9;
 }
 /* line 5, ../../node_modules/bulma/sass/elements/form.sass */
 .input.is-info,
@@ -5340,7 +5654,7 @@ a.box:active {
 }
 /* line 43, ../../node_modules/bulma/sass/utilities/controls.sass */
 .select select:active, .select select:focus, .select select.is-active {
-  border-color: #00d1b2;
+  border-color: #26bec9;
   outline: none;
 }
 /* line 48, ../../node_modules/bulma/sass/utilities/controls.sass */
@@ -5384,7 +5698,7 @@ a.box:active {
 }
 /* line 5, ../../node_modules/bulma/sass/elements/form.sass */
 .select select.is-primary {
-  border-color: #00d1b2;
+  border-color: #26bec9;
 }
 /* line 5, ../../node_modules/bulma/sass/elements/form.sass */
 .select select.is-info {
@@ -5420,7 +5734,7 @@ a.box:active {
 }
 /* line 81, ../../node_modules/bulma/sass/elements/form.sass */
 .select:after {
-  border: 1px solid #00d1b2;
+  border: 1px solid #26bec9;
   border-right: 0;
   border-top: 0;
   content: " ";
@@ -5514,7 +5828,7 @@ a.box:active {
 }
 /* line 118, ../../node_modules/bulma/sass/elements/form.sass */
 .help.is-primary {
-  color: #00d1b2;
+  color: #26bec9;
 }
 /* line 118, ../../node_modules/bulma/sass/elements/form.sass */
 .help.is-info {
@@ -5912,7 +6226,7 @@ a.box:active {
 }
 /* line 20, ../../node_modules/bulma/sass/elements/notification.sass */
 .notification.is-primary {
-  background-color: #00d1b2;
+  background-color: #26bec9;
   color: white;
 }
 /* line 20, ../../node_modules/bulma/sass/elements/notification.sass */
@@ -5998,11 +6312,11 @@ a.box:active {
 }
 /* line 22, ../../node_modules/bulma/sass/elements/progress.sass */
 .progress.is-primary::-webkit-progress-value {
-  background-color: #00d1b2;
+  background-color: #26bec9;
 }
 /* line 24, ../../node_modules/bulma/sass/elements/progress.sass */
 .progress.is-primary::-moz-progress-bar {
-  background-color: #00d1b2;
+  background-color: #26bec9;
 }
 /* line 22, ../../node_modules/bulma/sass/elements/progress.sass */
 .progress.is-info::-webkit-progress-value {
@@ -6107,7 +6421,7 @@ a.box:active {
 /* line 38, ../../node_modules/bulma/sass/elements/table.sass */
 .table td.is-link > a:hover,
 .table th.is-link > a:hover {
-  background-color: #00d1b2;
+  background-color: #26bec9;
   color: white;
 }
 /* line 41, ../../node_modules/bulma/sass/elements/table.sass */
@@ -6625,7 +6939,7 @@ a.box:active {
 }
 /* line 86, ../../node_modules/bulma/sass/elements/other.sass */
 .tag.is-primary {
-  background-color: #00d1b2;
+  background-color: #26bec9;
   color: white;
 }
 /* line 86, ../../node_modules/bulma/sass/elements/other.sass */
@@ -7176,11 +7490,11 @@ a.box:active {
 /* line 12, ../../node_modules/bulma/sass/components/menu.sass */
 .menu-list a:hover {
   background-color: whitesmoke;
-  color: #00d1b2;
+  color: #26bec9;
 }
 /* line 16, ../../node_modules/bulma/sass/components/menu.sass */
 .menu-list a.is-active {
-  background-color: #00d1b2;
+  background-color: #26bec9;
   color: white;
 }
 /* line 20, ../../node_modules/bulma/sass/components/menu.sass */
@@ -7298,17 +7612,17 @@ a.box:active {
 }
 /* line 29, ../../node_modules/bulma/sass/components/message.sass */
 .message.is-primary {
-  background-color: #ebfffc;
+  background-color: #eefbfc;
 }
 /* line 31, ../../node_modules/bulma/sass/components/message.sass */
 .message.is-primary .message-header {
-  background-color: #00d1b2;
+  background-color: #26bec9;
   color: white;
 }
 /* line 34, ../../node_modules/bulma/sass/components/message.sass */
 .message.is-primary .message-body {
-  border-color: #00d1b2;
-  color: #26d9be;
+  border-color: #26bec9;
+  color: #4faab0;
 }
 /* line 29, ../../node_modules/bulma/sass/components/message.sass */
 .message.is-info {
@@ -7577,7 +7891,7 @@ a.box:active {
 }
 /* line 109, ../../node_modules/bulma/sass/utilities/mixins.sass */
 .nav-toggle.is-active span {
-  background-color: #00d1b2;
+  background-color: #26bec9;
 }
 /* line 111, ../../node_modules/bulma/sass/utilities/mixins.sass */
 .nav-toggle.is-active span:nth-child(1) {
@@ -7665,15 +7979,15 @@ a.nav-item.is-tab {
 /* line 47, ../../node_modules/bulma/sass/components/nav.sass */
 .nav-item a.is-tab:hover,
 a.nav-item.is-tab:hover {
-  border-bottom: 1px solid #00d1b2;
+  border-bottom: 1px solid #26bec9;
   border-top: 1px solid transparent;
 }
 /* line 50, ../../node_modules/bulma/sass/components/nav.sass */
 .nav-item a.is-tab.is-active,
 a.nav-item.is-tab.is-active {
-  border-bottom: 3px solid #00d1b2;
+  border-bottom: 3px solid #26bec9;
   border-top: 3px solid transparent;
-  color: #00d1b2;
+  color: #26bec9;
 }
 
 @media screen and (max-width: 768px) {
@@ -7879,7 +8193,7 @@ a.nav-item.is-tab.is-active {
 }
 /* line 22, ../../node_modules/bulma/sass/components/panel.sass */
 .panel-list a:hover {
-  color: #00d1b2;
+  color: #26bec9;
 }
 
 /* line 25, ../../node_modules/bulma/sass/components/panel.sass */
@@ -7973,8 +8287,8 @@ a.panel-block:hover {
 }
 /* line 26, ../../node_modules/bulma/sass/components/tabs.sass */
 .tabs li.is-active a {
-  border-bottom-color: #00d1b2;
-  color: #00d1b2;
+  border-bottom-color: #26bec9;
+  color: #26bec9;
 }
 /* line 29, ../../node_modules/bulma/sass/components/tabs.sass */
 .tabs ul {
@@ -8068,8 +8382,8 @@ a.panel-block:hover {
 }
 /* line 97, ../../node_modules/bulma/sass/components/tabs.sass */
 .tabs.is-toggle li.is-active a {
-  background-color: #00d1b2;
-  border-color: #00d1b2;
+  background-color: #26bec9;
+  border-color: #26bec9;
   color: white;
   z-index: 1;
 }
@@ -9594,7 +9908,7 @@ a.panel-block:hover {
 }
 /* line 67, ../../node_modules/bulma/sass/layout/hero.sass */
 .hero.is-primary {
-  background-color: #00d1b2;
+  background-color: #26bec9;
   color: white;
 }
 /* line 70, ../../node_modules/bulma/sass/layout/hero.sass */
@@ -9622,7 +9936,7 @@ a.panel-block:hover {
 @media screen and (max-width: 768px) {
   /* line 82, ../../node_modules/bulma/sass/layout/hero.sass */
   .hero.is-primary .nav-menu {
-    background-color: #00d1b2;
+    background-color: #26bec9;
   }
 }
 /* line 85, ../../node_modules/bulma/sass/layout/hero.sass */
@@ -9661,11 +9975,11 @@ a.panel-block:hover {
 .hero.is-primary .tabs.is-boxed li.is-active a, .hero.is-primary .tabs.is-boxed li.is-active a:hover, .hero.is-primary .tabs.is-toggle li.is-active a, .hero.is-primary .tabs.is-toggle li.is-active a:hover {
   background-color: white;
   border-color: white;
-  color: #00d1b2;
+  color: #26bec9;
 }
 /* line 113, ../../node_modules/bulma/sass/layout/hero.sass */
 .hero.is-primary.is-bold {
-  background-image: linear-gradient(141deg, #009e6c 0%, #00d1b2 71%, #00e7eb 100%);
+  background-image: linear-gradient(141deg, #14a899 0%, #26bec9 71%, #2ab4de 100%);
 }
 @media screen and (max-width: 768px) {
   /* line 120, ../../node_modules/bulma/sass/layout/hero.sass */
@@ -10121,319 +10435,5 @@ a.panel-block:hover {
 }
 /* line 12, ../../node_modules/bulma/sass/layout/footer.sass */
 .footer a:not(.icon):hover, .footer a:visited:not(.icon):hover {
-  border-bottom-color: #00d1b2;
-}
-
-/* line 1, ../sass/mixins/_helper.scss */
-.clearfix {
-  zoom: 1;
-  /* For IE 6/7 (trigger hasLayout) */
-}
-/* line 4, ../sass/mixins/_helper.scss */
-.clearfix:after, .clearfix:before {
-  content: "";
-  display: table;
-}
-/* line 9, ../sass/mixins/_helper.scss */
-.clearfix:after {
-  clear: both;
-}
-
-/* line 13, ../sass/mixins/_helper.scss */
-.inline-flex-center-container {
-  display: -webkit-inline-flex;
-  display: inline-flex;
-  -webkit-align-items: center;
-  align-items: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-}
-
-/* line 20, ../sass/mixins/_helper.scss */
-.flex-center-container {
-  display: -webkit-flex;
-  display: flex;
-  -webkit-align-items: center;
-  align-items: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-}
-
-/* line 27, ../sass/mixins/_helper.scss */
-.full-width {
-  width: 100%;
-}
-
-/* line 30, ../sass/mixins/_helper.scss */
-.center-block {
-  margin: 0 auto;
-  display: block;
-}
-
-/* line 36, ../sass/mixins/_helper.scss */
-.padding-h-15 {
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-/* line 40, ../sass/mixins/_helper.scss */
-.padding-v-15 {
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-
-/* line 44, ../sass/mixins/_helper.scss */
-.padding-l-15 {
-  padding-left: 15px;
-}
-
-/* line 47, ../sass/mixins/_helper.scss */
-.padding-r-15 {
-  padding-right: 15px;
-}
-
-/* line 50, ../sass/mixins/_helper.scss */
-.padding-t-15 {
-  padding-top: 15px;
-}
-
-/* line 53, ../sass/mixins/_helper.scss */
-.padding-b-15 {
-  padding-bottom: 15px;
-}
-
-/* line 56, ../sass/mixins/_helper.scss */
-.margin-h-15 {
-  margin-left: 15px;
-  margin-right: 15px;
-}
-
-/* line 60, ../sass/mixins/_helper.scss */
-.margin-v-15 {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-/* line 64, ../sass/mixins/_helper.scss */
-.margin-l-15 {
-  margin-left: 15px;
-}
-
-/* line 67, ../sass/mixins/_helper.scss */
-.margin-r-15 {
-  margin-right: 15px;
-}
-
-/* line 70, ../sass/mixins/_helper.scss */
-.margin-t-15 {
-  margin-top: 15px;
-}
-
-/* line 73, ../sass/mixins/_helper.scss */
-.margin-b-15 {
-  margin-bottom: 15px;
-}
-
-/* line 36, ../sass/mixins/_helper.scss */
-.padding-h-20 {
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-/* line 40, ../sass/mixins/_helper.scss */
-.padding-v-20 {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-/* line 44, ../sass/mixins/_helper.scss */
-.padding-l-20 {
-  padding-left: 20px;
-}
-
-/* line 47, ../sass/mixins/_helper.scss */
-.padding-r-20 {
-  padding-right: 20px;
-}
-
-/* line 50, ../sass/mixins/_helper.scss */
-.padding-t-20 {
-  padding-top: 20px;
-}
-
-/* line 53, ../sass/mixins/_helper.scss */
-.padding-b-20 {
-  padding-bottom: 20px;
-}
-
-/* line 56, ../sass/mixins/_helper.scss */
-.margin-h-20 {
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-/* line 60, ../sass/mixins/_helper.scss */
-.margin-v-20 {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-/* line 64, ../sass/mixins/_helper.scss */
-.margin-l-20 {
-  margin-left: 20px;
-}
-
-/* line 67, ../sass/mixins/_helper.scss */
-.margin-r-20 {
-  margin-right: 20px;
-}
-
-/* line 70, ../sass/mixins/_helper.scss */
-.margin-t-20 {
-  margin-top: 20px;
-}
-
-/* line 73, ../sass/mixins/_helper.scss */
-.margin-b-20 {
-  margin-bottom: 20px;
-}
-
-/* line 36, ../sass/mixins/_helper.scss */
-.padding-h-25 {
-  padding-left: 25px;
-  padding-right: 25px;
-}
-
-/* line 40, ../sass/mixins/_helper.scss */
-.padding-v-25 {
-  padding-top: 25px;
-  padding-bottom: 25px;
-}
-
-/* line 44, ../sass/mixins/_helper.scss */
-.padding-l-25 {
-  padding-left: 25px;
-}
-
-/* line 47, ../sass/mixins/_helper.scss */
-.padding-r-25 {
-  padding-right: 25px;
-}
-
-/* line 50, ../sass/mixins/_helper.scss */
-.padding-t-25 {
-  padding-top: 25px;
-}
-
-/* line 53, ../sass/mixins/_helper.scss */
-.padding-b-25 {
-  padding-bottom: 25px;
-}
-
-/* line 56, ../sass/mixins/_helper.scss */
-.margin-h-25 {
-  margin-left: 25px;
-  margin-right: 25px;
-}
-
-/* line 60, ../sass/mixins/_helper.scss */
-.margin-v-25 {
-  margin-top: 25px;
-  margin-bottom: 25px;
-}
-
-/* line 64, ../sass/mixins/_helper.scss */
-.margin-l-25 {
-  margin-left: 25px;
-}
-
-/* line 67, ../sass/mixins/_helper.scss */
-.margin-r-25 {
-  margin-right: 25px;
-}
-
-/* line 70, ../sass/mixins/_helper.scss */
-.margin-t-25 {
-  margin-top: 25px;
-}
-
-/* line 73, ../sass/mixins/_helper.scss */
-.margin-b-25 {
-  margin-bottom: 25px;
-}
-
-/* line 36, ../sass/mixins/_helper.scss */
-.padding-h-30 {
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
-/* line 40, ../sass/mixins/_helper.scss */
-.padding-v-30 {
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
-
-/* line 44, ../sass/mixins/_helper.scss */
-.padding-l-30 {
-  padding-left: 30px;
-}
-
-/* line 47, ../sass/mixins/_helper.scss */
-.padding-r-30 {
-  padding-right: 30px;
-}
-
-/* line 50, ../sass/mixins/_helper.scss */
-.padding-t-30 {
-  padding-top: 30px;
-}
-
-/* line 53, ../sass/mixins/_helper.scss */
-.padding-b-30 {
-  padding-bottom: 30px;
-}
-
-/* line 56, ../sass/mixins/_helper.scss */
-.margin-h-30 {
-  margin-left: 30px;
-  margin-right: 30px;
-}
-
-/* line 60, ../sass/mixins/_helper.scss */
-.margin-v-30 {
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
-
-/* line 64, ../sass/mixins/_helper.scss */
-.margin-l-30 {
-  margin-left: 30px;
-}
-
-/* line 67, ../sass/mixins/_helper.scss */
-.margin-r-30 {
-  margin-right: 30px;
-}
-
-/* line 70, ../sass/mixins/_helper.scss */
-.margin-t-30 {
-  margin-top: 30px;
-}
-
-/* line 73, ../sass/mixins/_helper.scss */
-.margin-b-30 {
-  margin-bottom: 30px;
-}
-
-/* line 1, ../sass/component/_common.scss */
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-font-smoothing: antialiased;
-  -ms-font-smoothing: antialiased;
-  -o-font-smoothing: antialiased;
+  border-bottom-color: #26bec9;
 }
