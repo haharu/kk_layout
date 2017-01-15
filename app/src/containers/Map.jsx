@@ -8,7 +8,7 @@ import BaiduMap from '../components/BaiduMap';
 import * as mapLocationActions from '../reducers/mapLocation';
 
 @connect(state => {
-    return {mapLocation: state.mapLocation}
+    return {mapLocation: state.mapLocation, mapDirections: state.mapDirections}
 })
 export default class Map extends Component {
     constructor(props) {
@@ -27,6 +27,9 @@ export default class Map extends Component {
         let {mapLocation, mapDirections} = this.props
         return (<BaiduMap id='BMap' style={{
             height: '100%'
-        }} map={{mapLocation, mapDirections}} />)
+        }} map={{
+            mapLocation,
+            mapDirections
+        }}/>)
     }
 }

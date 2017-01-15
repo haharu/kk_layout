@@ -108,21 +108,18 @@ export class Locate extends Component {
     render() {
         let {mapLocation} = this.props
         return (
-            <section className="section">
-                <nav className="level">
-                    <div className="level-left">
-                        <div className="level-item">
-                            <p className="control has-addons">
-                                <input className="input" type="text" onChange={e => this.updateSearchValue(e.target.value)}/>
-                                <a onClick={this.mapSearchLocation} className={`button is-primary` + (mapLocation.isFetching && ' is-loading' || '')}>
-                                    Search
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                </nav>
-
-            </section>
+            <nav className="panel">
+                <div className="panel-block">
+                    <p className="control">
+                        <input className="input" type="text" placeholder="Location" onChange={e => this.updateSearchValue(e.target.value)}/>
+                    </p>
+                </div>
+                <div className="panel-block">
+                    <button onClick={this.mapSearchLocation} className={`button is-primary is-outlined is-fullwidth` + (mapLocation.isFetching && ' is-loading' || '')}>
+                        Search
+                    </button>
+                </div>
+            </nav>
         )
     }
 }

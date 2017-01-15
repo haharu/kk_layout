@@ -9,7 +9,7 @@ export default class BaiduMap extends Component {
     constructor(props) {
         super(props);
         this.showInfo = this.showInfo.bind(this)
-        this.locate = this.locate.bind(this)
+        this.getPoints = this.getPoints.bind(this)
     }
 
     componentDidMount() {
@@ -28,7 +28,12 @@ export default class BaiduMap extends Component {
         this._map.addControl(new BMap.ScaleControl(opts));
         this._map.addControl(new BMap.NavigationControl(opts));
         this._map.enableScrollWheelZoom();
-        this.locate(mapLocation.predictions)
+        let points = this.getPoints(mapLocation.predictions)
+        if (!_.isEmpty(points)) {
+            this._map.setViewport(points[0])
+            this.showInfo(predictions, points[0][0]);
+        }
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -39,30 +44,54 @@ export default class BaiduMap extends Component {
             }
         } = this.props
 
-        let {predictions} = nextProps.map.mapLocation
+        let {
+            mapLocation: {
+                predictions
+            },
+            mapDirections: {
+                distancematrix,
+                directions:{
+                    geocoded_waypoints,
+                    routes
+                }
+            }
+        } = nextProps.map
 
         if (!_.isEqual(predictions, mapLocation.predictions)) {
-            this.locate(predictions).then(point => {
-                this.showInfo(predictions, point);
-            })
+            let points = this.getPoints(predictions)
+            if (!_.isEmpty(points)) {
+                this._map.setViewport(points[0])
+                this.showInfo(predictions, points[0][0]);
+            }
+        }
+
+        if (!_.isEqual(routes, mapDirections.directions.routes)) {
+            let points = this.getPoints(routes)
+            this._map.setViewport(points[0])
         }
     }
 
-    locate(predictions) {
-        if (!_.isEmpty(predictions)) {
-            let {geometry} = predictions[0]
-
-            let point = new BMap.Point(geometry.location.lng + OFFSET, geometry.location.lat + OFFSET)
-            this._map.centerAndZoom(point);
-
-            if (_.has(geometry, 'viewport')) {
-                let viewPortNE = new BMap.Point(geometry.viewport.northeast.lng + OFFSET, geometry.viewport.northeast.lat + OFFSET)
-                let viewPortWS = new BMap.Point(geometry.viewport.southwest.lng + OFFSET, geometry.viewport.southwest.lat + OFFSET)
-                this._map.setViewport([point, viewPortNE, viewPortWS])
+    getPoints(predictions) {
+        return _.reduce(predictions, (acc, prediction, i) => {
+            let {geometry, bounds} = prediction
+            if (!_.isEmpty(geometry)) {
+                const points = []
+                points.push(new BMap.Point(geometry.location.lng + OFFSET, geometry.location.lat + OFFSET))
+                if (_.has(geometry, 'viewport')) {
+                    points.push(new BMap.Point(geometry.viewport.northeast.lng + OFFSET, geometry.viewport.northeast.lat + OFFSET))
+                    points.push(new BMap.Point(geometry.viewport.southwest.lng + OFFSET, geometry.viewport.southwest.lat + OFFSET))
+                }
+                acc.push(points)
             }
-            return Promise.resolve(point)
-        }
-        return Promise.resolve()
+
+            if (!_.isEmpty(bounds)) {
+                const points = []
+                points.push(new BMap.Point(bounds.northeast.lng + OFFSET, bounds.northeast.lat + OFFSET))
+                points.push(new BMap.Point(bounds.southwest.lng + OFFSET, bounds.southwest.lat + OFFSET))
+                acc.push(points)
+            }
+            return acc
+        }, [])
     }
 
     showInfo(predictions, point) {
