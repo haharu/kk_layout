@@ -75,7 +75,7 @@ app.use(async(ctx, next) => {
 })
 
 router.get('/map/place/textsearch/:input', async(ctx, next) => {
-    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURI(_.trim(ctx.params.input))}&language=zh-CN&key=${G_API_KEY}`
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURI(_.trim(ctx.params.input))}&key=${G_API_KEY}`
 
     await fetch(url).then(resp => resp.json()).then(resp => ctx.body = resp).catch(err => {
         ctx.status = err.status || 500
@@ -84,7 +84,7 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
     })
 }).get('/map/autocomplete/:input', async(ctx, next) => {
 
-    const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURI(_.trim(ctx.params.input))}&types=establishment&language=zh-CN&components=country:us&key=${G_API_KEY}`
+    const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURI(_.trim(ctx.params.input))}&key=${G_API_KEY}`
 
     await fetch(url).then(resp => resp.json()).then(resp => ctx.body = resp).catch(err => {
         ctx.status = err.status || 500
@@ -136,7 +136,6 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
     }, {})
 
     let _opts = Object.assign({}, {
-        language: 'zh-CN',
         key: G_API_KEY
     }, _.omitBy(opts, _.isEmpty))
 
@@ -156,7 +155,6 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
     })
 }).get('/map/directions', async(ctx, next) => {
     let opts = Object.assign({}, {
-        language: 'zh-CN',
         key: G_API_KEY
     }, _.omitBy(ctx.query, _.isEmpty))
 

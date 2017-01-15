@@ -21,12 +21,12 @@ export class MapRoute extends Component {
     getDistanceMatrix() {
         let {dispatch} = this.props
         dispatch(mapDirectionsActions.fetchDistanceMatrixIfNeeded()).then((resp) => {
-            if (!_.isEmpty(resp.origin_addresses) && !_.isEmpty(resp.destination_addresses)) {
+            if (!_.isEmpty(resp) && !_.isEmpty(resp.origin_addresses) && !_.isEmpty(resp.destination_addresses)) {
                 dispatch(mapDirectionsActions.changeDistanceMatrixState({origin: resp.origin_addresses[0], destination: resp.destination_addresses[0]}))
             }
         }).then(() => {
             dispatch(mapDirectionsActions.fetchDirectionsIfNeeded()).then(resp => {
-                if (!_.isEmpty(resp.geocoded_waypoints)) {
+                if (!_.isEmpty(resp) && !_.isEmpty(resp.geocoded_waypoints)) {
                     _.forEach(resp.geocoded_waypoints, (waypoint, i) => {
                         if (!_.isEmpty(waypoint.place_id)) {
                             dispatch(mapLocationActions.fetchPlaceDetailIfNeeded(waypoint.place_id))

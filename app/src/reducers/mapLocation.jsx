@@ -120,6 +120,7 @@ export function fetchPlaceDetailIfNeeded(placeId) {
         if (placeId && !_.has(mapLocation.placeDetail, placeId)) {
             return dispatch(fetchPlaceDetail(placeId));
         }
+        return Promise.resolve()
     }
 }
 export function fetchAutocompleteIfNeeded() {
@@ -128,6 +129,7 @@ export function fetchAutocompleteIfNeeded() {
         if (!_.isEmpty(mapLocation.searchTxt)) {
             return dispatch(fetchAutocomplete(mapLocation.searchTxt));
         }
+        return Promise.resolve()
     }
 }
 
@@ -137,5 +139,6 @@ export function fetchTextSearchIfNeeded() {
         if (!_.isEmpty(mapLocation.searchTxt)) {
             return dispatch(fetchTextSearch(mapLocation.searchTxt))
         }
+        return Promise.resolve()
     }
 }

@@ -106,6 +106,7 @@ export function fetchDistanceMatrixIfNeeded() {
         if (!_.isEmpty(mapDirections.origin) && !_.isEmpty(mapDirections.destination)) {
             return dispatch(fetchDistanceMatrix(mapDirections));
         }
+        return Promise.resolve()
     }
 }
 
@@ -115,6 +116,7 @@ export function fetchDirectionsIfNeeded() {
         if (!_.isEmpty(mapDirections.origin) && !_.isEmpty(mapDirections.destination)) {
             return dispatch(fetchDirections(mapDirections))
         }
+        return Promise.resolve()
     }
 
 }
