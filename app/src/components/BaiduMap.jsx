@@ -45,7 +45,9 @@ export default class BaiduMap extends Component {
 
         let {
             mapLocation: {
-                predictions
+                predictions,
+                placeDetail,
+                placeId
             },
             mapDirections: {
                 distancematrix,
@@ -66,6 +68,21 @@ export default class BaiduMap extends Component {
                 })
                 this._map.clearOverlays();
                 this._map.addOverlay(marker);
+            }
+        }
+
+        if (!_.isEqual(placeId, mapLocation.placeId)) {
+            if (_.has(placeDetail, placeId)) {
+                let points = this.getPoints([placeDetail[placeId]])
+                if (!_.isEmpty(points)) {
+                    this._map.setViewport(points[0])
+                    let marker = new BMap.Marker(points[0][0])
+                    marker.addEventListener('click', (e) => {
+                        this.showInfo(placeDetail);
+                    })
+                    this._map.clearOverlays();
+                    this._map.addOverlay(marker);
+                }
             }
         }
 

@@ -1,5 +1,7 @@
 const CHANGE_SEARCH_TXT = 'CHANGE_SEARCH_TXT';
+const CHANGE_PLACE_ID = 'CHANGE_PLACE_ID'
 const CHANGE_DISTANCE_MATRIX_STATE = 'CHANGE_DISTANCE_MATRIX_STATE';
+const TOGGLE_AUTOCOMPLETE_VISIBILITY = 'TOGGLE_AUTOCOMPLETE_VISIBILITY'
 const REQUEST_TEXT_SEARCH = 'REQUEST_TEXT_SEARCH';
 const RECEIVE_TEXT_SEARCH = 'RECEIVE_TEXT_SEARCH';
 const REQUEST_AUTOCOMPLETE = 'REQUEST_AUTOCOMPLETE';
@@ -12,8 +14,11 @@ import deepAssign from 'deep-assign';
 
 export default function reducer(state = {
     searchTxt: '',
-    predictions: {},
+    placeId: '',
+    predictions: [],
+    autocomplete: [],
     placeDetail: {},
+    showAutocomplete: false,
     isFetching: false
 }, action) {
     switch (action.type) {
@@ -21,6 +26,15 @@ export default function reducer(state = {
             return Object.assign({}, state, {
                 searchTxt: action.searchTxt,
                 isFetching: false
+            })
+        case CHANGE_PLACE_ID:
+            return Object.assign({}, state, {
+                placeId: action.placeId,
+                isFetching: false
+            })
+        case TOGGLE_AUTOCOMPLETE_VISIBILITY:
+            return Object.assign({}, state, {
+                showAutocomplete: !state.showAutocomplete
             })
         case REQUEST_TEXT_SEARCH:
         case REQUEST_AUTOCOMPLETE:
@@ -33,7 +47,7 @@ export default function reducer(state = {
             })
         case RECEIVE_AUTOCOMPLETE:
             return Object.assign({}, state, {
-                predictions: action.data.predictions,
+                autocomplete: action.data.predictions,
                 isFetching: false
             })
         case RECEIVE_PLACE_DETAIL:
@@ -51,6 +65,15 @@ export default function reducer(state = {
 export function changeSearchTxt(searchTxt) {
     return {type: CHANGE_SEARCH_TXT, searchTxt};
 }
+
+export function changePlaceId(placeId) {
+    return {type: CHANGE_PLACE_ID, placeId}
+}
+
+export function toggleAutocompleteVisibility() {
+    return {type: TOGGLE_AUTOCOMPLETE_VISIBILITY}
+}
+
 export function requestTextSearch(searchTxt) {
     return {type: REQUEST_TEXT_SEARCH, searchTxt}
 }

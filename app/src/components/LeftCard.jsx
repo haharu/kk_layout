@@ -105,27 +105,50 @@ export class Locate extends Component {
         super(props)
         this.updateSearchValue = this.updateSearchValue.bind(this);
         this.mapSearchLocation = this.mapSearchLocation.bind(this);
+        this.toggleAutocompleteVisibility = this.toggleAutocompleteVisibility.bind(this);
     }
 
     updateSearchValue(nextValue) {
         let {dispatch} = this.props
         dispatch(mapLocationActions.changeSearchTxt(nextValue));
+        dispatch(mapLocationActions.fetchAutocompleteIfNeeded())
     }
-    mapSearchLocation(nextValue) {
+
+    selectPrediction(i) {
+        let {dispatch, mapLocation} = this.props
+        let placeId = mapLocation.autocomplete[i].place_id
+        dispatch(mapLocationActions.fetchPlaceDetailIfNeeded(placeId)).then((resp) => {
+            dispatch(mapLocationActions.changePlaceId(placeId))
+        })
+    }
+
+    toggleAutocompleteVisibility() {
+        let {dispatch} = this.props
+        dispatch(mapLocationActions.toggleAutocompleteVisibility())
+    }
+
+    mapSearchLocation() {
         let {dispatch} = this.props
         dispatch(mapLocationActions.fetchTextSearchIfNeeded())
     }
+
     render() {
         let {mapLocation} = this.props
+        const autocomplete = _.map(mapLocation.autocomplete, (prediction, i) => (
+            <a key={`${i}`} className="panel-block" onMouseDown={(e) => this.selectPrediction(i)}>
+                {prediction.description}
+            </a>
+        ))
         return (
             <nav className="panel">
                 <div className="panel-block">
                     <p className="control">
-                        <input className="input" type="text" placeholder="Location" onChange={e => this.updateSearchValue(e.target.value)}/>
+                        <input value={mapLocation.searchTxt} className="input" type="text" placeholder="Location" onFocus={this.toggleAutocompleteVisibility} onBlur={this.toggleAutocompleteVisibility} onChange={e => this.updateSearchValue(e.target.value)}/>
                     </p>
                 </div>
+                {mapLocation.showAutocomplete && !_.isEmpty(mapLocation.searchTxt) && !_.isEmpty(mapLocation.autocomplete) && autocomplete}
                 <div className="panel-block">
-                    <button onClick={this.mapSearchLocation} className={`button is-primary is-outlined is-fullwidth` + (mapLocation.isFetching && ' is-loading' || '')}>
+                    <button onMouseDown={this.mapSearchLocation} className={`button is-primary is-outlined is-fullwidth` + (mapLocation.isFetching && ' is-loading' || '')}>
                         Search
                     </button>
                 </div>
