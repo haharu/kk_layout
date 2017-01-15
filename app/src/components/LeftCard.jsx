@@ -4,7 +4,7 @@ import * as mapDirectionsActions from '../reducers/mapDirections';
 import * as mapLocationActions from '../reducers/mapLocation';
 
 @connect(state => {
-    return {mapDirections: state.mapDirections}
+    return {mapDirections: state.mapDirections, mapLocation: state.mapLocation}
 })
 export class MapRoute extends Component {
     constructor(props) {
@@ -24,7 +24,17 @@ export class MapRoute extends Component {
             if (!_.isEmpty(resp.origin_addresses) && !_.isEmpty(resp.destination_addresses)) {
                 dispatch(mapDirectionsActions.changeDistanceMatrixState({origin: resp.origin_addresses[0], destination: resp.destination_addresses[0]}))
             }
-        }).then(dispatch(mapDirectionsActions.fetchDirectionsIfNeeded()))
+        }).then(() => {
+            dispatch(mapDirectionsActions.fetchDirectionsIfNeeded()).then(resp => {
+                if (!_.isEmpty(resp.geocoded_waypoints)) {
+                    _.forEach(resp.geocoded_waypoints, (waypoint, i) => {
+                        if (!_.isEmpty(waypoint.place_id)) {
+                            dispatch(mapLocationActions.fetchPlaceDetailIfNeeded(waypoint.place_id))
+                        }
+                    })
+                }
+            })
+        })
     }
 
     render() {

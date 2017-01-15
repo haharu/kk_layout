@@ -1,7 +1,6 @@
 "use strict";
 import React, {PropTypes, Component} from 'react';
 
-const OFFSET = 0.00003;
 const DEFAULT_INFO_IMG = 'http://static.bigstockphoto.com/images/homepage/2016_popular_photo_categories.jpg'
 
 export default class BaiduMap extends Component {
@@ -28,10 +27,10 @@ export default class BaiduMap extends Component {
         this._map.addControl(new BMap.ScaleControl(opts));
         this._map.addControl(new BMap.NavigationControl(opts));
         this._map.enableScrollWheelZoom();
+
         let points = this.getPoints(mapLocation.predictions)
         if (!_.isEmpty(points)) {
             this._map.setViewport(points[0])
-            this.showInfo(predictions, points[0][0]);
         }
 
     }
@@ -50,7 +49,7 @@ export default class BaiduMap extends Component {
             },
             mapDirections: {
                 distancematrix,
-                directions:{
+                directions: {
                     geocoded_waypoints,
                     routes
                 }
@@ -61,14 +60,42 @@ export default class BaiduMap extends Component {
             let points = this.getPoints(predictions)
             if (!_.isEmpty(points)) {
                 this._map.setViewport(points[0])
-                this.showInfo(predictions, points[0][0]);
+                let marker = new BMap.Marker(points[0][0])
+                marker.addEventListener('click', (e) => {
+                    this.showInfo(predictions[0]);
+                })
+                this._map.clearOverlays();
+                this._map.addOverlay(marker);
             }
         }
 
         if (!_.isEqual(routes, mapDirections.directions.routes)) {
             let points = this.getPoints(routes)
             this._map.setViewport(points[0])
+            this._map.clearOverlays();
         }
+
+        if (!_.isEqual(geocoded_waypoints, mapDirections.geocoded_waypoints)) {
+
+            let places = _.reduce(geocoded_waypoints, (acc, waypoint, i) => {
+                if (!_.isEmpty(mapLocation.placeDetail[waypoint.place_id])) {
+                    acc.push(mapLocation.placeDetail[waypoint.place_id]);
+                }
+                return acc
+            }, [])
+
+            if (!_.isEmpty(places)) {
+                let points = this.getPoints(places)
+                _.forEach(points, (point, i) => {
+                    let marker = new BMap.Marker(point[0])
+                    marker.addEventListener('click', () => {
+                        this.showInfo(places[i]);
+                    })
+                    this._map.addOverlay(marker);
+                })
+            }
+        }
+
     }
 
     getPoints(predictions) {
@@ -76,27 +103,26 @@ export default class BaiduMap extends Component {
             let {geometry, bounds} = prediction
             if (!_.isEmpty(geometry)) {
                 const points = []
-                points.push(new BMap.Point(geometry.location.lng + OFFSET, geometry.location.lat + OFFSET))
+                points.push(new BMap.Point(geometry.location.lng, geometry.location.lat))
                 if (_.has(geometry, 'viewport')) {
-                    points.push(new BMap.Point(geometry.viewport.northeast.lng + OFFSET, geometry.viewport.northeast.lat + OFFSET))
-                    points.push(new BMap.Point(geometry.viewport.southwest.lng + OFFSET, geometry.viewport.southwest.lat + OFFSET))
+                    points.push(new BMap.Point(geometry.viewport.northeast.lng, geometry.viewport.northeast.lat))
+                    points.push(new BMap.Point(geometry.viewport.southwest.lng, geometry.viewport.southwest.lat))
                 }
                 acc.push(points)
             }
 
             if (!_.isEmpty(bounds)) {
                 const points = []
-                points.push(new BMap.Point(bounds.northeast.lng + OFFSET, bounds.northeast.lat + OFFSET))
-                points.push(new BMap.Point(bounds.southwest.lng + OFFSET, bounds.southwest.lat + OFFSET))
+                points.push(new BMap.Point(bounds.northeast.lng, bounds.northeast.lat))
+                points.push(new BMap.Point(bounds.southwest.lng, bounds.southwest.lat))
                 acc.push(points)
             }
             return acc
         }, [])
     }
 
-    showInfo(predictions, point) {
-        if (!_.isEmpty(predictions)) {
-            let info = predictions[0]
+    showInfo(info) {
+        if (!_.isEmpty(info)) {
             let imgUrl = _.has(info, 'photos')
                 ? '/map/photo/400/300/' + info.photos[0].photo_reference
                 : DEFAULT_INFO_IMG
@@ -133,6 +159,7 @@ export default class BaiduMap extends Component {
             `;
 
             let infoWindow = new BMap.InfoWindow(content);
+            let point = new BMap.Point(info.geometry.location.lng, info.geometry.location.lat)
 
             this._map.openInfoWindow(infoWindow, point)
             infoWindow.redraw()

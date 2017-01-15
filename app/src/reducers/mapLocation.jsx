@@ -8,6 +8,7 @@ const REQUEST_PLACE_DETAIL = 'REQUEST_PLACE_DETAIL';
 const RECEIVE_PLACE_DETAIL = 'RECEIVE_PLACE_DETAIL';
 
 import request from 'superagent';
+import deepAssign from 'deep-assign';
 
 export default function reducer(state = {
     searchTxt: '',
@@ -118,8 +119,6 @@ export function fetchPlaceDetailIfNeeded(placeId) {
         const {mapLocation} = getState();
         if (placeId && !_.has(mapLocation.placeDetail, placeId)) {
             return dispatch(fetchPlaceDetail(placeId));
-        } else {
-            return Promise.resolve();
         }
     }
 }
@@ -128,8 +127,6 @@ export function fetchAutocompleteIfNeeded() {
         const {mapLocation} = getState();
         if (!_.isEmpty(mapLocation.searchTxt)) {
             return dispatch(fetchAutocomplete(mapLocation.searchTxt));
-        } else {
-            return Promise.resolve();
         }
     }
 }
@@ -139,8 +136,6 @@ export function fetchTextSearchIfNeeded() {
         const {mapLocation} = getState();
         if (!_.isEmpty(mapLocation.searchTxt)) {
             return dispatch(fetchTextSearch(mapLocation.searchTxt))
-        } else {
-            return Promise.resolve();
         }
     }
 }
