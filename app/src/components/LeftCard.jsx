@@ -26,7 +26,7 @@ export class MapRoute extends Component {
     render() {
         let {mapDirections} = this.props
 
-        let allowedMethods = {
+        let allowedMode = {
             'driving': {
                 icon: 'car'
             },
@@ -40,6 +40,17 @@ export class MapRoute extends Component {
                 icon: 'subway'
             }
         }
+
+        const modeTabs = _.map(allowedMode, (opts, mode) => (
+            <li key={`${mode}`} className={(mapDirections.mode === mode) && 'is-active' || ''}>
+                <a>
+                    <span className="icon is-small">
+                        <i className={`fa fa-${opts.icon}`}></i>
+                    </span>
+                </a>
+            </li>
+        ))
+
         return (
             <div>
                 <nav className="panel">
@@ -52,32 +63,18 @@ export class MapRoute extends Component {
                     </div>
                     <div className="panel-block">
                         <div className="tabs">
-                            <ul>
-                                {_.map(allowedMethods, (opts, method) => (
-                                    <li key={`${method}`} className={(mapDirections.method === method) && 'is-active' || ''}>
-                                        <a>
-                                            <span className="icon is-small">
-                                                <i className={`fa fa-${opts.icon}`}></i>
-                                            </span>
-                                        </a>
-                                    </li>
-                                ))
-                                }
-                            </ul>
+                            <ul>{modeTabs}</ul>
                         </div>
                         <p className="control">
-                            <input className="input" type="text" placeholder="Search" onChange={e => this.updateDistanceMatrixState({origins: e.target.value})}/>
+                            <input className="input" type="text" placeholder="Origins" onChange={e => this.updateDistanceMatrixState({origins: e.target.value})}/>
                         </p>
-                        <p className="control has-addons">
-                            <input className="input" type="text" onChange={e => this.updateDistanceMatrixState({destinations: e.target.value})}/>
-                            <a className={`button is-primary` + (mapDirections.isFetching && 'is-loading' || '')} onClick={this.getDistanceMatrix}>
-                                搜尋
-                            </a>
+                        <p className="control">
+                            <input className="input" type="text" placeholder="Directions" onChange={e => this.updateDistanceMatrixState({destinations: e.target.value})}/>
                         </p>
                     </div>
                     <div className="panel-block">
-                        <button className="button is-primary is-outlined is-fullwidth">
-                            Reset all filters
+                        <button onClick={this.getDistanceMatrix} className={`button is-primary is-outlined is-fullwidth` + (mapDirections.isFetching && ' is-loading' || '')}>
+                            Search
                         </button>
                     </div>
                 </nav>
@@ -113,9 +110,7 @@ export class Locate extends Component {
                         <div className="level-item">
                             <p className="control has-addons">
                                 <input className="input" type="text" onChange={e => this.updateSearchValue(e.target.value)}/>
-                                <a className={mapLocation.isFetching
-                                    ? "button is-primary is-loading"
-                                    : "button is-primary"} onClick={this.mapSearchLocation}>
+                                <a onClick={this.mapSearchLocation} className={`button is-primary` + (mapLocation.isFetching && ' is-loading' || '')}>
                                     搜尋
                                 </a>
                             </p>

@@ -1,4 +1,3 @@
-
 const CHANGE_DISTANCE_MATRIX_STATE = 'CHANGE_DISTANCE_MATRIX_STATE';
 const REQUEST_DISTANCE_MATRIX = 'REQUEST_DISTANCE_MATRIX';
 const RECEIVE_DISTANCE_MATRIX = 'RECEIVE_DISTANCE_MATRIX';
@@ -17,13 +16,7 @@ export default function reducer(state = {
 }, action) {
     switch (action.type) {
         case CHANGE_DISTANCE_MATRIX_STATE:
-            return Object.assign({}, state, {
-                origins: action.data.origins,
-                destinations: action.data.destinations,
-                mode: action.data.mode,
-                transit_mode: action.data.transit_mode,
-                avoid: action.data.avoid
-            })
+            return Object.assign({}, state, action.data)
 
         case REQUEST_DISTANCE_MATRIX:
             return Object.assign({}, state, {isFetching: true})
