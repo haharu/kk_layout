@@ -20,7 +20,11 @@ export class MapRoute extends Component {
 
     getDistanceMatrix() {
         let {dispatch} = this.props
-        dispatch(mapDirectionsActions.fetchDistanceMatrixIfNeeded())
+        dispatch(mapDirectionsActions.fetchDistanceMatrixIfNeeded()).then((resp) => {
+            if (!_.isEmpty(resp.origin_addresses) && !_.isEmpty(resp.destination_addresses)) {
+                dispatch(mapDirectionsActions.changeDistanceMatrixState({origin: resp.origin_addresses[0], destination: resp.destination_addresses[0]}))
+            }
+        }).then(dispatch(mapDirectionsActions.fetchDirectionsIfNeeded()))
     }
 
     render() {
@@ -43,7 +47,7 @@ export class MapRoute extends Component {
 
         const modeTabs = _.map(allowedMode, (opts, mode) => (
             <li key={`${mode}`} className={(mapDirections.mode === mode) && 'is-active' || ''}>
-                <a>
+                <a onClick={e => this.updateDistanceMatrixState({mode})}>
                     <span className="icon is-small">
                         <i className={`fa fa-${opts.icon}`}></i>
                     </span>
@@ -66,10 +70,10 @@ export class MapRoute extends Component {
                             <ul>{modeTabs}</ul>
                         </div>
                         <p className="control">
-                            <input className="input" type="text" placeholder="Origins" onChange={e => this.updateDistanceMatrixState({origins: e.target.value})}/>
+                            <input value={mapDirections.origin} className="input" type="text" placeholder="Origin" onChange={e => this.updateDistanceMatrixState({origin: e.target.value})}/>
                         </p>
                         <p className="control">
-                            <input className="input" type="text" placeholder="Directions" onChange={e => this.updateDistanceMatrixState({destinations: e.target.value})}/>
+                            <input value={mapDirections.destination} className="input" type="text" placeholder="Direction" onChange={e => this.updateDistanceMatrixState({destination: e.target.value})}/>
                         </p>
                     </div>
                     <div className="panel-block">
@@ -111,7 +115,7 @@ export class Locate extends Component {
                             <p className="control has-addons">
                                 <input className="input" type="text" onChange={e => this.updateSearchValue(e.target.value)}/>
                                 <a onClick={this.mapSearchLocation} className={`button is-primary` + (mapLocation.isFetching && ' is-loading' || '')}>
-                                    搜尋
+                                    Search
                                 </a>
                             </p>
                         </div>

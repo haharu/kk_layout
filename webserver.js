@@ -125,11 +125,27 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
     })
 
 }).get('/map/distancematrix', async(ctx, next) => {
-    let opts = Object.assign({}, {
-        language: 'zh-CN'
-    }, _.omitBy(ctx.query, _.isEmpty))
+    const renameMap = {
+        origin: 'origins',
+        destination: 'destinations'
+    }
+    let opts = _.reduce(ctx.query, (acc, value, key) => {
+        key = renameMap[key] || key;
+        acc[key] = value
+        return acc
+    }, {})
 
-    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?${querystring.stringify(opts)}`;
+    let _opts = Object.assign({}, {
+        language: 'zh-CN',
+        key: G_API_KEY
+    }, _.omitBy(opts, _.isEmpty))
+
+    if (_.has(_opts, 'mode') && _opts.mode === 'transit' && _.isEmpty(_opts.transit_mode)) {
+        _opts.transit_mode = 'bus|rail';
+        _opts.transit_routing_preference = 'fewer_transfers'
+    }
+
+    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?${querystring.stringify(_opts)}`;
 
     await fetch(url).then(resp => resp.json()).then(resp => {
         ctx.body = resp
@@ -138,6 +154,26 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
         ctx.body = err.message
         ctx.app.emit('error', err, ctx)
     })
+}).get('/map/directions', async(ctx, next) => {
+    let opts = Object.assign({}, {
+        language: 'zh-CN',
+        key: G_API_KEY
+    }, _.omitBy(ctx.query, _.isEmpty))
+
+    if (_.has(opts, 'mode') && opts.mode === 'transit' && _.isEmpty(opts.transit_mode)) {
+        opts.transit_mode = 'bus|rail';
+        opts.transit_routing_preference = 'fewer_transfers'
+    }
+
+    const url = `https://maps.googleapis.com/maps/api/directions/json?${querystring.stringify(opts)}`;
+    await fetch(url).then(resp => resp.json()).then(resp => {
+        ctx.body = resp
+    }).catch(err => {
+        ctx.status = err.status || 500
+        ctx.body = err.message
+        ctx.app.emit('error', err, ctx)
+    })
+
 })
 
 app.use(router.routes());
