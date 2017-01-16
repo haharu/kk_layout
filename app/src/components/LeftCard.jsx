@@ -104,7 +104,7 @@ export class MapRoute extends Component {
                     </div>
                     <Autocomplete refs={this.refs}/>
                     <div className="panel-block">
-                        <button onClick={this.getDistanceMatrix} className={`button is-primary is-outlined is-fullwidth` + (mapDirections.isFetching && ' is-loading' || '')}>
+                        <button onMouseDown={this.getDistanceMatrix} className={`button is-primary is-outlined is-fullwidth` + (mapDirections.isFetching && ' is-loading' || '')}>
                             Search
                         </button>
                     </div>
