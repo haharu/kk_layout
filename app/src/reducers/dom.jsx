@@ -18,9 +18,13 @@ function chnageActiveElement(elmt) {
 
 export function changeActiveElementIfNeeded(e) {
     return (dispatch, getState) => {
+        let {activeElement} = getState()
         switch (e.type) {
             case 'focus':
-                dispatch(chnageActiveElement(e.target))
+            case 'change':
+                if (!_.isEqual(e.target, activeElement)) {
+                    dispatch(chnageActiveElement(e.target))
+                }
                 break;
             case 'blur':
                 dispatch(chnageActiveElement(undefined))
