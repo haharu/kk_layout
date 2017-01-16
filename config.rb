@@ -1,6 +1,5 @@
 require 'compass/import-once/activate'
 require 'sass-globbing'
-require 'sass-css-importer'
 require 'font-awesome-sass'
 
 # Require any additional compass plugins here.
