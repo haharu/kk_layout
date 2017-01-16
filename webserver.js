@@ -119,7 +119,7 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
     }
 
     await googleMapsClient.distanceMatrix(_opts).asPromise().then(resp => {
-        ctx.body = resp.json.results
+        ctx.body = resp.json
     })
 
 }).get('/map/directions', async(ctx, next) => {
@@ -131,7 +131,7 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
     }
 
     await googleMapsClient.directions(opts).asPromise().then(resp => {
-        ctx.body = resp.json.results
+        ctx.body = resp.json
     })
 
 })
