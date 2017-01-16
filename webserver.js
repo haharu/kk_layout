@@ -31,6 +31,9 @@ import Html from './app/src/helpers/Html'
 import Root from './app/src/router';
 import routes from './app/src/router/route';
 
+import googleMapService from '@google/maps'
+const googleMapsClient = googleMapService.createClient({key: 'AIzaSyCWF9rxrnc0Lxx5YuhojPNhO-kY3aflIXE', Promise: Promise});
+
 const app = new Koa();
 const router = koaRouter();
 
@@ -75,53 +78,26 @@ app.use(async(ctx, next) => {
 })
 
 router.get('/map/place/textsearch/:input', async(ctx, next) => {
-    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURI(_.trim(ctx.params.input))}&key=${G_API_KEY}`
-
-    await fetch(url).then(resp => resp.json()).then(resp => ctx.body = resp).catch(err => {
-        ctx.status = err.status || 500
-        ctx.body = err.message
-        ctx.app.emit('error', err, ctx)
+    await googleMapsClient.places({query: ctx.params.input}).asPromise().then(resp => {
+        ctx.body = resp.json.results
     })
+
 }).get('/map/autocomplete/:input', async(ctx, next) => {
 
-    const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURI(_.trim(ctx.params.input))}&key=${G_API_KEY}`
-
-    await fetch(url).then(resp => resp.json()).then(resp => ctx.body = resp).catch(err => {
-        ctx.status = err.status || 500
-        ctx.body = err.message
-        ctx.app.emit('error', err, ctx)
+    await googleMapsClient.placesAutoComplete({input: ctx.params.input}).asPromise().then(resp => {
+        ctx.body = resp.json.predictions
     })
 
 }).get('/map/place/detail/:placeId', async(ctx, next) => {
 
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${ctx.params.placeId}&key=${G_API_KEY}`
-
-    await fetch(url).then(resp => resp.json()).then(resp => ctx.body = resp).catch(err => {
-        ctx.status = err.status || 500
-        ctx.body = err.message
-        ctx.app.emit('error', err, ctx)
+    await googleMapsClient.place({placeid: ctx.params.placeId}).asPromise().then(resp => {
+        ctx.body = resp.json.result
     })
 
-}).get('/map/photo/:maxWidth/:maxHeight/:ref', async(ctx, next) => {
+}).get('/map/photo/:maxwidth/:maxheight/:ref', async(ctx, next) => {
 
-    const url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${ctx.params.maxWidth}&maxheight=${ctx.params.maxHeight}&photoreference=${ctx.params.ref}&key=${G_API_KEY}`;
-
-    await fetch(url).then(resp => ctx.body = resp.body).catch(err => {
-        ctx.status = err.status || 500
-        ctx.body = err.message
-        ctx.app.emit('error', err, ctx)
-    })
-
-}).get('/map/geoconv', async(ctx, next) => {
-
-    const url = `https://api.map.baidu.com/ag/coord/convert?from=2&to=4&x=${ctx.query.lng}&y=${ctx.query.lat}`;
-
-    await fetch(url).then(resp => resp.json()).then(resp => {
+    await googleMapsClient.placesPhoto({photoreference: ctx.params.ref, maxheight: _.toNumber(ctx.params.maxheight), maxwidth: _.toNumber(ctx.params.maxwidth)}).asPromise().then(resp => {
         ctx.body = resp
-    }).catch(err => {
-        ctx.status = err.status || 500
-        ctx.body = err.message
-        ctx.app.emit('error', err, ctx)
     })
 
 }).get('/map/distancematrix', async(ctx, next) => {
@@ -135,41 +111,27 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
         return acc
     }, {})
 
-    let _opts = Object.assign({}, {
-        key: G_API_KEY
-    }, _.omitBy(opts, _.isEmpty))
+    let _opts = _.omitBy(opts, _.isEmpty)
 
     if (_.has(_opts, 'mode') && _opts.mode === 'transit' && _.isEmpty(_opts.transit_mode)) {
         _opts.transit_mode = 'bus|rail';
         _opts.transit_routing_preference = 'fewer_transfers'
     }
 
-    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?${querystring.stringify(_opts)}`;
-
-    await fetch(url).then(resp => resp.json()).then(resp => {
-        ctx.body = resp
-    }).catch(err => {
-        ctx.status = err.status || 500
-        ctx.body = err.message
-        ctx.app.emit('error', err, ctx)
+    await googleMapsClient.distanceMatrix(_opts).asPromise().then(resp => {
+        ctx.body = resp.json.results
     })
+
 }).get('/map/directions', async(ctx, next) => {
-    let opts = Object.assign({}, {
-        key: G_API_KEY
-    }, _.omitBy(ctx.query, _.isEmpty))
+    let opts = _.omitBy(ctx.query, _.isEmpty)
 
     if (_.has(opts, 'mode') && opts.mode === 'transit' && _.isEmpty(opts.transit_mode)) {
         opts.transit_mode = 'bus|rail';
         opts.transit_routing_preference = 'fewer_transfers'
     }
 
-    const url = `https://maps.googleapis.com/maps/api/directions/json?${querystring.stringify(opts)}`;
-    await fetch(url).then(resp => resp.json()).then(resp => {
-        ctx.body = resp
-    }).catch(err => {
-        ctx.status = err.status || 500
-        ctx.body = err.message
-        ctx.app.emit('error', err, ctx)
+    await googleMapsClient.directions(opts).asPromise().then(resp => {
+        ctx.body = resp.json.results
     })
 
 })

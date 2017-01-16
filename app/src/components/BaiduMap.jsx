@@ -78,7 +78,7 @@ export default class BaiduMap extends Component {
                     this._map.setViewport(points[0])
                     let marker = new BMap.Marker(points[0][0])
                     marker.addEventListener('click', (e) => {
-                        this.showInfo(placeDetail);
+                        this.showInfo(placeDetail[placeId]);
                     })
                     this._map.clearOverlays();
                     this._map.addOverlay(marker);
@@ -141,7 +141,7 @@ export default class BaiduMap extends Component {
     showInfo(info) {
         if (!_.isEmpty(info)) {
             let imgUrl = _.has(info, 'photos')
-                ? '/map/photo/400/300/' + info.photos[0].photo_reference
+                ? '/map/photo/1000/1000/' + info.photos[0].photo_reference
                 : DEFAULT_INFO_IMG
             let content = `
                 <div class="card">

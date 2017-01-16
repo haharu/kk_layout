@@ -42,18 +42,18 @@ export default function reducer(state = {
             return Object.assign({}, state, {isFetching: true})
         case RECEIVE_TEXT_SEARCH:
             return Object.assign({}, state, {
-                predictions: action.data.results,
+                predictions: action.data,
                 isFetching: false
             })
         case RECEIVE_AUTOCOMPLETE:
             return Object.assign({}, state, {
-                autocomplete: action.data.predictions,
+                autocomplete: action.data,
                 isFetching: false
             })
         case RECEIVE_PLACE_DETAIL:
             return deepAssign({}, state, {
                 placeDetail: {
-                    [action.placeId]: action.data.result
+                    [action.placeId]: action.data
                 },
                 isFetching: false
             })
