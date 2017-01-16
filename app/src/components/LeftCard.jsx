@@ -2,9 +2,10 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import * as mapDirectionsActions from '../reducers/mapDirections';
 import * as mapLocationActions from '../reducers/mapLocation';
+import * as domActions from '../reducers/dom'
 
 @connect(state => {
-    return {mapDirections: state.mapDirections, mapLocation: state.mapLocation}
+    return {mapDirections: state.mapDirections, mapLocation: state.mapLocation, dom: state.dom}
 })
 export class MapRoute extends Component {
     constructor(props) {
@@ -98,14 +99,14 @@ export class MapRoute extends Component {
 }
 
 @connect(state => {
-    return {mapLocation: state.mapLocation}
+    return {mapLocation: state.mapLocation, dom: state.dom}
 })
 export class Locate extends Component {
     constructor(props) {
         super(props)
         this.updateSearchValue = this.updateSearchValue.bind(this);
         this.mapSearchLocation = this.mapSearchLocation.bind(this);
-        this.toggleAutocompleteVisibility = this.toggleAutocompleteVisibility.bind(this);
+        this.toggleActive = this.toggleActive.bind(this);
     }
 
     updateSearchValue(nextValue) {
@@ -122,9 +123,9 @@ export class Locate extends Component {
         })
     }
 
-    toggleAutocompleteVisibility() {
+    toggleActive(e) {
         let {dispatch} = this.props
-        dispatch(mapLocationActions.toggleAutocompleteVisibility())
+        dispatch(domActions.changeActiveElementIfNeeded(e));
     }
 
     mapSearchLocation() {
@@ -133,7 +134,8 @@ export class Locate extends Component {
     }
 
     render() {
-        let {mapLocation} = this.props
+        let {mapLocation, dom} = this.props
+        let showAutocomplete = (dom.activeElement === this.refs.locate_input)
         const autocomplete = _.map(mapLocation.autocomplete, (prediction, i) => (
             <a key={`${i}`} className="panel-block" onMouseDown={(e) => this.selectPrediction(i)}>
                 {prediction.description}
@@ -143,10 +145,10 @@ export class Locate extends Component {
             <nav className="panel">
                 <div className="panel-block">
                     <p className="control">
-                        <input value={mapLocation.searchTxt} className="input" type="text" placeholder="Location" onFocus={this.toggleAutocompleteVisibility} onBlur={this.toggleAutocompleteVisibility} onChange={e => this.updateSearchValue(e.target.value)}/>
+                        <input ref="locate_input" value={mapLocation.searchTxt} className="input" type="text" placeholder="Location" onFocus={e => this.toggleActive(e)} onBlur={e => this.toggleActive(e)} onChange={e => this.updateSearchValue(e.target.value)}/>
                     </p>
                 </div>
-                {mapLocation.showAutocomplete && !_.isEmpty(mapLocation.searchTxt) && !_.isEmpty(mapLocation.autocomplete) && autocomplete}
+                {showAutocomplete && !_.isEmpty(mapLocation.searchTxt) && !_.isEmpty(mapLocation.autocomplete) && autocomplete}
                 <div className="panel-block">
                     <button onMouseDown={this.mapSearchLocation} className={`button is-primary is-outlined is-fullwidth` + (mapLocation.isFetching && ' is-loading' || '')}>
                         Search

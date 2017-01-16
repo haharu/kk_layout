@@ -1,7 +1,6 @@
 const CHANGE_SEARCH_TXT = 'CHANGE_SEARCH_TXT';
 const CHANGE_PLACE_ID = 'CHANGE_PLACE_ID'
 const CHANGE_DISTANCE_MATRIX_STATE = 'CHANGE_DISTANCE_MATRIX_STATE';
-const TOGGLE_AUTOCOMPLETE_VISIBILITY = 'TOGGLE_AUTOCOMPLETE_VISIBILITY'
 const REQUEST_TEXT_SEARCH = 'REQUEST_TEXT_SEARCH';
 const RECEIVE_TEXT_SEARCH = 'RECEIVE_TEXT_SEARCH';
 const REQUEST_AUTOCOMPLETE = 'REQUEST_AUTOCOMPLETE';
@@ -31,10 +30,6 @@ export default function reducer(state = {
             return Object.assign({}, state, {
                 placeId: action.placeId,
                 isFetching: false
-            })
-        case TOGGLE_AUTOCOMPLETE_VISIBILITY:
-            return Object.assign({}, state, {
-                showAutocomplete: !state.showAutocomplete
             })
         case REQUEST_TEXT_SEARCH:
         case REQUEST_AUTOCOMPLETE:
@@ -68,10 +63,6 @@ export function changeSearchTxt(searchTxt) {
 
 export function changePlaceId(placeId) {
     return {type: CHANGE_PLACE_ID, placeId}
-}
-
-export function toggleAutocompleteVisibility() {
-    return {type: TOGGLE_AUTOCOMPLETE_VISIBILITY}
 }
 
 export function requestTextSearch(searchTxt) {
