@@ -58,7 +58,10 @@ export default class BaiduMap extends Component {
             }
         } = nextProps.map
 
+
+
         if (!_.isEqual(predictions, mapLocation.predictions)) {
+            this._map.clearOverlays();
             let points = this.getPoints(predictions)
             if (!_.isEmpty(points)) {
                 this._map.setViewport(points[0])
@@ -66,12 +69,12 @@ export default class BaiduMap extends Component {
                 marker.addEventListener('click', (e) => {
                     this.showInfo(predictions[0]);
                 })
-                this._map.clearOverlays();
                 this._map.addOverlay(marker);
             }
         }
 
         if (!_.isEqual(placeId, mapLocation.placeId)) {
+            this._map.clearOverlays();
             if (_.has(placeDetail, placeId)) {
                 let points = this.getPoints([placeDetail[placeId]])
                 if (!_.isEmpty(points)) {
@@ -80,19 +83,19 @@ export default class BaiduMap extends Component {
                     marker.addEventListener('click', (e) => {
                         this.showInfo(placeDetail[placeId]);
                     })
-                    this._map.clearOverlays();
                     this._map.addOverlay(marker);
                 }
             }
         }
 
         if (!_.isEqual(routes, mapDirections.directions.routes)) {
+            this._map.clearOverlays();
             let points = this.getPoints(routes)
             this._map.setViewport(points[0])
-            this._map.clearOverlays();
         }
 
         if (!_.isEqual(geocoded_waypoints, mapDirections.geocoded_waypoints)) {
+            this._map.clearOverlays();
 
             let places = _.reduce(geocoded_waypoints, (acc, waypoint, i) => {
                 if (!_.isEmpty(mapLocation.placeDetail[waypoint.place_id])) {
