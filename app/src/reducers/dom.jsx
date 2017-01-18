@@ -18,7 +18,9 @@ function chnageActiveElement(elmt) {
 
 export function changeActiveElementIfNeeded(e) {
     return (dispatch, getState) => {
-        let {activeElement} = getState()
+        let {dom: {
+                activeElement
+            }} = getState()
         switch (e.type) {
             case 'focus':
             case 'change':

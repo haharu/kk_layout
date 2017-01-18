@@ -58,8 +58,6 @@ export default class BaiduMap extends Component {
             }
         } = nextProps.map
 
-
-
         if (!_.isEqual(predictions, mapLocation.predictions)) {
             this._map.clearOverlays();
             let points = this.getPoints(predictions)
@@ -88,34 +86,6 @@ export default class BaiduMap extends Component {
             }
         }
 
-        if (!_.isEqual(routes, mapDirections.directions.routes)) {
-            this._map.clearOverlays();
-            let points = this.getPoints(routes)
-            this._map.setViewport(points[0])
-        }
-
-        if (!_.isEqual(geocoded_waypoints, mapDirections.geocoded_waypoints)) {
-            this._map.clearOverlays();
-
-            let places = _.reduce(geocoded_waypoints, (acc, waypoint, i) => {
-                if (!_.isEmpty(mapLocation.placeDetail[waypoint.place_id])) {
-                    acc.push(mapLocation.placeDetail[waypoint.place_id]);
-                }
-                return acc
-            }, [])
-
-            if (!_.isEmpty(places)) {
-                let points = this.getPoints(places)
-                _.forEach(points, (point, i) => {
-                    let marker = new BMap.Marker(point[0])
-                    marker.addEventListener('click', () => {
-                        this.showInfo(places[i]);
-                    })
-                    this._map.addOverlay(marker);
-                })
-            }
-        }
-
     }
 
     getPoints(predictions) {
@@ -131,12 +101,6 @@ export default class BaiduMap extends Component {
                 acc.push(points)
             }
 
-            if (!_.isEmpty(bounds)) {
-                const points = []
-                points.push(new BMap.Point(bounds.northeast.lng, bounds.northeast.lat))
-                points.push(new BMap.Point(bounds.southwest.lng, bounds.southwest.lat))
-                acc.push(points)
-            }
             return acc
         }, [])
     }
