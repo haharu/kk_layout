@@ -44,7 +44,7 @@ export class Locate extends Component {
                 </div>
                 <Autocomplete refs={_.map(this.refs)}/>
                 <div className="panel-block">
-                    <button onMouseDown={this.mapSearchLocation} className={`button is-primary is-outlined is-fullwidth` + (mapLocation.isFetching && ' is-loading' || '')}>
+                    <button onMouseDown={this.mapSearchLocation} className={`button is-primary is-outlined is-fullwidth` + (mapLocation.isFetching && ' is-loading is-disabled' || '')}>
                         Search
                     </button>
                 </div>

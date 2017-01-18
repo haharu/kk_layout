@@ -96,6 +96,7 @@ function fetchPlaceDetail(placeId) {
         dispatch(requestPlaceDetail(placeId))
         return fetch(url).then(resp => resp.json()).then(resp => {
             dispatch(receivePlaceDetail(placeId, resp))
+            return resp
         }).catch(err => {
             console.log(err);
         })
@@ -109,6 +110,7 @@ function fetchAutocomplete(searchTxt) {
         dispatch(requestAutocomplete(searchTxt))
         return fetch(url).then(resp => resp.json()).then(resp => {
             dispatch(receiveAutocomplete(searchTxt, resp))
+            return resp
         }).catch(err => {
             console.log(err);
         });
@@ -122,6 +124,7 @@ function fetchTextSearch(searchTxt) {
         dispatch(requestTextSearch(searchTxt))
         return fetch(url).then(resp => resp.json()).then(resp => {
             dispatch(receiveTextSearch(searchTxt, resp))
+            return resp
         }).catch(err => {
             console.log(err);
         })
