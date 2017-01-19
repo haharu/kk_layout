@@ -96,10 +96,19 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
 
 }).get('/map/photo/:maxwidth/:maxheight/:ref', async(ctx, next) => {
 
-    await googleMapsClient.placesPhoto({photoreference: ctx.params.ref, maxheight: _.toNumber(ctx.params.maxheight), maxwidth: _.toNumber(ctx.params.maxwidth)}).asPromise().then(resp => {
+    await googleMapsClient.placesPhoto({
+        photoreference: ctx.params.ref,
+        maxheight: _.toNumber(ctx.params.maxheight),
+        maxwidth: _.toNumber(ctx.params.maxwidth)
+    }).asPromise().then(resp => {
         ctx.body = resp
     })
 
+}).get('/map/nearbysearch', async(ctx, next) => {
+    let {location, radius, types} = ctx.query
+    await googleMapsClient.placesNearby({location, radius: _.toNumber(radius), type: types}).asPromise().then(resp => {
+        ctx.body = resp.json.results
+    })
 }).get('/map/distancematrix', async(ctx, next) => {
     const renameMap = {
         origin: 'origins',

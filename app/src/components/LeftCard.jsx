@@ -29,7 +29,19 @@ export class Locate extends Component {
 
     mapSearchLocation() {
         let {dispatch} = this.props
-        dispatch(mapLocationActions.fetchTextSearchIfNeeded())
+        dispatch(mapLocationActions.fetchTextSearchIfNeeded()).then(resp => {
+            if (!_.isEmpty(resp)) {
+                let {geometry: {
+                        location
+                    }} = resp[0]
+                let opts = {
+                    location: `${location.lat},${location.lng}`,
+                    radius: 5000,
+                    types: 'university'
+                }
+                dispatch(mapLocationActions.fetchNearbySearchIfNeeded(opts))
+            }
+        })
     }
 
     render() {
@@ -68,6 +80,17 @@ export class Autocomplete extends Component {
         dispatch(mapLocationActions.changeSearchTxt(description));
         dispatch(mapLocationActions.fetchPlaceDetailIfNeeded(place_id)).then(resp => {
             dispatch(mapLocationActions.changePlaceId(place_id))
+            if (!_.isEmpty(resp)) {
+                let {geometry: {
+                        location
+                    }} = resp
+                let opts = {
+                    location: `${location.lat},${location.lng}`,
+                    radius: 5000,
+                    types: 'university'
+                }
+                dispatch(mapLocationActions.fetchNearbySearchIfNeeded(opts))
+            }
         })
     }
 

@@ -7,6 +7,8 @@ const REQUEST_AUTOCOMPLETE = 'REQUEST_AUTOCOMPLETE';
 const RECEIVE_AUTOCOMPLETE = 'RECEIVE_AUTOCOMPLETE';
 const REQUEST_PLACE_DETAIL = 'REQUEST_PLACE_DETAIL';
 const RECEIVE_PLACE_DETAIL = 'RECEIVE_PLACE_DETAIL';
+const REQUEST_NEARBY_SEARCH = 'REQUEST_NEARBY_SEARCH';
+const RECEIVE_NEARBY_SEARCH = 'RECEIVE_NEARBY_SEARCH';
 
 import request from 'superagent';
 import deepAssign from 'deep-assign';
@@ -34,6 +36,7 @@ export default function reducer(state = {
         case REQUEST_TEXT_SEARCH:
         case REQUEST_AUTOCOMPLETE:
         case REQUEST_PLACE_DETAIL:
+        case REQUEST_NEARBY_SEARCH:
             return Object.assign({}, state, {isFetching: true})
         case RECEIVE_TEXT_SEARCH:
             return Object.assign({}, state, {
@@ -50,6 +53,11 @@ export default function reducer(state = {
                 placeDetail: {
                     [action.placeId]: action.data
                 },
+                isFetching: false
+            })
+        case RECEIVE_NEARBY_SEARCH:
+            return Object.assign({}, state, {
+                predictions: action.data,
                 isFetching: false
             })
         default:
@@ -87,6 +95,14 @@ export function requestPlaceDetail(placeId) {
 
 export function receivePlaceDetail(placeId, data) {
     return {type: RECEIVE_PLACE_DETAIL, placeId, data}
+}
+
+export function requestNearbySearch(opts) {
+    return {type: REQUEST_NEARBY_SEARCH, ...opts}
+}
+
+export function receiveNearbySearch(data) {
+    return {type: RECEIVE_NEARBY_SEARCH, data}
 }
 
 function fetchPlaceDetail(placeId) {
@@ -131,6 +147,17 @@ function fetchTextSearch(searchTxt) {
     }
 }
 
+function fetchNearbySearch(opts) {
+    return dispatch => {
+        const url = `/map/nearbysearch`
+        dispatch(requestNearbySearch(opts))
+        return request.get(url).query(opts).ok(resp => resp.status < 500).then(resp => {
+            dispatch(receiveNearbySearch(resp.body))
+            return resp.body
+        })
+    }
+}
+
 export function fetchPlaceDetailIfNeeded(placeId) {
     return (dispatch, getState) => {
         const {mapLocation} = getState();
@@ -157,5 +184,11 @@ export function fetchTextSearchIfNeeded() {
             return dispatch(fetchTextSearch(mapLocation.searchTxt))
         }
         return Promise.resolve()
+    }
+}
+
+export function fetchNearbySearchIfNeeded(opts) {
+    return (dispatch,getState) => {
+        return dispatch(fetchNearbySearch(opts))
     }
 }

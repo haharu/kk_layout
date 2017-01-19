@@ -62,12 +62,16 @@ export default class BaiduMap extends Component {
             this._map.clearOverlays();
             let points = this.getPoints(predictions)
             if (!_.isEmpty(points)) {
-                this._map.setViewport(points[0])
-                let marker = new BMap.Marker(points[0][0])
-                marker.addEventListener('click', (e) => {
-                    this.showInfo(predictions[0]);
+                this._map.setViewport(_.flattenDeep(points))
+
+                _.forEach(points, (point, i) => {
+                    let marker = new BMap.Marker(point[0])
+                    marker.addEventListener('click', (e) => {
+                        this.showInfo(predictions[i]);
+                    })
+                    this._map.addOverlay(marker);
                 })
-                this._map.addOverlay(marker);
+
             }
         }
 
@@ -77,11 +81,6 @@ export default class BaiduMap extends Component {
                 let points = this.getPoints([placeDetail[placeId]])
                 if (!_.isEmpty(points)) {
                     this._map.setViewport(points[0])
-                    let marker = new BMap.Marker(points[0][0])
-                    marker.addEventListener('click', (e) => {
-                        this.showInfo(placeDetail[placeId]);
-                    })
-                    this._map.addOverlay(marker);
                 }
             }
         }
@@ -131,7 +130,7 @@ export default class BaiduMap extends Component {
                         </div>
 
                         <div class="content">
-                            ${info.formatted_address}
+                            ${info.formatted_address || info.vicinity}
                         </div>
                     </div>
                     <footer class="card-footer">

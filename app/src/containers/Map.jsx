@@ -24,7 +24,7 @@ export default class Map extends Component {
     }
 
     render() {
-        let {mapLocation, mapDirections} = this.props
+        let {mapLocation, mapDirections} = this.props;
         return (<BaiduMap id='BMap' style={{
             height: '100%'
         }} map={{
