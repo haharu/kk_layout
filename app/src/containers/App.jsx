@@ -41,10 +41,7 @@ export default class App extends Component {
         super(props)
     }
     render() {
-        let {
-            children,
-            ...props
-        } = this.props
+        let {children} = this.props
 
         return (
             <div className="is-overlay">
@@ -53,7 +50,7 @@ export default class App extends Component {
                     position: 'absolute',
                     zIndex: 1
                 }}>
-                    <Header {...props}/>
+                    <Header/>
                     {children}
                 </div>
                 <Map/>

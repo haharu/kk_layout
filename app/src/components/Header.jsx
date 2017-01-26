@@ -1,11 +1,16 @@
 'use strict';
 
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Link, IndexLink} from 'react-router';
 
 class NavLink extends Component {
+    constructor(props, context) {
+        super(props, context)
+    }
+
     render() {
-        const {index, to, children, activeClassName, router} = this.props
+        const {index, to, children, activeClassName} = this.props
+        const {router} = this.context
 
         const isActive = index
             ? router.isActive(to, index)
@@ -22,6 +27,10 @@ class NavLink extends Component {
             </li>
         )
     }
+}
+
+NavLink.contextTypes = {
+    router: React.PropTypes.object.isRequired
 }
 
 class SubNavLink extends Component {
@@ -57,8 +66,8 @@ export default class Header extends Component {
                         <div className="container">
                             <nav className="tabs is-boxed">
                                 <ul>
-                                    <NavLink index={true} to="/" router={this.props.router} activeClassName="is-active" children="home"/>
-                                    <NavLink to="/bmap" router={this.props.router} activeClassName="is-active" children="bmap"/>
+                                    <NavLink index={true} to="/" activeClassName="is-active" children="home"/>
+                                    <NavLink to="/bmap" activeClassName="is-active" children="bmap"/>
                                 </ul>
                             </nav>
                         </div>
