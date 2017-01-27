@@ -1,7 +1,5 @@
 import React, {Component, PropTypes} from 'react'
 import Header from '../components/Header'
-import {Locate, MapRoute} from '../components/LeftCard'
-import Map from './Map'
 
 export class PageNotFound extends Component {
     render() {
@@ -20,18 +18,21 @@ export class PageNotFound extends Component {
 export class Home extends Component {
     render() {
         return (
-            <section className="section">
-                <article className="message is-primary">
-                    <div className="message-body">
-                        All test passed.
-                    </div>
-                </article>
-                <article className="message is-primary">
-                    <div className="message-body">
-                        homepage
-                    </div>
-                </article>
-            </section>
+            <div>
+                <Header/>
+                <section className="section">
+                    <article className="message is-primary">
+                        <div className="message-body">
+                            All test passed.
+                        </div>
+                    </article>
+                    <article className="message is-primary">
+                        <div className="message-body">
+                            homepage
+                        </div>
+                    </article>
+                </section>
+            </div>
         )
     }
 }
@@ -42,18 +43,9 @@ export default class App extends Component {
     }
     render() {
         let {children} = this.props
-
         return (
-            <div className="is-overlay">
-                <div className="box is-paddingless is-marginless" style={{
-                    width: 400,
-                    position: 'absolute',
-                    zIndex: 1
-                }}>
-                    <Header/>
-                    {children}
-                </div>
-                <Map/>
+            <div>
+                {children}
             </div>
         )
     }

@@ -68,6 +68,7 @@ export default class Header extends Component {
                                 <ul>
                                     <NavLink index={true} to="/" activeClassName="is-active" children="home"/>
                                     <NavLink to="/bmap" activeClassName="is-active" children="bmap"/>
+                                    <NavLink to="/temp-page" activeClassName="is-active" children="Sample"/>
                                 </ul>
                             </nav>
                         </div>

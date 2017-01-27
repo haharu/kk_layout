@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 
 import BaiduMap from '../components/BaiduMap';
 
+import Header from '../components/Header'
+
 import * as mapLocationActions from '../reducers/mapLocation';
 
 @connect(state => {
@@ -12,7 +14,7 @@ import * as mapLocationActions from '../reducers/mapLocation';
 })
 export default class Map extends Component {
     constructor(props) {
-        super(props);
+        super(props)
     }
 
     componentDidMount() {
@@ -24,12 +26,25 @@ export default class Map extends Component {
     }
 
     render() {
-        let {mapLocation, mapDirections} = this.props;
-        return (<BaiduMap id='BMap' style={{
-            height: '100%'
-        }} map={{
-            mapLocation,
-            mapDirections
-        }}/>)
+        let {children, mapLocation, mapDirections} = this.props
+
+        return (
+            <div className="is-overlay">
+                <div className="box is-paddingless is-marginless" style={{
+                    width: 400,
+                    position: 'absolute',
+                    zIndex: 1
+                }}>
+                    <Header/>
+                    {children}
+                </div>
+                <BaiduMap id='BMap' style={{
+                    height: '100%'
+                }} map={{
+                    mapLocation,
+                    mapDirections
+                }}/>
+            </div>
+        )
     }
 }
