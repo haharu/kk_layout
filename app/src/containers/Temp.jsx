@@ -90,7 +90,7 @@ export class TempNotFound extends Component {
         return (
             <section className="section">
                 <div className="container">
-                    <div className="tile">
+                    <div className="tile is-vertical">
                         <div className="tile is-child">
                             <Pagination/>
                         </div>
