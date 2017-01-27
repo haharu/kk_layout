@@ -1,9 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import Nav from '../components/Nav';
 import {RegNavLink} from '../components/NavLink'
-import {PageNotFound} from '../containers/App'
 
-class Menu extends Component {
+export class Temp1 extends Component {
     render() {
         return (
             <aside className="menu">
@@ -37,6 +36,39 @@ class Menu extends Component {
     }
 }
 
+export class Temp2 extends Component {
+    render() {
+        return (
+            <div>
+                <h3 className="title is-5">Location</h3>
+                <p className="control">
+                    <input className="input is-primary" type="text" placeholder="Location"/>
+                </p>
+                <h3 className="title is-5">Distance</h3>
+                <div className="tabs is-centered is-small is-fullwidth is-toggle">
+                    <ul>
+                        <li className="is-active">
+                            <a>
+                                <span>5</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span>10</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span>15</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        )
+    }
+}
+
 class Pagination extends Component {
     render() {
         return (
@@ -60,61 +92,33 @@ class Pagination extends Component {
     }
 }
 
-export class Temp1 extends Component {
-    render() {
-        return (
-            <section className="section">
-                <div className="container">
-                    <div className="tile is-vertical">
-                        <div className="tile is-child">
-                            <Pagination/>
-                        </div>
-                        <div className="tile is-child">
-                            <Menu/>
-                        </div>
-                        <div className="tile is-child">
-                            <nav className="pagination is-centered">
-                                <a className="pagination-previous">Previous</a>
-                                <a className="pagination-next">Next page</a>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        )
-    }
-}
-
-export class TempNotFound extends Component {
-    render() {
-        return (
-            <section className="section">
-                <div className="container">
-                    <div className="tile is-vertical">
-                        <div className="tile is-child">
-                            <Pagination/>
-                        </div>
-                        <div className="tile is-child">
-                            <PageNotFound/>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        )
-    }
-}
-
 export default class Temp extends Component {
     constructor(props) {
-        super(props);
+        super(props)
     }
-
     render() {
         const {children} = this.props
-
         return (
             <div>
-                <Nav/> {children}
+                <Nav/>
+                <section className="section">
+                    <div className="container">
+                        <div className="tile is-vertical">
+                            <div className="tile is-child">
+                                <Pagination/>
+                            </div>
+                            <div className="tile is-child">
+                                {children}
+                            </div>
+                            <div className="tile is-child">
+                                <nav className="pagination is-centered">
+                                    <a className="pagination-previous">Previous</a>
+                                    <a className="pagination-next">Next page</a>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         )
     }
