@@ -7,7 +7,7 @@ export class NavLink extends Component {
     }
 
     render() {
-        const {index, to, children, activeClassName} = this.props
+        const {index, to, name, activeClassName} = this.props
         const {router} = this.context
 
         const isActive = index
@@ -20,8 +20,8 @@ export class NavLink extends Component {
         return (
             <li className={isActive
                 ? activeClassName
-            : ''}>
-                <LinkComponent to={to}>{children}</LinkComponent>
+                : ''}>
+                <LinkComponent to={to}>{name}</LinkComponent>
             </li>
         )
     }
@@ -31,14 +31,28 @@ NavLink.contextTypes = {
     router: React.PropTypes.object.isRequired
 }
 
-
 export class SubNavLink extends Component {
     render() {
-        const {to, name} = this.props
+        const {to, name, index} = this.props
+        const LinkComponent = index
+            ? IndexLink
+            : Link
         return (
-            <Link to={to} className="nav-item is-tab" activeClassName="is-active">
+            <LinkComponent to={to} className="nav-item is-tab" activeClassName="is-active">
                 {name}
-            </Link>
+            </LinkComponent>
+        )
+    }
+}
+
+export class RegNavLink extends Component {
+    render() {
+        const {to, className, activeClassName, name, index} = this.props
+        const LinkComponent = index
+            ? IndexLink
+            : Link
+        return (
+            <LinkComponent to={to} className={className} activeClassName={activeClassName}>{name}</LinkComponent>
         )
     }
 }

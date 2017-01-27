@@ -25,9 +25,9 @@ export default class Header extends Component {
                         <div className="container">
                             <nav className="tabs is-boxed">
                                 <ul>
-                                    <NavLink index={true} to="/" activeClassName="is-active" children="home"/>
-                                    <NavLink to="/bmap" activeClassName="is-active" children="bmap"/>
-                                    <NavLink to="/temp-page" activeClassName="is-active" children="Sample"/>
+                                    <NavLink index={true} to="/" activeClassName="is-active" name="home"/>
+                                    <NavLink to="/bmap" activeClassName="is-active" name="bmap"/>
+                                    <NavLink to="/temp-page" activeClassName="is-active" name="Sample"/>
                                 </ul>
                             </nav>
                         </div>
