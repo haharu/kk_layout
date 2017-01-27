@@ -2,7 +2,7 @@ import React from 'react'
 import {Route, Link, IndexRedirect, IndexRoute} from 'react-router'
 import App, {PageNotFound, Home} from '../containers/App'
 import Map from '../containers/Map'
-import Temp, {Temp1, Temp2} from '../containers/Temp'
+import Temp, {Temp1, Temp2, Temp3} from '../containers/Temp'
 import {Locate} from '../components/LeftCard'
 import Header from '../components/Header'
 
@@ -18,6 +18,7 @@ export default(
             <IndexRedirect to="/temp-page/1"/>
             <Route path="/temp-page/1" component={Temp1}/>
             <Route path="/temp-page/2" component={Temp2}/>
+            <Route path="/temp-page/3" component={Temp3}/>
             <Route path="*" component={PageNotFound}/>
         </Route>
         <Route path="*" component={() => (

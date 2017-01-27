@@ -69,6 +69,77 @@ export class Temp2 extends Component {
     }
 }
 
+export class Temp3 extends Component {
+    render() {
+        return (
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>School</th>
+                        <th>GRE</th>
+                        <th>TOELF</th>
+                        <th>IELTS</th>
+                        <th>GMAT</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Rank</th>
+                        <th>School</th>
+                        <th>GRE</th>
+                        <th>TOELF</th>
+                        <th>IELTS</th>
+                        <th>GMAT</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr>
+                        <th>1</th>
+                        <td>NYU</td>
+                        <td>500</td>
+                        <td>80</td>
+                        <td>8</td>
+                        <td>500</td>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <td>NYU</td>
+                        <td>500</td>
+                        <td>80</td>
+                        <td>8</td>
+                        <td>500</td>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <td>NYU</td>
+                        <td>500</td>
+                        <td>80</td>
+                        <td>8</td>
+                        <td>500</td>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <td>NYU</td>
+                        <td>500</td>
+                        <td>80</td>
+                        <td>8</td>
+                        <td>500</td>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <td>NYU</td>
+                        <td>500</td>
+                        <td>80</td>
+                        <td>8</td>
+                        <td>500</td>
+                    </tr>
+                </tbody>
+            </table>
+        )
+    }
+}
+
 class Pagination extends Component {
     render() {
         return (
