@@ -96,7 +96,7 @@ export class Temp3 extends Component {
                 <tbody>
                     <tr>
                         <th>1</th>
-                        <td>NYU</td>
+                        <td>Stanford University Exec. Ed.</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -104,7 +104,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>NYU</td>
+                        <td>Stanford University Exec. Ed.</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -112,7 +112,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>NYU</td>
+                        <td>Stanford University Exec. Ed.</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -120,7 +120,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>NYU</td>
+                        <td>Stanford University Exec. Ed.</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -128,7 +128,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>NYU</td>
+                        <td>Stanford University Exec. Ed.</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
