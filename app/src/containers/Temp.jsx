@@ -149,7 +149,7 @@ export class Temp4 extends Component {
                         <div className="card-content">
                             <div className="media">
                                 <figure className="media-left">
-                                    <p className="image is-128x128">
+                                    <p className="image is-64x64">
                                         <img src="https://lh5.googleusercontent.com/-9ZtfI7Iadbo/AAAAAAAAAAI/AAAAAAAAASM/pa_22SDQqFI/s0-c-k-no-ns/photo.jpg"/>
                                     </p>
                                 </figure>
