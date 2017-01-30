@@ -96,7 +96,7 @@ export class Temp3 extends Component {
                 <tbody>
                     <tr>
                         <th>1</th>
-                        <td>Stanford University Exec. Ed.</td>
+                        <td>Louisiana State University—​Baton Rouge 路易斯安那州立大學巴頓魯治分校</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -104,7 +104,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>Stanford University Exec. Ed.</td>
+                        <td>University of California—​San Diego (Jacobs) 加利福尼亚大学圣迭戈分校</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -112,7 +112,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>Stanford University Exec. Ed.</td>
+                        <td>Rutgers, The State University of New Jersey—​New Brunswick 罗格斯大学新伯朗士威校区</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -120,7 +120,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>Stanford University Exec. Ed.</td>
+                        <td>Virginia Tech -​ Wake Forest University 弗吉尼亚理工-维克森林大学生物医学工程与科学学院</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -128,7 +128,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>Stanford University Exec. Ed.</td>
+                        <td>North Carolina State University -​ University of North Carolina—​Chapel Hill 北卡罗来纳大学教堂山分校</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -166,7 +166,17 @@ class Pagination extends Component {
 export default class Temp extends Component {
     constructor(props) {
         super(props)
+        this.toNext = this.toNext.bind(this);
     }
+
+    toPrev() {
+
+    }
+
+    toNext() {
+
+    }
+
     render() {
         const {children} = this.props
         return (
@@ -183,8 +193,8 @@ export default class Temp extends Component {
                             </div>
                             <div className="tile is-child">
                                 <nav className="pagination is-centered">
-                                    <a className="pagination-previous">Previous</a>
-                                    <a className="pagination-next">Next page</a>
+                                    <a className="pagination-previous" onClick={this.toPrev}>Previous</a>
+                                    <a className="pagination-next" onClick={this.toNext}>Next page</a>
                                 </nav>
                             </div>
                         </div>
