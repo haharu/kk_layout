@@ -96,7 +96,7 @@ export class Temp3 extends Component {
                 <tbody>
                     <tr>
                         <th>1</th>
-                        <td>Louisiana State University—​Baton Rouge 路易斯安那州立大學巴頓魯治分校</td>
+                        <td>Louisiana State University—​Baton Rouge 路易斯安那州立大學巴頓魯治分校</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -104,7 +104,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>University of California—​San Diego (Jacobs) 加利福尼亚大学圣迭戈分校</td>
+                        <td>University of California—​San Diego (Jacobs) 加利福尼亚大学圣迭戈分校</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -112,7 +112,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>Rutgers, The State University of New Jersey—​New Brunswick 罗格斯大学新伯朗士威校区</td>
+                        <td>Rutgers, The State University of New Jersey—​New Brunswick 罗格斯大学新伯朗士威校区</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -120,7 +120,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>Virginia Tech -​ Wake Forest University 弗吉尼亚理工-维克森林大学生物医学工程与科学学院</td>
+                        <td>Virginia Tech -​ Wake Forest University 弗吉尼亚理工-维克森林大学生物医学工程与科学学院</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -128,7 +128,7 @@ export class Temp3 extends Component {
                     </tr>
                     <tr>
                         <th>1</th>
-                        <td>North Carolina State University -​ University of North Carolina—​Chapel Hill 北卡罗来纳大学教堂山分校</td>
+                        <td>North Carolina State University -​ University of North Carolina—​Chapel Hill 北卡罗来纳大学教堂山分校</td>
                         <td>500</td>
                         <td>80</td>
                         <td>8</td>
@@ -136,6 +136,58 @@ export class Temp3 extends Component {
                     </tr>
                 </tbody>
             </table>
+        )
+    }
+}
+
+export class Temp4 extends Component {
+    render() {
+        return (
+            <div>
+                {_.times(5, () => (
+                    <div className="card block">
+                        <div className="card-content">
+                            <div className="media">
+                                <figure className="media-left">
+                                    <p className="image is-128x128">
+                                        <img src="https://lh5.googleusercontent.com/-9ZtfI7Iadbo/AAAAAAAAAAI/AAAAAAAAASM/pa_22SDQqFI/s0-c-k-no-ns/photo.jpg"/>
+                                    </p>
+                                </figure>
+                                <div className="media-content">
+                                    <p className="title is-4">Leland Stanford Junior University - Wake Forest University</p>
+                                    <p className="subtitle is-6">斯坦福大学-维克森林大学生物医学工程与科学学院</p>
+                                </div>
+                            </div>
+                            <nav className="level is-mobile">
+                                <div className="level-item has-text-centered">
+                                    <div>
+                                        <p className="heading">GRE</p>
+                                        <p className="title">500</p>
+                                    </div>
+                                </div>
+                                <div className="level-item has-text-centered">
+                                    <div>
+                                        <p className="heading">TOELF</p>
+                                        <p className="title">80</p>
+                                    </div>
+                                </div>
+                                <div className="level-item has-text-centered">
+                                    <div>
+                                        <p className="heading">IELTS</p>
+                                        <p className="title">8</p>
+                                    </div>
+                                </div>
+                                <div className="level-item has-text-centered">
+                                    <div>
+                                        <p className="heading">GMAT</p>
+                                        <p className="title">500</p>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                ))}
+            </div>
         )
     }
 }
@@ -169,13 +221,9 @@ export default class Temp extends Component {
         this.toNext = this.toNext.bind(this);
     }
 
-    toPrev() {
+    toPrev() {}
 
-    }
-
-    toNext() {
-
-    }
+    toNext() {}
 
     render() {
         const {children} = this.props
