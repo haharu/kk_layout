@@ -10,12 +10,9 @@ export default class BaiduMap extends Component {
     }
 
     componentDidMount() {
-        let {
-            id,
-            map: {
+        let {id, map: {
                 mapLocation
-            }
-        } = this.props
+            }} = this.props
 
         let opts = {
             anchor: BMAP_ANCHOR_BOTTOM_RIGHT
@@ -28,11 +25,9 @@ export default class BaiduMap extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        let {
-            map: {
+        let {map: {
                 mapLocation
-            }
-        } = this.props
+            }} = this.props
 
         let {
             mapLocation: {
@@ -56,6 +51,22 @@ export default class BaiduMap extends Component {
             }
         }
 
+        if (!_.isEqual(place, mapLocation.place)) {
+            this._map.clearOverlays();
+            let points = this.getPoints([place])
+
+            if (!_.isEmpty(points)) {
+
+                let icon = new BMap.Icon(require('../../images/pin.png'), new BMap.Size(20, 32), {
+                    anchor: new BMap.Size(10, 30),
+                    infoWindowAnchor: new BMap.Size(10, 0)
+                });
+                let marker = new BMap.Marker(points[0][0], {icon})
+                this._map.addOverlay(marker)
+                this._map.setViewport(points[0])
+            }
+        }
+
     }
 
     getPoints(predictions) {
@@ -75,8 +86,8 @@ export default class BaiduMap extends Component {
                 const points = []
                 points.push(new BMap.Point(lon, lat))
                 if (!_.isEmpty(boundingbox)) {
-                    points.push(new BMap.Point(boundingbox[2],boundingbox[0]))
-                    points.push(new BMap.Point(boundingbox[3],boundingbox[1]))
+                    points.push(new BMap.Point(boundingbox[2], boundingbox[0]))
+                    points.push(new BMap.Point(boundingbox[3], boundingbox[1]))
                 }
                 acc.push(points)
             }
