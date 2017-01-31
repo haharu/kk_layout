@@ -71,7 +71,7 @@ function fetchDistanceMatrix(mapDirections) {
         isFetching,
         ...opts
     } = mapDirections
-    const url = `/map/distancematrix`
+    const url = `/api/map/distancematrix`
 
     return dispatch => {
         dispatch(requestDistanceMatrix(opts))
@@ -89,7 +89,7 @@ function fetchDirections(mapDirections) {
         isFetching,
         ...opts
     } = mapDirections
-    const url = `/map/directions`
+    const url = `/api/map/directions`
 
     return dispatch => {
         dispatch(requestDirections(opts))

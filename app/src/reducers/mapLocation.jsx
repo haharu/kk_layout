@@ -106,7 +106,7 @@ export function receiveNearbySearch(data) {
 }
 
 function fetchPlaceDetail(placeId) {
-    const url = `/map/place/detail/${placeId}`
+    const url = `/api/map/place/detail/${placeId}`
 
     return (dispatch, getState) => {
         dispatch(requestPlaceDetail(placeId))
@@ -120,7 +120,7 @@ function fetchPlaceDetail(placeId) {
 }
 
 function fetchAutocomplete(searchTxt) {
-    const url = `/map/autocomplete/${searchTxt}`
+    const url = `/api/map/autocomplete/${searchTxt}`
 
     return dispatch => {
         dispatch(requestAutocomplete(searchTxt))
@@ -134,7 +134,7 @@ function fetchAutocomplete(searchTxt) {
 }
 
 function fetchTextSearch(searchTxt) {
-    const url = `/map/place/textsearch/${searchTxt}`
+    const url = `/api/map/place/textsearch/${searchTxt}`
 
     return dispatch => {
         dispatch(requestTextSearch(searchTxt))
@@ -149,7 +149,7 @@ function fetchTextSearch(searchTxt) {
 
 function fetchNearbySearch(opts) {
     return dispatch => {
-        const url = `/map/nearbysearch`
+        const url = `/api/map/nearbysearch`
         dispatch(requestNearbySearch(opts))
         return request.get(url).query(opts).ok(resp => resp.status < 500).then(resp => {
             dispatch(receiveNearbySearch(resp.body))

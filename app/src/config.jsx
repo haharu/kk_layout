@@ -11,7 +11,7 @@ export default Object.assign({
     host: process.env.HOST || 'localhost',
     port: process.env.PORT || 3000,
     apiHost: process.env.APIHOST || 'localhost',
-    apiPort: process.env.APIPORT || 3000,
+    apiPort: process.env.APIPORT || 3001,
     app: {
         title: 'React Redux Example',
         description: 'All the modern best practices in one example.',
