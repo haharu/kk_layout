@@ -1,8 +1,6 @@
 "use strict";
 import React, {PropTypes, Component} from 'react';
 
-const DEFAULT_INFO_IMG = 'http://static.bigstockphoto.com/images/homepage/2016_popular_photo_categories.jpg'
-
 export default class BaiduMap extends Component {
 
     constructor(props) {
@@ -98,8 +96,8 @@ export default class BaiduMap extends Component {
     showInfo(info) {
         if (!_.isEmpty(info)) {
             let imgUrl = _.has(info, 'photos')
-                ? '/map/photo/1000/1000/' + info.photos[0].photo_reference
-                : DEFAULT_INFO_IMG
+                ? '/api/map/photo/1000/1000/' + info.photos[0].photo_reference
+                : 'http://static.bigstockphoto.com/images/homepage/2016_popular_photo_categories.jpg'
             let content = `
                 <div class="card">
                     <div class="card-image">
