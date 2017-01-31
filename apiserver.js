@@ -9,13 +9,13 @@ import koaRouter from 'koa-router';
 
 import config from './app/src/config';
 
+import request from 'superagent';
+
 import googleMapService from '@google/maps'
 const googleMapsClient = googleMapService.createClient({key: 'AIzaSyCWF9rxrnc0Lxx5YuhojPNhO-kY3aflIXE', Promise: Promise});
 
 const app = new Koa();
-const router = koaRouter({
-  prefix: '/api'
-});
+const router = koaRouter({prefix: '/api'});
 
 const _use = app.use;
 app.use = x => _use.call(app, convert(x))
@@ -91,12 +91,17 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
     await googleMapsClient.directions(opts).asPromise().then(resp => {
         ctx.body = resp.json
     })
+})
 
+router.get('/nominatim/search/:input', async(ctx, next) => {
+    const url = `http://nominatim.openstreetmap.org/search`
+    await request.get(url).query({q: ctx.params.input, format: 'json', addressdetails: 1}).ok(resp => resp.status < 500).then(resp => {
+        ctx.body = resp.body
+    })
 })
 
 app.use(router.routes());
 app.use(router.allowedMethods());
-
 
 app.listen(config.apiPort, function(err) {
     if (err) {

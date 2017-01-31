@@ -75,7 +75,7 @@ function fetchDistanceMatrix(mapDirections) {
 
     return dispatch => {
         dispatch(requestDistanceMatrix(opts))
-        return request.get(url).query(opts).ok(resp => resp.status < 500).then((resp) => {
+        return request.get(url).query(opts).ok(resp => resp.status < 500).then(resp => {
             dispatch(receiveDistanceMatrix(resp.body))
             return Promise.resolve(resp.body)
         })
@@ -93,7 +93,7 @@ function fetchDirections(mapDirections) {
 
     return dispatch => {
         dispatch(requestDirections(opts))
-        return request.get(url).query(opts).ok(resp => resp.status < 500).then((resp) => {
+        return request.get(url).query(opts).ok(resp => resp.status < 500).then(resp => {
             dispatch(receiveDirections(resp.body))
             return Promise.resolve(resp.body)
         })

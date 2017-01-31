@@ -10,6 +10,7 @@
     "dev-apiserver": "cross-env NODE_ENV=development babel-node apiserver.js",
     "prod-webserver": "cross-env NODE_ENV=production babel-node server.js",
     "prod-apiserver": "cross-env NODE_ENV=production babel-node apiserver.js",
+    "dev": "concurrently --kill-others \"npm run dev-webserver\" \"npm run dev-apiserver\"",
     "start": "concurrently --kill-others \"npm run prod-webserver\" \"npm run prod-apiserver\"",
     "postinstall": "npm run deploy"
   },
