@@ -7,10 +7,10 @@ import BaiduMap from '../components/BaiduMap';
 
 import Header from '../components/Header'
 
-import * as mapLocationActions from '../reducers/mapLocation';
+import * as mapLocationActions from '../reducers/nominatim';
 
 @connect(state => {
-    return {mapLocation: state.mapLocation}
+    return {mapLocation: state.nominatim}
 })
 export default class Map extends Component {
     constructor(props) {
@@ -21,7 +21,6 @@ export default class Map extends Component {
         let {mapLocation, dispatch} = this.props
         if (_.isEmpty(mapLocation.searchTxt)) {
             dispatch(mapLocationActions.changeSearchTxt('美國'));
-            dispatch(mapLocationActions.fetchTextSearchIfNeeded());
         }
     }
 
@@ -35,8 +34,7 @@ export default class Map extends Component {
                     position: 'absolute',
                     zIndex: 1
                 }}>
-                    <Header/>
-                    {children}
+                    <Header/> {children}
                 </div>
                 <BaiduMap id='BMap' style={{
                     height: '100%'

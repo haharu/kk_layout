@@ -95,7 +95,25 @@ router.get('/map/place/textsearch/:input', async(ctx, next) => {
 
 router.get('/nominatim/search/:input', async(ctx, next) => {
     const url = `http://nominatim.openstreetmap.org/search`
-    await request.get(url).query({q: ctx.params.input, format: 'json', addressdetails: 1}).ok(resp => resp.status < 500).then(resp => {
+    const opts = {
+        q: ctx.params.input,
+        format: 'json',
+        addressdetails: 1,
+        limit: 5
+    }
+
+    await request.get(url).query(opts).ok(resp => resp.status < 500).then(resp => {
+        ctx.body = resp.body
+    })
+}).get('/nominatim/nearbysearch', async(ctx, next) => {
+    const url = `http://nominatim.openstreetmap.org/search`
+    const opts = {
+        q: `${ctx.query.types} near [${_.toNumber(ctx.query.lat)},${_.toNumber(ctx.query.lon)}]`,
+        format: 'json',
+        addressdetails: 1
+    }
+
+    await request.get(url).query(opts).ok(resp => resp.status < 500).then(resp => {
         ctx.body = resp.body
     })
 })

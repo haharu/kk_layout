@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import * as mapDirectionsActions from '../reducers/mapDirections';
-import * as mapLocationActions from '../reducers/mapLocation';
+import * as mapLocationActions from '../reducers/nominatim';
 import * as domActions from '../reducers/dom'
 
 @connect(state => {
-    return {mapLocation: state.mapLocation, dom: state.dom}
+    return {mapLocation: state.nominatim, dom: state.dom}
 })
 export class Locate extends Component {
     constructor(props) {
@@ -31,11 +31,11 @@ export class Locate extends Component {
         let {dispatch} = this.props
         dispatch(mapLocationActions.fetchTextSearchIfNeeded()).then(resp => {
             if (!_.isEmpty(resp)) {
-                let {geometry: {
-                        location
-                    }} = resp[0]
+                dispatch(mapLocationActions.changePlace(resp[0]))
+                let {lon, lat} = resp[0]
                 let opts = {
-                    location: `${location.lat},${location.lng}`,
+                    lon,
+                    lat,
                     radius: 5000,
                     types: 'university'
                 }
@@ -66,7 +66,7 @@ export class Locate extends Component {
 }
 
 @connect(state => {
-    return {mapLocation: state.mapLocation, dom: state.dom}
+    return {mapLocation: state.nominatim, dom: state.dom}
 })
 export class Autocomplete extends Component {
     constructor(props) {
@@ -76,22 +76,16 @@ export class Autocomplete extends Component {
 
     selectPrediction(i) {
         let {dispatch, mapLocation} = this.props
-        let {place_id, description} = mapLocation.autocomplete[i]
-        dispatch(mapLocationActions.changeSearchTxt(description));
-        dispatch(mapLocationActions.fetchPlaceDetailIfNeeded(place_id)).then(resp => {
-            dispatch(mapLocationActions.changePlaceId(place_id))
-            if (!_.isEmpty(resp)) {
-                let {geometry: {
-                        location
-                    }} = resp
-                let opts = {
-                    location: `${location.lat},${location.lng}`,
-                    radius: 5000,
-                    types: 'university'
-                }
-                dispatch(mapLocationActions.fetchNearbySearchIfNeeded(opts))
-            }
-        })
+        let place = mapLocation.autocomplete[i]
+        dispatch(mapLocationActions.changePlace(place))
+        let {lon, lat} = place
+        let opts = {
+            lon,
+            lat,
+            radius: 5000,
+            types: 'university'
+        }
+        dispatch(mapLocationActions.fetchNearbySearchIfNeeded(opts))
     }
 
     render() {
@@ -99,7 +93,7 @@ export class Autocomplete extends Component {
         let showAutocomplete = _.includes(refs, dom.activeElement)
         const autocomplete = _.map(mapLocation.autocomplete, (prediction, i) => (
             <a key={`${i}`} className="panel-block" onMouseDown={(e) => this.selectPrediction(i)}>
-                {prediction.description}
+                {prediction.display_name}
             </a>
         ))
         return (

@@ -1,5 +1,5 @@
 const CHANGE_SEARCH_TXT = 'CHANGE_SEARCH_TXT';
-const CHANGE_PLACE_ID = 'CHANGE_PLACE_ID'
+const CHANGE_PLACE = 'CHANGE_PLACE';
 const REQUEST_TEXT_SEARCH = 'REQUEST_TEXT_SEARCH';
 const RECEIVE_TEXT_SEARCH = 'RECEIVE_TEXT_SEARCH';
 const REQUEST_AUTOCOMPLETE = 'REQUEST_AUTOCOMPLETE';
@@ -10,15 +10,13 @@ const REQUEST_NEARBY_SEARCH = 'REQUEST_NEARBY_SEARCH';
 const RECEIVE_NEARBY_SEARCH = 'RECEIVE_NEARBY_SEARCH';
 
 import request from 'superagent';
-import deepAssign from 'deep-assign';
 
 export default function reducer(state = {
     searchTxt: '',
     placeId: '',
     predictions: [],
     autocomplete: [],
-    placeDetail: {},
-    showAutocomplete: false,
+    place: {},
     isFetching: false
 }, action) {
     switch (action.type) {
@@ -27,14 +25,13 @@ export default function reducer(state = {
                 searchTxt: action.searchTxt,
                 isFetching: false
             })
-        case CHANGE_PLACE_ID:
+        case CHANGE_PLACE:
             return Object.assign({}, state, {
-                placeId: action.placeId,
+                place: action.place,
                 isFetching: false
             })
         case REQUEST_TEXT_SEARCH:
         case REQUEST_AUTOCOMPLETE:
-        case REQUEST_PLACE_DETAIL:
         case REQUEST_NEARBY_SEARCH:
             return Object.assign({}, state, {isFetching: true})
         case RECEIVE_TEXT_SEARCH:
@@ -45,13 +42,6 @@ export default function reducer(state = {
         case RECEIVE_AUTOCOMPLETE:
             return Object.assign({}, state, {
                 autocomplete: action.data,
-                isFetching: false
-            })
-        case RECEIVE_PLACE_DETAIL:
-            return deepAssign({}, state, {
-                placeDetail: {
-                    [action.placeId]: action.data
-                },
                 isFetching: false
             })
         case RECEIVE_NEARBY_SEARCH:
@@ -66,6 +56,10 @@ export default function reducer(state = {
 
 export function changeSearchTxt(searchTxt) {
     return {type: CHANGE_SEARCH_TXT, searchTxt};
+}
+
+export function changePlace(place) {
+    return {type: CHANGE_PLACE, place}
 }
 
 export function changePlaceId(placeId) {
@@ -88,14 +82,6 @@ export function receiveAutocomplete(searchTxt, data) {
     return {type: RECEIVE_AUTOCOMPLETE, searchTxt, data};
 }
 
-export function requestPlaceDetail(placeId) {
-    return {type: REQUEST_PLACE_DETAIL, placeId}
-}
-
-export function receivePlaceDetail(placeId, data) {
-    return {type: RECEIVE_PLACE_DETAIL, placeId, data}
-}
-
 export function requestNearbySearch(opts) {
     return {type: REQUEST_NEARBY_SEARCH, ...opts}
 }
@@ -104,22 +90,8 @@ export function receiveNearbySearch(data) {
     return {type: RECEIVE_NEARBY_SEARCH, data}
 }
 
-function fetchPlaceDetail(placeId) {
-    const url = `/api/map/place/detail/${placeId}`
-
-    return (dispatch, getState) => {
-        dispatch(requestPlaceDetail(placeId))
-        return fetch(url).then(resp => resp.json()).then(resp => {
-            dispatch(receivePlaceDetail(placeId, resp))
-            return resp
-        }).catch(err => {
-            console.log(err);
-        })
-    }
-}
-
 function fetchAutocomplete(searchTxt) {
-    const url = `/api/map/autocomplete/${searchTxt}`
+    const url = `/api/nominatim/search/${searchTxt}`
 
     return dispatch => {
         dispatch(requestAutocomplete(searchTxt))
@@ -133,7 +105,7 @@ function fetchAutocomplete(searchTxt) {
 }
 
 function fetchTextSearch(searchTxt) {
-    const url = `/api/map/place/textsearch/${searchTxt}`
+    const url = `/api/nominatim/search/${searchTxt}`
 
     return dispatch => {
         dispatch(requestTextSearch(searchTxt))
@@ -148,7 +120,7 @@ function fetchTextSearch(searchTxt) {
 
 function fetchNearbySearch(opts) {
     return dispatch => {
-        const url = `/api/map/nearbysearch`
+        const url = `/api/nominatim/nearbysearch`
         dispatch(requestNearbySearch(opts))
         return request.get(url).query(opts).ok(resp => resp.status < 500).then(resp => {
             dispatch(receiveNearbySearch(resp.body))
@@ -157,20 +129,11 @@ function fetchNearbySearch(opts) {
     }
 }
 
-export function fetchPlaceDetailIfNeeded(placeId) {
-    return (dispatch, getState) => {
-        const {mapLocation} = getState();
-        if (placeId && !_.has(mapLocation.placeDetail, placeId)) {
-            return dispatch(fetchPlaceDetail(placeId));
-        }
-        return Promise.resolve()
-    }
-}
 export function fetchAutocompleteIfNeeded() {
     return (dispatch, getState) => {
-        const {mapLocation} = getState();
-        if (!_.isEmpty(mapLocation.searchTxt)) {
-            return dispatch(fetchAutocomplete(mapLocation.searchTxt));
+        const {nominatim} = getState();
+        if (!_.isEmpty(nominatim.searchTxt)) {
+            return dispatch(fetchAutocomplete(nominatim.searchTxt));
         }
         return Promise.resolve()
     }
@@ -178,9 +141,9 @@ export function fetchAutocompleteIfNeeded() {
 
 export function fetchTextSearchIfNeeded() {
     return (dispatch, getState) => {
-        const {mapLocation} = getState();
-        if (!_.isEmpty(mapLocation.searchTxt)) {
-            return dispatch(fetchTextSearch(mapLocation.searchTxt))
+        const {nominatim} = getState();
+        if (!_.isEmpty(nominatim.searchTxt)) {
+            return dispatch(fetchTextSearch(nominatim.searchTxt))
         }
         return Promise.resolve()
     }

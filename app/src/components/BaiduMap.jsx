@@ -24,12 +24,7 @@ export default class BaiduMap extends Component {
         this._map.addControl(new BMap.ScaleControl(opts));
         this._map.addControl(new BMap.NavigationControl(opts));
         this._map.enableScrollWheelZoom();
-
-        let points = this.getPoints(mapLocation.predictions)
-        if (!_.isEmpty(points)) {
-            this._map.setViewport(points[0])
-        }
-
+        this._map.centerAndZoom(new BMap.Point(-100.4458824, 39.7837304), 5);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -42,17 +37,14 @@ export default class BaiduMap extends Component {
         let {
             mapLocation: {
                 predictions,
-                placeDetail,
-                placeId
+                place
             }
         } = nextProps.map
 
         if (!_.isEqual(predictions, mapLocation.predictions)) {
-            this._map.clearOverlays();
             let points = this.getPoints(predictions)
             if (!_.isEmpty(points)) {
                 this._map.setViewport(_.flattenDeep(points))
-
                 _.forEach(points, (point, i) => {
                     let marker = new BMap.Marker(point[0])
                     marker.addEventListener('click', (e) => {
@@ -64,21 +56,11 @@ export default class BaiduMap extends Component {
             }
         }
 
-        if (!_.isEqual(placeId, mapLocation.placeId)) {
-            this._map.clearOverlays();
-            if (_.has(placeDetail, placeId)) {
-                let points = this.getPoints([placeDetail[placeId]])
-                if (!_.isEmpty(points)) {
-                    this._map.setViewport(points[0])
-                }
-            }
-        }
-
     }
 
     getPoints(predictions) {
         return _.reduce(predictions, (acc, prediction, i) => {
-            let {geometry, bounds} = prediction
+            let {geometry, bounds, lat, lon, boundingbox} = prediction
             if (!_.isEmpty(geometry)) {
                 const points = []
                 points.push(new BMap.Point(geometry.location.lng, geometry.location.lat))
@@ -89,37 +71,28 @@ export default class BaiduMap extends Component {
                 acc.push(points)
             }
 
+            if (!_.isEmpty(lat) && !_.isEmpty(lon)) {
+                const points = []
+                points.push(new BMap.Point(lon, lat))
+                if (!_.isEmpty(boundingbox)) {
+                    points.push(new BMap.Point(boundingbox[2],boundingbox[0]))
+                    points.push(new BMap.Point(boundingbox[3],boundingbox[1]))
+                }
+                acc.push(points)
+            }
+
             return acc
         }, [])
     }
 
     showInfo(info) {
         if (!_.isEmpty(info)) {
-            let imgUrl = _.has(info, 'photos')
-                ? '/api/map/photo/1000/1000/' + info.photos[0].photo_reference
-                : 'http://static.bigstockphoto.com/images/homepage/2016_popular_photo_categories.jpg'
             let content = `
                 <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="${imgUrl}" alt="">
-                        </figure>
-                    </div>
                     <div class="card-content">
-                        <div class="media">
-                            <div class="media-left">
-                                <figure class="image is-32x32">
-                                    <img src="${info.icon}" alt="Image">
-                                </figure>
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-5">${info.name}</p>
-                                <p class="subtitle is-6">@${info.types[0]}</p>
-                            </div>
-                        </div>
-
                         <div class="content">
-                            ${info.formatted_address || info.vicinity}
+                            <p class="title is-5">${info.display_name}</p>
+                            <p class="subtitle is-6">@${info.type}</p>
                         </div>
                     </div>
                     <footer class="card-footer">
@@ -131,7 +104,7 @@ export default class BaiduMap extends Component {
             `;
 
             let infoWindow = new BMap.InfoWindow(content);
-            let point = new BMap.Point(info.geometry.location.lng, info.geometry.location.lat)
+            let point = new BMap.Point(info.lon, info.lat)
 
             this._map.openInfoWindow(infoWindow, point)
             infoWindow.redraw()
