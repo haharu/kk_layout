@@ -10,7 +10,7 @@ import Header from '../components/Header'
 import * as mapLocationActions from '../reducers/mapLocation';
 
 @connect(state => {
-    return {mapLocation: state.mapLocation, mapDirections: state.mapDirections}
+    return {mapLocation: state.mapLocation}
 })
 export default class Map extends Component {
     constructor(props) {
@@ -41,8 +41,7 @@ export default class Map extends Component {
                 <BaiduMap id='BMap' style={{
                     height: '100%'
                 }} map={{
-                    mapLocation,
-                    mapDirections
+                    mapLocation
                 }}/>
             </div>
         )

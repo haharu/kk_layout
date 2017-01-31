@@ -15,8 +15,7 @@ export default class BaiduMap extends Component {
         let {
             id,
             map: {
-                mapLocation,
-                mapDirections
+                mapLocation
             }
         } = this.props
 
@@ -38,8 +37,7 @@ export default class BaiduMap extends Component {
     componentWillReceiveProps(nextProps) {
         let {
             map: {
-                mapLocation,
-                mapDirections
+                mapLocation
             }
         } = this.props
 
@@ -48,13 +46,6 @@ export default class BaiduMap extends Component {
                 predictions,
                 placeDetail,
                 placeId
-            },
-            mapDirections: {
-                distancematrix,
-                directions: {
-                    geocoded_waypoints,
-                    routes
-                }
             }
         } = nextProps.map
 
