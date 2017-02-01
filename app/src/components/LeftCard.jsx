@@ -36,7 +36,7 @@ export class Locate extends Component {
                 let opts = {
                     lon,
                     lat,
-                    radius: 2000,
+                    radius: 5000,
                     types: 'university'
                 }
                 dispatch(mapLocationActions.fetchNearbySearchIfNeeded(opts))
@@ -82,7 +82,7 @@ export class Autocomplete extends Component {
         let opts = {
             lon,
             lat,
-            radius: 2000,
+            radius: 5000,
             types: 'university'
         }
         dispatch(mapLocationActions.fetchNearbySearchIfNeeded(opts))

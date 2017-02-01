@@ -72,11 +72,17 @@ export default class BaiduMap extends Component {
         return _.reduce(predictions, (acc, prediction, i) => {
             let {geometry, bounds, lat, lon, boundingbox} = prediction
             if (!_.isEmpty(geometry)) {
+                let {location, viewport, coordinates} = geometry
                 const points = []
-                points.push(new BMap.Point(geometry.location.lng, geometry.location.lat))
-                if (_.has(geometry, 'viewport')) {
-                    points.push(new BMap.Point(geometry.viewport.northeast.lng, geometry.viewport.northeast.lat))
-                    points.push(new BMap.Point(geometry.viewport.southwest.lng, geometry.viewport.southwest.lat))
+                if (location) {
+                    points.push(new BMap.Point(location.lng, location.lat))
+                }
+                if (viewport) {
+                    points.push(new BMap.Point(viewport.northeast.lng, viewport.northeast.lat))
+                    points.push(new BMap.Point(viewport.southwest.lng, viewport.southwest.lat))
+                }
+                if (coordinates) {
+                    points.push(new BMap.Point(coordinates[0], coordinates[1]))
                 }
                 acc.push(points)
             }
@@ -101,8 +107,8 @@ export default class BaiduMap extends Component {
                 <div class="card">
                     <div class="card-content">
                         <div class="content">
-                            <p class="title is-5">${info.display_name}</p>
-                            <p class="subtitle is-6">@${info.type}</p>
+                            <p class="title is-5">${info.display_name || info.properties.tags.name}</p>
+                            <p class="subtitle is-6">@${info.properties.tags.amenity || info.type}</p>
                         </div>
                     </div>
                     <footer class="card-footer">
@@ -114,7 +120,7 @@ export default class BaiduMap extends Component {
             `;
 
             let infoWindow = new BMap.InfoWindow(content);
-            let point = new BMap.Point(info.lon, info.lat)
+            let point = new BMap.Point(info.lon || info.geometry.coordinates[0], info.lat || info.geometry.coordinates[1])
 
             this._map.openInfoWindow(infoWindow, point)
             infoWindow.redraw()

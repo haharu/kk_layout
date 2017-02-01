@@ -125,7 +125,7 @@ router.get('/nominatim/search/:input', async(ctx, next) => {
             if (err) {
                 reject(err)
             }
-            return resolve(resp)
+            return resolve(resp.features)
         })
     }).then(resp => {
         ctx.body = resp
