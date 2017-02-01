@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import Nav from '../components/Nav';
 import {RegNavLink} from '../components/NavLink'
+import Leaflet from '../components/Leaflet';
 
 export class Temp1 extends Component {
     render() {
@@ -187,6 +188,16 @@ export class Temp4 extends Component {
                         </div>
                     </div>
                 ))}
+            </div>
+        )
+    }
+}
+
+export class TempMap extends Component {
+    render() {
+        return (
+            <div>
+                <Leaflet/>
             </div>
         )
     }

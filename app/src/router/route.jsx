@@ -2,7 +2,7 @@ import React from 'react'
 import {Route, Link, IndexRedirect, IndexRoute} from 'react-router'
 import App, {PageNotFound, Home} from '../containers/App'
 import Map from '../containers/Map'
-import Temp, {Temp1, Temp2, Temp3, Temp4} from '../containers/Temp'
+import Temp, {Temp1, Temp2, Temp3, Temp4, TempMap} from '../containers/Temp'
 import {Locate} from '../components/LeftCard'
 import Header from '../components/Header'
 
@@ -22,6 +22,7 @@ export default(
             <Route path="/temp-page/4" component={Temp4}/>
             <Route path="*" component={PageNotFound}/>
         </Route>
+        <Route path="temp-map" component={TempMap}/>
         <Route path="*" component={() => (
             <div><Header/><PageNotFound/></div>
         )}/>

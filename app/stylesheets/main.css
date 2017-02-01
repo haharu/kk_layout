@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url(~leaflet/dist/leaflet.css);
 /* line 5, ../../../../../../.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -4127,6 +4128,12 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -moz-font-smoothing: antialiased;
   -ms-font-smoothing: antialiased;
   -o-font-smoothing: antialiased;
+}
+
+/* line 3, ../sass/component/_leaflet.scss */
+.leaflet-control-container {
+  height: 1000px;
+  width: 100%;
 }
 
 /*! bulma.io v0.3.1 | MIT License | github.com/jgthms/bulma */
