@@ -30,7 +30,9 @@ export default class Map extends Component {
         return (
             <div className="is-overlay">
                 <div className="box is-paddingless is-marginless" style={{
-                    width: 400,
+                    maxWidth: 400,
+                    left: 0,
+                    right: 0,
                     position: 'absolute',
                     zIndex: 1
                 }}>
