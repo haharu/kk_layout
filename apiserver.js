@@ -10,6 +10,7 @@ import koaRouter from 'koa-router';
 import config from './app/src/config';
 
 import request from 'superagent';
+import qo from 'query-overpass';
 
 import googleMapService from '@google/maps'
 const googleMapsClient = googleMapService.createClient({key: 'AIzaSyCWF9rxrnc0Lxx5YuhojPNhO-kY3aflIXE', Promise: Promise});
@@ -108,13 +109,26 @@ router.get('/nominatim/search/:input', async(ctx, next) => {
 }).get('/nominatim/nearbysearch', async(ctx, next) => {
     const url = `http://nominatim.openstreetmap.org/search`
     const opts = {
-        q: `${ctx.query.types} near [${_.toNumber(ctx.query.lat)},${_.toNumber(ctx.query.lon)}]`,
+        q: `${ctx.query.types} neer [${_.toNumber(ctx.query.lat)},${_.toNumber(ctx.query.lon)}]`,
         format: 'json',
         addressdetails: 1
     }
 
     await request.get(url).query(opts).ok(resp => resp.status < 500).then(resp => {
         ctx.body = resp.body
+    })
+}).get('/overpass/nearbysearch', async(ctx, next) => {
+    const q = `[out:json];node(around:${_.toNumber(ctx.query.radius)},${_.toNumber(ctx.query.lat)},${_.toNumber(ctx.query.lon)})[name][amenity="${ctx.query.types}"];out;`;
+
+    await new Promise((resolve, reject) => {
+        qo(q, (err, resp) => {
+            if (err) {
+                reject(err)
+            }
+            return resolve(resp)
+        })
+    }).then(resp => {
+        ctx.body = resp
     })
 })
 

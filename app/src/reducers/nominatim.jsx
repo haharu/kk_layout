@@ -120,7 +120,7 @@ function fetchTextSearch(searchTxt) {
 
 function fetchNearbySearch(opts) {
     return dispatch => {
-        const url = `/api/nominatim/nearbysearch`
+        const url = `/api/overpass/nearbysearch`
         dispatch(requestNearbySearch(opts))
         return request.get(url).query(opts).ok(resp => resp.status < 500).then(resp => {
             dispatch(receiveNearbySearch(resp.body))

@@ -55,7 +55,6 @@ export default class BaiduMap extends Component {
             let points = this.getPoints([place])
 
             if (!_.isEmpty(points)) {
-
                 let icon = new BMap.Icon(require('../../images/pin.png'), new BMap.Size(20, 32), {
                     anchor: new BMap.Size(10, 30),
                     infoWindowAnchor: new BMap.Size(10, 0)
