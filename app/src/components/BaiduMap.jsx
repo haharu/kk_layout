@@ -39,6 +39,7 @@ export default class BaiduMap extends Component {
         if (!_.isEqual(predictions, mapLocation.predictions)) {
             let points = this.getPoints(predictions)
             if (!_.isEmpty(points)) {
+                this._map.setViewport(_.flattenDeep(points))
                 _.forEach(points, (point, i) => {
                     let marker = new BMap.Marker(point[0])
                     marker.addEventListener('click', (e) => {
