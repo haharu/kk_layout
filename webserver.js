@@ -6,7 +6,6 @@ import devMiddleware from 'koa-webpack-dev-middleware';
 import hotMiddleware from 'koa-webpack-hot-middleware';
 
 import devConfig from './webpack-dev-server.config';
-import prodConfig from './webpack-production.config';
 
 import Koa from 'koa';
 import convert from 'koa-convert';

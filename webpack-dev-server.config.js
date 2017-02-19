@@ -5,8 +5,6 @@ var path = require('path');
 var config = require('./app/src/config').default;
 
 var assetPath = path.resolve(__dirname, 'dist');
-var nodeModulesPath = path.resolve(__dirname, 'node_modules');
-var TransferWebpackPlugin = require('transfer-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -16,7 +14,11 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ["", ".js", ".jsx"]
+        extensions: [".js", ".jsx"],
+        modules: [
+            path.resolve(__dirname, './app/src'),
+            'node_modules'
+        ]
     },
     devtool: 'cheap-module-eval-source-map',
     output: {
@@ -25,50 +27,86 @@ module.exports = {
         publicPath: 'http://' + config.host + ':' + config.port + '/assets/'
     },
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(), new webpack.HotModuleReplacementPlugin(), new webpack.NoErrorsPlugin(), webpackIsomorphicToolsPlugin.development()
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                context: __dirname,
+                debug: true,
+                eslint: {
+                    configFile: '.eslintrc'
+                }
+            }
+        }),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
+        webpackIsomorphicToolsPlugin.development()
     ],
     module: {
-        preLoaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
                 loader: 'eslint-loader',
-                include: [path.resolve(__dirname, "app/src")]
-            }
-        ],
-        loaders: [
-            {
-                test: /\.json$/,
-                loader: "json-loader"
+                include: [path.resolve(__dirname, "app/src")],
+                enforce: 'pre'
             }, {
                 test: /\.jsx?$/,
-                loaders: ['babel'],
+                loader: 'babel-loader',
                 exclude: /(node_modules|bower_components)/
             }, {
                 test: /\.css$/,
-                loader: "style-loader!css-loader",
-                exclude: /(node_modules|bower_components)/
+                use: [
+                    {
+                        loader: 'style-loader'
+                    }, {
+                        loader: 'css-loader',
+                        options: {
+                            modules: false
+                        }
+                    }
+                ]
             }, {
                 test: /\.svg(\?.*$|$)/,
-                loader: 'file-loader?mimetype=image/svg+xml'
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        mimetype: 'image/svg+xml'
+                    }
+                }
             }, {
                 test: /\.woff(\?.*$|$)/,
-                loader: "file-loader?mimetype=application/font-woff"
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        mimetype: 'application/font-woff'
+                    }
+                }
             }, {
                 test: /\.woff2(\?.*$|$)/,
-                loader: "file-loader?mimetype=application/font-woff"
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        mimetype: 'application/font-woff'
+                    }
+                }
             }, {
                 test: /\.ttf(\?.*$|$)/,
-                loader: "file-loader?mimetype=application/octet-stream"
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        mimetype: 'application/octet-stream'
+                    }
+                }
             }, {
                 test: /\.eot(\?.*$|$)/,
-                loader: "file-loader"
+                use: "file-loader"
             }, {
                 test: webpackIsomorphicToolsPlugin.regular_expression('images'),
-                loader: 'url-loader?limit=10240'
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10240
+                    }
+                }
             }
         ]
-    },
-    eslint: {
-        configFile: '.eslintrc'
     }
 };
