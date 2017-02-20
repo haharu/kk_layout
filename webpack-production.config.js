@@ -2,7 +2,6 @@ var webpack = require('webpack');
 var path = require('path');
 var assetPath = path.resolve(__dirname, 'dist');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
-var TransferWebpackPlugin = require('transfer-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
 var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools-configuration'));
@@ -10,7 +9,7 @@ var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./w
 module.exports = {
     entry: [path.join(__dirname, '/app/src/app.jsx')],
     resolve: {
-        extensions: ["", ".js", ".jsx"]
+        extensions: [".js", ".jsx"]
     },
     output: {
         path: assetPath,
@@ -19,15 +18,17 @@ module.exports = {
         publicPath: '/'
     },
     plugins: [
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            minimize: true,
-            compress: {
-                warnings: false
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                context: __dirname,
+                debug: false,
+                eslint: {
+                    configFile: '.eslintrc'
+                }
             }
         }),
-        new webpack.NoErrorsPlugin(),
+        new webpack.optimize.UglifyJsPlugin({sourceMap: true, minimize: true}),
+        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: '"production"'
@@ -35,54 +36,69 @@ module.exports = {
         }),
         new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
         webpackIsomorphicToolsPlugin,
-        new webpack.optimize.CommonsChunkPlugin("commons", "commons.js"),
-        new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true})
+        new webpack.optimize.CommonsChunkPlugin({name: 'common', filename: "commons.js", async: true}),
+        new ExtractTextPlugin({filename: '[name]-[chunkhash].css', allChunks: true})
     ],
     devtool: 'cheap-module-source-map',
     module: {
-        preLoaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
                 loader: 'eslint-loader',
                 include: [path.resolve(__dirname, "app/src")],
-                exclude: [nodeModulesPath]
-            }
-        ],
-        loaders: [
-            {
-                test: /\.json$/,
-                loader: "json-loader"
+                exclude: [nodeModulesPath],
+                enforce: 'pre'
             }, {
                 test: /\.jsx?$/,
-                loaders: ['babel'],
-                exclude: [nodeModulesPath]
+                loader: 'babel-loader',
+                exclude: /(node_modules|bower_components)/
             }, {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader"),
-                include: [path.join(__dirname, 'app/stylesheets')]
+                use: ExtractTextPlugin.extract({fallback: "style-loader", use: "css-loader", publicPath: assetPath})
             }, {
                 test: /\.svg(\?.*$|$)/,
-                loader: 'file-loader?mimetype=image/svg+xml'
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        mimetype: 'image/svg+xml'
+                    }
+                }
             }, {
                 test: /\.woff(\?.*$|$)/,
-                loader: "file-loader?mimetype=application/font-woff"
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        mimetype: 'application/font-woff'
+                    }
+                }
             }, {
                 test: /\.woff2(\?.*$|$)/,
-                loader: "file-loader?mimetype=application/font-woff"
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        mimetype: 'application/font-woff'
+                    }
+                }
             }, {
                 test: /\.ttf(\?.*$|$)/,
-                loader: "file-loader?mimetype=application/octet-stream"
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        mimetype: 'application/octet-stream'
+                    }
+                }
             }, {
                 test: /\.eot(\?.*$|$)/,
-                loader: "file-loader"
+                use: "file-loader"
             }, {
                 test: webpackIsomorphicToolsPlugin.regular_expression('images'),
-                loader: 'url-loader?limit=10240'
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10240
+                    }
+                }
             }
         ]
-    },
-    //Eslint config
-    eslint: {
-        configFile: '.eslintrc'
     }
 };
