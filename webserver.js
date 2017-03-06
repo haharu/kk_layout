@@ -1,6 +1,5 @@
 import webpack from 'webpack'
 import path from 'path';
-import _ from 'lodash';
 
 import devMiddleware from 'koa-webpack-dev-middleware';
 import hotMiddleware from 'koa-webpack-hot-middleware';
@@ -17,7 +16,7 @@ import bodyParser from 'koa-bodyparser';
 
 import React from 'react'
 import {renderToString} from 'react-dom/server'
-import {ReduxAsyncConnect, loadOnServer, reducer as reduxAsyncConnect} from 'redux-connect'
+import {loadOnServer} from 'redux-connect'
 import {match} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 import configureStore from './app/src/store/configureStore'
