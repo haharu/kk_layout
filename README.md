@@ -1,2 +1,13 @@
-# workbox
-- a startkit with react, redux, webpack, hot, universal, koa2, sass
+# Workbox
+
+[![Build Status](https://travis-ci.org/haharu/workbox.svg?branch=master)](https://travis-ci.org/haharu/workbox)
+
+A startkit with react, redux, webpack, hot, universal, koa2, sass
+
+---
+
+License
+----
+
+MIT
+
