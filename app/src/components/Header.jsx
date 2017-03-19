@@ -14,10 +14,10 @@ export default class Header extends Component {
                     <div className="hero-body">
                         <div className="container">
                             <h1 className="title">
-                                drhush
+                                workbox
                             </h1>
                             <h2 className="subtitle">
-                                drhush map
+                                A startkit with react, redux, webpack, hot, universal, koa2, sass
                             </h2>
                         </div>
                     </div>
@@ -25,9 +25,9 @@ export default class Header extends Component {
                         <div className="container">
                             <nav className="tabs is-boxed">
                                 <ul>
-                                    <NavLink index={true} to="/" activeClassName="is-active" name="home"/>
-                                    <NavLink to="/bmap" activeClassName="is-active" name="bmap"/>
-                                    <NavLink to="/temp-page" activeClassName="is-active" name="Sample"/>
+                                    <NavLink index={true} to="/" activeClassName="is-active" name="root"/>
+                                    <NavLink to="/foo" activeClassName="is-active" name="foo"/>
+                                    <NavLink to="/bar" activeClassName="is-active" name="bar"/>
                                 </ul>
                             </nav>
                         </div>
@@ -36,8 +36,8 @@ export default class Header extends Component {
                 <nav className="nav has-shadow">
                     <div className="container">
                         <div className="nav-left">
-                            <SubNavLink to="/bmap/locate" name="locate"/>
-                            <SubNavLink to="/bmap/route" name="route"/>
+                            <SubNavLink to="/hey" name="hey"/>
+                            <SubNavLink to="/ho" name="ho"/>
                         </div>
                     </div>
                 </nav>

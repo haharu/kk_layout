@@ -23,12 +23,7 @@ export class Home extends Component {
                 <section className="section">
                     <article className="message is-primary">
                         <div className="message-body">
-                            All test passed.
-                        </div>
-                    </article>
-                    <article className="message is-primary">
-                        <div className="message-body">
-                            homepage
+                            Hello world !!
                         </div>
                     </article>
                 </section>

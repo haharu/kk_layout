@@ -4,4 +4,4 @@ import {routerReducer as routing} from 'react-router-redux';
 import dom from './dom'
 import nominatim from './nominatim'
 
-export default combineReducers({routing, reduxAsyncConnect, nominatim, dom});
+export default combineReducers({routing, reduxAsyncConnect});
