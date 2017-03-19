@@ -1,6 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
-var assetPath = path.resolve(__dirname, 'dist');
+var distPath = path.resolve(__dirname, 'dist');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
@@ -12,7 +12,7 @@ module.exports = {
         extensions: [".js", ".jsx"]
     },
     output: {
-        path: assetPath,
+        path: distPath,
         filename: '[name]-[chunkhash].js',
         chunkFilename: '[name]-[chunkhash].js',
         publicPath: '/'
@@ -54,7 +54,7 @@ module.exports = {
                 exclude: /(node_modules|bower_components)/
             }, {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({fallback: "style-loader", use: "css-loader", publicPath: assetPath})
+                use: ExtractTextPlugin.extract({fallback: "style-loader", use: "css-loader", publicPath: distPath})
             }, {
                 test: /\.svg(\?.*$|$)/,
                 use: {

@@ -1,9 +1,7 @@
 'use strict';
 
-import "../stylesheets/main.css";
+import "../assets/stylesheets/main.css";
 
-import _ from 'lodash';
-require('isomorphic-fetch')
 import React from 'react';
 import {render} from 'react-dom';
 

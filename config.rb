@@ -6,11 +6,14 @@ require 'font-awesome-sass'
 
 # Set this to the root of your project when deployed:
 http_path = "app"
-css_dir = "app/stylesheets"
-fonts_dir = "app/fonts"
-sass_dir = "app/sass"
-images_dir = "app/images"
+css_dir = "app/assets/stylesheets"
+fonts_dir = "app/assets/fonts"
+sass_dir = "app/assets/sass"
+images_dir = "app/assets/images"
 javascripts_dir = "app/src"
+additional_import_paths = [
+    'node_modules'
+]
 relative_assets = true
 cache = false
 

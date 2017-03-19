@@ -4,7 +4,7 @@ var webpack = require('webpack');
 var path = require('path');
 var config = require('./app/src/config').default;
 
-var assetPath = path.resolve(__dirname, 'dist');
+var distPath = path.resolve(__dirname, 'dist');
 
 module.exports = {
     entry: {
@@ -22,7 +22,7 @@ module.exports = {
     },
     devtool: 'cheap-module-eval-source-map',
     output: {
-        path: assetPath,
+        path: distPath,
         filename: 'bundle_[hash].js',
         publicPath: 'http://' + config.host + ':' + config.port + '/assets/'
     },
