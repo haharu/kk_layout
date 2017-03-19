@@ -2,5 +2,6 @@
 .DS_Store
 /build
 /public
+/dist
 webpack-assets.json
 /app/stylesheets
