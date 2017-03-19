@@ -4,4 +4,4 @@
 /public
 /dist
 webpack-assets.json
-/app/stylesheets
+/app/assets/stylesheets
