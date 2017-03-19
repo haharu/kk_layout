@@ -3,3 +3,4 @@
 /build
 /public
 webpack-assets.json
+/app/stylesheets
