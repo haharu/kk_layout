@@ -1,6 +1,6 @@
 'use strict';
 
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {NavLink, SubNavLink} from './NavLink'
 
 export default class Header extends Component {

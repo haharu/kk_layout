@@ -1,5 +1,6 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {Link, IndexLink} from 'react-router';
+import PropTypes from 'prop-types';
 
 export class NavLink extends Component {
     constructor(props, context) {
@@ -20,7 +21,7 @@ export class NavLink extends Component {
         return (
             <li className={isActive
                 ? activeClassName
-                : ''}>
+            : ''}>
                 <LinkComponent to={to}>{name}</LinkComponent>
             </li>
         )
