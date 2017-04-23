@@ -36,7 +36,7 @@ module.exports = {
         }),
         new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
         webpackIsomorphicToolsPlugin,
-        new webpack.optimize.CommonsChunkPlugin({name: 'common', filename: "commons.js", async: true}),
+        new webpack.optimize.CommonsChunkPlugin({children: true, async: true}),
         new ExtractTextPlugin({filename: '[name]-[chunkhash].css', allChunks: true})
     ],
     devtool: 'cheap-module-source-map',
