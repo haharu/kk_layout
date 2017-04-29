@@ -21,7 +21,7 @@ export class NavLink extends Component {
         return (
             <li className={isActive
                 ? activeClassName
-            : ''}>
+                : ''}>
                 <LinkComponent to={to}>{name}</LinkComponent>
             </li>
         )
