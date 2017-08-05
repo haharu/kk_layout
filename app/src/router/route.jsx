@@ -1,13 +1,27 @@
-import React from 'react'
-import {Route, Link, IndexRedirect, IndexRoute} from 'react-router'
-import App, {PageNotFound, Home} from '../containers/App'
-import Header from '../components/Header'
+import React from 'react';
+import {Route, Switch} from 'react-router-dom';
 
-export default(
-    <Route path="/" component={App}>
-        <IndexRoute component={Home}/>
-        <Route path="*" component={() => (
-            <div><Header/><PageNotFound/></div>
+import {PageNotFound, WorkBox} from '../containers/App';
+import Header from '../components/Header';
+import Nav from '../components/Nav';
+
+const Routes = () => (
+    <Switch>
+        <Route exact path="/" component={() => (
+            <div>
+                <Nav/>
+                <Header title="WorkBox"/>
+                <WorkBox/>
+            </div>
         )}/>
-    </Route>
+        <Route path="*" component={() => (
+            <div>
+                <Nav/>
+                <Header/>
+                <PageNotFound/>
+            </div>
+        )}/>
+    </Switch>
 );
+
+export default Routes;

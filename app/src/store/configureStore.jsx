@@ -1,26 +1,26 @@
-import {createStore, applyMiddleware} from 'redux'
-import ReduxThunk from 'redux-thunk'
+import {createStore, applyMiddleware} from 'redux';
+import ReduxThunk from 'redux-thunk';
 import {createLogger} from 'redux-logger';
-import rootReducer from '../reducers'
-import config from '../config'
+import {routerMiddleware} from 'react-router-redux';
+import rootReducer from '../reducers';
+import config from 'Root/config';
 
-export default function configureStore(preloadedState) {
-    let middleware = [ReduxThunk];
+export default function configureStore(history, preloadedState) {
+    let middleware = [ReduxThunk, routerMiddleware(history)];
     if (!config.isProduction) {
         middleware = [
             ...middleware,
-            createLogger()
+            createLogger(),
         ];
     }
-    const store = createStore(rootReducer, preloadedState, applyMiddleware(...middleware))
+    const store = createStore(rootReducer, preloadedState, applyMiddleware(...middleware));
 
     if (module.hot) {
         module.hot.accept('../reducers', () => {
-            const nextRootReducer = require('../reducers').default
-            store.replaceReducer(nextRootReducer)
+            const nextRootReducer = require('../reducers').default;
+            store.replaceReducer(nextRootReducer);
         });
     }
 
-    return store
-
+    return store;
 }

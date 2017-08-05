@@ -1,7 +1,7 @@
-var fs = require('fs');
+let fs = require('fs');
 
-var babelrc = fs.readFileSync('./.babelrc');
-var config;
+let babelrc = fs.readFileSync('./.babelrc');
+let config;
 
 try {
   config = JSON.parse(babelrc);

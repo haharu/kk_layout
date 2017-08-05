@@ -1,26 +1,31 @@
-var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
+let WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
+let path = require('path');
 
 module.exports = {
+    alias: {
+        Root: path.resolve(__dirname, './'),
+        Assets: path.resolve(__dirname, 'app/assets'),
+    },
     assets: {
         images: {
             extensions: [
-                'jpeg', 'jpg', 'png', 'gif'
+                'jpeg', 'jpg', 'png', 'gif',
             ],
-            parser: WebpackIsomorphicToolsPlugin.url_loader_parser
+            parser: WebpackIsomorphicToolsPlugin.url_loader_parser,
         },
         fonts: {
             extensions: [
-                'woff', 'woff2', 'ttf', 'eot'
+                'woff', 'woff2', 'ttf', 'eot',
             ],
-            parser: WebpackIsomorphicToolsPlugin.url_loader_parser
+            parser: WebpackIsomorphicToolsPlugin.url_loader_parser,
         },
         svg: {
             extension: 'svg',
-            parser: WebpackIsomorphicToolsPlugin.url_loader_parser
+            parser: WebpackIsomorphicToolsPlugin.url_loader_parser,
         },
         style_modules: {
             extensions: [
-                'less', 'scss'
+                'css', 'less', 'scss',
             ],
             filter: function(module, regex, options, log) {
                 if (options.development) {
@@ -51,7 +56,7 @@ module.exports = {
                     // in production mode there's Extract Text Loader which extracts CSS text away
                     return module.source;
                 }
-            }
-        }
-    }
-}
+            },
+        },
+    },
+};

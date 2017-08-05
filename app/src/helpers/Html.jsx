@@ -8,7 +8,7 @@ export default class Html extends Component {
     static propTypes = {
         assets: PropTypes.object,
         component: PropTypes.node,
-        store: PropTypes.object
+        store: PropTypes.object,
     };
 
     render() {
@@ -32,10 +32,10 @@ export default class Html extends Component {
                 </head>
                 <body>
                     <div id="app" dangerouslySetInnerHTML={{
-                        __html: content
+                        __html: content,
                     }}/>
                     <script dangerouslySetInnerHTML={{
-                        __html: `window.__INITIAL_STATE__=${serialize(store.getState())};`
+                        __html: `window.__INITIAL_STATE__=${serialize(store.getState())};`,
                     }} charSet="UTF-8"/>
                     {Object.keys(assets.javascript).map((script, i) =>
                         <script src={assets.javascript[script]} key={i}/>

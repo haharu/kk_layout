@@ -4,6 +4,8 @@
 @import "compass/css3";
 @import "font-awesome-compass";
 @import "font-awesome";
-@import "./mixins/**/*";
-@import "./component/**/*";
-@import "bulma/bulma";
+
+@import "./libraries/**/*";
+
+@import "./helpers/**/*";
+@import "./components/**/*";

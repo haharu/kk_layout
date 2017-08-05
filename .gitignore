@@ -3,5 +3,5 @@
 /build
 /public
 /dist
-webpack-assets.json
 /app/assets/stylesheets
+webpack-assets.json

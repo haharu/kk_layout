@@ -1,26 +1,31 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {Provider} from 'react-redux';
-import {render} from 'react-dom';
-import {Router} from 'react-router';
-import {ReduxAsyncConnect} from 'redux-connect'
+import {ConnectedRouter} from 'react-router-redux';
 
-import routes from './route'
+import Routes from './route';
+
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import '../helpers/Injection';
+
+import PropTypes from 'prop-types';
 
 export default class Root extends Component {
+    static propTypes = {
+        store: PropTypes.object.isRequired,
+        history: PropTypes.object.isRequired,
+    }
+
     render() {
         const {store, history} = this.props;
         return (
             <Provider store={store}>
-                <Router render={(props) => {
-                    return <ReduxAsyncConnect {...props}/>
-                }} routes={routes} history={history}/>
+                <ConnectedRouter history={history}>
+                    <MuiThemeProvider muiTheme={getMuiTheme()}>
+                        <Routes/>
+                    </MuiThemeProvider>
+                </ConnectedRouter>
             </Provider>
         );
     }
 }
-
-Root.propTypes = {
-    store: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
-};

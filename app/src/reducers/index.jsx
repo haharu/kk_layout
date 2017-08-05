@@ -1,7 +1,4 @@
-import {combineReducers} from 'redux'
-import {reducer as reduxAsyncConnect} from 'redux-connect';
-import {routerReducer as routing} from 'react-router-redux';
-import dom from './dom'
-import nominatim from './nominatim'
+import {combineReducers} from 'redux';
+import {routerReducer as router} from 'react-router-redux';
 
-export default combineReducers({routing, reduxAsyncConnect});
+export default combineReducers({router});

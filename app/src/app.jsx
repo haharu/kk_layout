@@ -1,19 +1,19 @@
 'use strict';
 
-import "../assets/stylesheets/main.css";
+import 'Assets/stylesheets/main.css';
+
+import _ from 'lodash';
+window._ = _;
 
 import React from 'react';
 import {render} from 'react-dom';
-
-import {syncHistoryWithStore} from 'react-router-redux'
-import configureStore from './store/configureStore'
-
-import {browserHistory} from 'react-router';
+import createHistory from 'history/createBrowserHistory';
+import configureStore from './store/configureStore';
 
 import Root from './router';
 
-const store = configureStore(window.__INITIAL_STATE__);
-const history = syncHistoryWithStore(browserHistory, store)
+const history = createHistory();
+const store = configureStore(history, window.__INITIAL_STATE__);
 
 render(
     <Root store={store} history={history}/>, document.getElementById('app'));

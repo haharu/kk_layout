@@ -1,0 +1,17 @@
+.bg-transparent {
+	background-color: transparent;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+@for $i from 1 through 9 {
+    .bg-blur-#{$i} {
+    	@include filter(blur(#{$i}px));
+    }
+
+    .bg-opacity-#{$i} {
+        opacity: $i / 10;
+    }
+}

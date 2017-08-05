@@ -1,0 +1,62 @@
+$gap-list: 15 20 25 30 40;
+@each $num in $gap-list {
+	.padding-h-#{$num} {
+		padding-left: #{$num}px;
+		padding-right: #{$num}px;
+	}
+
+	.padding-v-#{$num} {
+		padding-top: #{$num}px;
+		padding-bottom: #{$num}px;
+	}
+
+	.padding-l-#{$num} {
+		padding-left: #{$num}px;
+	}
+
+	.padding-r-#{$num} {
+		padding-right: #{$num}px;
+	}
+
+	.padding-t-#{$num} {
+		padding-top: #{$num}px;
+	}
+
+	.padding-b-#{$num} {
+		padding-bottom: #{$num}px;
+	}
+
+    .padding-#{$num} {
+        padding: #{$num}px;
+    }
+
+	.margin-h-#{$num} {
+		margin-left: #{$num}px;
+		margin-right: #{$num}px;
+	}
+
+	.margin-v-#{$num} {
+		margin-top: #{$num}px;
+		margin-bottom: #{$num}px;
+	}
+
+	.margin-l-#{$num} {
+		margin-left: #{$num}px;
+	}
+
+	.margin-r-#{$num} {
+		margin-right: #{$num}px;
+	}
+
+	.margin-t-#{$num} {
+		margin-top: #{$num}px;
+	}
+
+	.margin-b-#{$num} {
+		margin-bottom: #{$num}px;
+	}
+
+    .margin-#{$num} {
+        margin: #{$num}px;
+    }
+}
