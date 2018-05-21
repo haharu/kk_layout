@@ -6,15 +6,20 @@ let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
 let webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools-configuration'));
 
+// let ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+let Dotenv = require('dotenv-webpack');
+
 module.exports = {
-    context: path.resolve(__dirname, 'app/src'),
+    mode: 'production',
+    context: path.resolve(__dirname, './app/src'),
     entry: {
         main: './app',
     },
     resolve: {
         alias: {
-            Root: path.resolve(__dirname, './'),
-            Assets: path.resolve(__dirname, 'app/assets'),
+            Root: path.resolve(__dirname, '.'),
+            App: path.resolve(__dirname, './app/src'),
+            Assets: path.resolve(__dirname, './app/assets'),
         },
         extensions: ['.js', '.jsx'],
     },
@@ -24,37 +29,28 @@ module.exports = {
         chunkFilename: '[name]_[chunkhash].js',
         publicPath: '/',
     },
+    optimization: {
+        minimize: true,
+    },
     plugins: [
+        // new ServiceWorkerWebpackPlugin({
+        //     entry: path.join(__dirname, 'serviceWorker/sw.js'),
+        //     excludes: [
+        //         '**/.*', '**/*.map',
+        //     ],
+        // }),
         new webpack.LoaderOptionsPlugin({
-            minimize: true,
             debug: false,
             options: {
-                context: __dirname,
+                context: path.resolve(__dirname, './app/src'),
                 debug: false,
                 eslint: {
                     configFile: '.eslintrc',
                 },
             },
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            beautify: false,
-            mangle: {
-                screw_ie8: true,
-                keep_fnames: true,
-            },
-            compress: {
-                screw_ie8: true,
-            },
-            comments: false,
-        }),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: '"production"',
-            },
-        }),
+        new Dotenv(),
         new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
-        new webpack.optimize.CommonsChunkPlugin({children: true, async: true}),
         new ExtractTextPlugin({filename: '[name]_[chunkhash].css', allChunks: true}),
         webpackIsomorphicToolsPlugin,
     ],

@@ -22,4 +22,10 @@
     &.right {
         right: 0;
     }
+
+    &.center {
+        top: 50%!important;
+        left: 50%!important;
+        @include translate(-50%, -50%);
+    }
 }

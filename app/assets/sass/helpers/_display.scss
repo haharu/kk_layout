@@ -13,3 +13,29 @@
 	height: 100%;
 	text-align: center;
 }
+
+.flex-center {
+	@include align-items(center);
+}
+
+.flex-left {
+	@include align-items(left);
+}
+
+.flex-right {
+	@include align-items(right);
+}
+
+.flex-justify-center {
+	@include justify-content(center);
+}
+
+.flex-justify-space-between {
+	@include justify-content(space-between);
+}
+
+.is-ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

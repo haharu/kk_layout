@@ -1,0 +1,19 @@
+.is-border-circle {
+	border-radius: 50%;
+}
+
+.is-option-icon {
+	height: 2rem;
+	width: 2rem;
+	background-color: $white-ter;
+	color: $grey;
+	cursor: pointer;
+
+	.fa {
+		font-size: 1rem;
+	}
+
+	&:hover {
+		background-color: $grey-lighter;
+	}
+}

@@ -1,4 +1,4 @@
-$gap-list: 15 20 25 30 40;
+$gap-list: 5 10 15 20 25 30 40;
 @each $num in $gap-list {
 	.padding-h-#{$num} {
 		padding-left: #{$num}px;

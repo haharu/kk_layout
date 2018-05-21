@@ -1,3 +1,4 @@
+require('dotenv').config();
 require('./babel');
 let path = require('path');
 let WebpackIsomorphicTools = require('webpack-isomorphic-tools');

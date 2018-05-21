@@ -1,7 +1,9 @@
-/node_modules
+node_modules/
 .DS_Store
 /build
 /public
 /dist
 /app/assets/stylesheets
+/cert
 webpack-assets.json
+yarn-error.log

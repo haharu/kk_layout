@@ -6,7 +6,9 @@ import hotMiddleware from 'koa-webpack-hot-middleware';
 
 import devConfig from './webpack-dev-server.config';
 
+import http2 from 'http2';
 import Koa from 'koa';
+import fs from 'fs';
 import convert from 'koa-convert';
 import staticCache from 'koa-static-cache';
 import compress from 'koa-compress';
@@ -15,28 +17,31 @@ import responseTime from 'koa-response-time';
 import bodyParser from 'koa-bodyparser';
 
 import React from 'react';
-import {renderToString} from 'react-dom/server';
-import configureStore from './app/src/store/configureStore';
+import {renderToNodeStream} from 'react-dom/server';
 import config from './config';
-import {createMemoryHistory} from 'history';
+
 import Html from './app/src/helpers/Html';
 import Routes from './app/src/router/route';
 
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import multistream from 'multistream';
+import stringToStream from 'string-to-stream';
 
-import {Provider} from 'react-redux';
-import {ConnectedRouter} from 'react-router-redux';
 import {StaticRouter} from 'react-router';
+import send from 'koa-send';
 
-import proxy from 'koa-proxy';
+import {baseFetch} from 'Root/helpers/Request';
+
+import {ApolloProvider, getDataFromTree} from 'react-apollo';
+import {ApolloClient} from 'apollo-client';
+import {HttpLink} from 'apollo-link-http';
+import {InMemoryCache} from 'apollo-cache-inmemory';
+
+import Loadable from 'react-loadable';
 
 const app = new Koa();
 
 const _use = app.use;
 app.use = (x) => _use.call(app, convert(x));
-
-app.use(proxy({host: `http://${config.apiHost}:${config.apiPort}`, match: /^\/api\//}));
 
 app.use(compress({threshold: 2048, flush: zlib.Z_SYNC_FLUSH}));
 
@@ -54,17 +59,25 @@ app.use(async (ctx, next) => {
     }
 });
 
+// middleware for favicon
+app.use(async (ctx, next) => {
+    if ('/favicon.ico' === ctx.path) {
+        await send(ctx, './favicon.png');
+        return;
+    }
+
+    await next();
+});
+
 if (!config.isProduction) {
     const compile = webpack(devConfig);
     app.use(devMiddleware(compile, {
-        noInfo: false,
-        stats: {
-            colors: true,
-        },
+        compress: true,
         hot: true,
-        quiet: true,
         inline: true,
-        port: config.port,
+        quiet: true,
+        https: true,
+        progress: true,
         publicPath: devConfig.output.publicPath,
     }));
 
@@ -79,32 +92,40 @@ app.use(async (ctx, next) => {
         webpackIsomorphicTools.refresh();
     }
 
+    const client = new ApolloClient({
+        ssrMode: true,
+        link: new HttpLink({
+            uri: `${config.gqlApiURL}/graphql`,
+            fetch: baseFetch,
+        }),
+        cache: new InMemoryCache(),
+    });
+
     const context = {};
 
-    const history = createMemoryHistory();
-    const store = configureStore(history);
-    const muiTheme = getMuiTheme({userAgent: ctx.request.headers['user-agent']});
-    const component = (
-        <Provider store={store}>
-            <ConnectedRouter history={history}>
+    const modules = [];
+    const Component = (
+        <Loadable.Capture report={(moduleName) => modules.push(moduleName)}>
+            <ApolloProvider client={client}>
                 <StaticRouter location={ctx.originalUrl} context={context}>
-                    <MuiThemeProvider muiTheme={muiTheme}>
-                        <Routes/>
-                    </MuiThemeProvider>
+                    <Routes />
                 </StaticRouter>
-            </ConnectedRouter>
-        </Provider>
+            </ApolloProvider>
+        </Loadable.Capture>
     );
-    const html = renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>);
 
-    ctx.body = '<!doctype html>\n' + html;
+    await getDataFromTree(Component);
+
+    const html = renderToNodeStream(<Html assets={webpackIsomorphicTools.assets()} component={Component} state={client.extract()} />);
+
+    ctx.type = 'html';
+    ctx.body = multistream([stringToStream('<!DOCTYPE html>\n'), html]);
 });
 
-app.listen(config.port, function(err) {
-    if (err) {
-        console.log(err);
-        return;
-    }
+http2.createSecureServer({
+    key: fs.readFileSync(process.env.SERVER_CERT_KEY_PATH),
+    cert: fs.readFileSync(process.env.SERVER_CERT_PATH),
+    allowHTTP1: true,
+}, app.callback()).listen(config.port, () => {
+    console.log('Listening at port ' + config.port);
 });
-
-console.log('Listening at port ' + config.port);

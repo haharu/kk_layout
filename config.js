@@ -1,4 +1,4 @@
-let environment = {
+const environment = {
     development: {
         isProduction: false,
     },
@@ -10,36 +10,26 @@ let environment = {
     },
 }[process.env.NODE_ENV || 'development'];
 
-let dbEnvironment = {
-    development: {
-        isProductionDB: false,
-    },
-    staging: {
-        isProductionDB: false,
-    },
-    production: {
-        isProductionDB: true,
-    },
-}[process.env.DB_ENV || 'development'];
-
-let agent = {
+const agent = {
     isNode: Object.prototype.toString.call(typeof process) === '[object process]',
+};
+
+const api = {
+    gqlApiURL: process.env.GQL_API_URL,
 };
 
 module.exports = Object.assign({
     host: process.env.HOST || 'localhost',
     port: process.env.PORT || 3000,
-    apiHost: process.env.APIHOST || 'localhost',
-    apiPort: process.env.APIPORT || 3001,
     app: {
-        title: 'KKday guide backend',
-        description: 'backend for guide',
+        title: 'React Web App Boilerplate',
+        description: 'React + apollo + ssr + hot bolilerplate',
         head: {
-            titleTemplate: 'KKday guide backend: %s',
+            titleTemplate: '%s',
             meta: [
                 {
                     name: 'description',
-                    content: 'backend for guide',
+                    content: 'React + apollo + ssr + hot bolilerplate',
                 }, {
                     charset: 'utf-8',
                 }, {
@@ -76,4 +66,4 @@ module.exports = Object.assign({
             ],
         },
     },
-}, environment, dbEnvironment, agent);
+}, environment, agent, api);

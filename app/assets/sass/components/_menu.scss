@@ -1,0 +1,9 @@
+.menu-nav-list {
+    a {
+        border-left: 4px solid transparent;
+
+        &.selected {
+            border-left-color: $turquoise;
+        }
+    }
+}

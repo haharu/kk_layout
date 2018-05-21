@@ -1,15 +1,32 @@
-LINT_PATH=./app/src/*.jsx ./app/src/**/*.jsx ./*.js ./service/*.jsx ./helpers/*.jsx
+TESTS ?= test/*.js
+LINT_PATH=./app/src/*.jsx ./app/src/**/*.jsx ./*.js ./service/*.jsx ./helpers/*.jsx ./test/*.js ./test/**/*.js
+REPORTER = spec
+
 lint:
 	@./node_modules/.bin/eslint $(LINT_PATH)
 
 lint-fix:
 	@./node_modules/.bin/eslint $(LINT_PATH) --fix
 
-test:
-	@NODE_ENV=test ./node_modules/.bin/mocha \
-		--recursive \
+test-local:
+	@NODE_ENV=development DB_ENV=development APIPORT=8888 NODE_TLS_REJECT_UNAUTHORIZED=0 \
+		./node_modules/.bin/mocha \
+		--reporter $(REPORTER) \
+		--timeout 5000 \
 		--harmony \
-		--compilers js:babel-register
+		--require babel-register \
+		--exit \
+		$(TESTS)
+
+test:
+	@NODE_ENV=staging DB_ENV=staging APIPORT=8888 \
+		./node_modules/.bin/mocha \
+		--reporter $(REPORTER) \
+		--timeout 5000 \
+		--harmony \
+		--require babel-register \
+		--exit \
+		$(TESTS)
 
 deploy:
 	@NODE_ENV=production DB_ENV=production \
@@ -19,53 +36,26 @@ deploy:
 		--colors
 
 build:
-	@NODE_ENV=production DB_ENV=development \
+	@NODE_ENV=staging DB_ENV=staging \
 		./node_modules/.bin/webpack \
 			--config webpack-production.config.js \
 			--progress \
 			--colors
 
-dev-webserver:
+dev:
 	@NODE_ENV=development DB_ENV=development \
 		./node_modules/.bin/pm2 start \
 		--node-args "--harmony" webserver.js
 
-dev-apiserver:
-	@NODE_ENV=development DB_ENV=development NODE_TLS_REJECT_UNAUTHORIZED=0 \
-		./node_modules/.bin/pm2 start \
-		--node-args "--harmony" apiserver.js
-
-sit-webserver:
+sit:
 	@PORT=80 NODE_ENV=production DB_ENV=staging \
 		./node_modules/.bin/pm2 start \
 		--node-args "--harmony" webserver.js
 
-sit-apiserver:
-	@NODE_ENV=production DB_ENV=staging \
-		./node_modules/.bin/pm2 start \
-		--node-args "--harmony" apiserver.js
-
-prod-webserver:
+prod:
 	@PORT=80 NODE_ENV=production DB_ENV=production \
 		./node_modules/.bin/pm2 start \
 		--node-args "--harmony" webserver.js
-
-prod-apiserver:
-	@NODE_ENV=production DB_ENV=production \
-		./node_modules/.bin/pm2 start \
-		--node-args "--harmony" apiserver.js
-
-dev: dev-webserver dev-apiserver
-
-sit: sit-webserver sit-apiserver
-
-prod: prod-webserver prod-apiserver
-
-ps-reload-web:
-	./node_modules/.bin/pm2 reload webserver
-
-ps-reload-api:
-	./node_modules/.bin/pm2 reload apiserver
 
 ps-reload:
 	./node_modules/.bin/pm2 reload all
@@ -84,4 +74,4 @@ css-watch:
 	@compass watch
 
 
-.PHONY: lint lint-fix test
+.PHONY: lint lint-fix test test-local

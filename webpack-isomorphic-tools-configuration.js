@@ -4,7 +4,8 @@ let path = require('path');
 module.exports = {
     alias: {
         Root: path.resolve(__dirname, './'),
-        Assets: path.resolve(__dirname, 'app/assets'),
+        App: path.resolve(__dirname, './app/src'),
+        Assets: path.resolve(__dirname, './app/assets'),
     },
     assets: {
         images: {

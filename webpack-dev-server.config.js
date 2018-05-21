@@ -4,20 +4,26 @@ let webpack = require('webpack');
 let path = require('path');
 let config = require('./config');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
+// let ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 let distPath = path.resolve(__dirname, 'dist');
 
+let Dotenv = require('dotenv-webpack');
+
 module.exports = {
-    context: path.resolve(__dirname, 'app/src'),
+    mode: 'development',
+    context: path.resolve(__dirname, './app/src'),
     entry: {
         main: [
-            './app', 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+            './app',
+            'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=2000',
         ],
     },
     resolve: {
         alias: {
-            Root: path.resolve(__dirname, './'),
-            Assets: path.resolve(__dirname, 'app/assets'),
+            Root: path.resolve(__dirname, '.'),
+            App: path.resolve(__dirname, './app/src'),
+            Assets: path.resolve(__dirname, './app/assets'),
         },
         extensions: [
             '.js', '.jsx',
@@ -31,13 +37,16 @@ module.exports = {
     output: {
         path: distPath,
         filename: '[name]_[hash].js',
-        chunkFilename: '[name]_[chunkhash].js',
-        publicPath: 'http://' + config.host + ':' + config.port + '/assets/',
+        chunkFilename: '[name]_[hash].js',
+        publicPath: 'https://' + config.host + ':' + config.port + '/assets/',
     },
     plugins: [
+        // new ServiceWorkerWebpackPlugin({
+        //     entry: path.resolve(__dirname, './serviceWorker/sw.js'),
+        // }),
         new webpack.LoaderOptionsPlugin({
             options: {
-                context: __dirname,
+                context: path.resolve(__dirname, './app/src'),
                 debug: true,
                 eslint: {
                     configFile: '.eslintrc',
@@ -46,9 +55,8 @@ module.exports = {
             },
         }),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.optimize.CommonsChunkPlugin({children: true, async: true}),
-        new ExtractTextPlugin({filename: '[name]_[chunkhash].css', allChunks: true}),
+        new Dotenv(),
+        new ExtractTextPlugin({filename: '[name]_[hash].css', allChunks: true}),
         webpackIsomorphicToolsPlugin.development(),
     ],
     module: {
