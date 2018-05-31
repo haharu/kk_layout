@@ -1,5 +1,5 @@
 {
-    "name": "kkday-guide-be",
+    "name": "workbox",
     "scripts": {
         "build": "make build",
         "deploy": "make deploy",
