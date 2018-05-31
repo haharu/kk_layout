@@ -8,7 +8,7 @@
         "dev": "make dev",
         "sit": "make sit",
         "prod": "make prod",
-        "start": "yarn deploy && yarn prod",
+        "start": "yarn deploy && yarn prod"
     },
     "author": "haharu",
     "license": "ISC",
