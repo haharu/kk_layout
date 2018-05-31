@@ -1,0 +1,27 @@
+.flex {
+	@include display-flex(flex);
+}
+
+.flex--inline-flex {
+	@include display-flex(inline-flex);
+}
+
+.flex--align-center {
+	@include align-items(center);
+}
+
+.flex--align-left {
+	@include align-items(left);
+}
+
+.flex--align-right {
+	@include align-items(right);
+}
+
+.flex--justify-center {
+	@include justify-content(center);
+}
+
+.flex--justify-space-between {
+	@include justify-content(space-between);
+}

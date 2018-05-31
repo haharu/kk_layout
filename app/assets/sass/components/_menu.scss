@@ -1,9 +1,7 @@
-.menu-nav-list {
-    a {
-        border-left: 4px solid transparent;
+.menu-nav-list__link {
+    border-left: 4px solid transparent;
+}
 
-        &.selected {
-            border-left-color: $turquoise;
-        }
-    }
+.menu-nav-list__link--selected {
+    border-left-color: $turquoise;
 }

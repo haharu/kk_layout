@@ -1,21 +1,18 @@
-.image.has-texture {
-    @include background-image(linear-gradient(45deg,#efefef 25%,transparent 25%,transparent 75%,#efefef 75%,#efefef),linear-gradient(45deg,#efefef 25%,transparent 25%,transparent 75%,#efefef 75%,#efefef));
+.image--has-texture {
+    @include background-image(linear-gradient(45deg, #efefef 25%, transparent 25%, transparent 75%, #efefef 75%, #efefef), linear-gradient(45deg, #efefef 25%, transparent 25%, transparent 75%, #efefef 75%, #efefef));
     background-position: 0 0, 10px 10px;
     background-size: 21px;
 }
 
-#image-dialog {
-    .card {
-        .card-content {
-            color: $grey;
-            background-color: #eee;
-        }
-        &.active {
-            @include box-shadow(0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2));
-            .card-content {
-                color: $white;
-                background-color: #4285f4;
-            }
-        }
+.image-dialog__card--active {
+    @include box-shadow(0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2));
+    .image-dialog__card-content {
+        color: $white;
+        background-color: #4285f4;
     }
+}
+
+.image-dialog__card-content {
+    color: $grey;
+    background-color: #eee;
 }
