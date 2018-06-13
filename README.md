@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/haharu/workbox.svg?branch=master)](https://travis-ci.org/haharu/workbox)
 
-A startkit with react, redux, webpack, hot, universal, koa2, sass
+A startkit with react, gql, webpack, hot, universal, koa2, sass
 
 ---
 
